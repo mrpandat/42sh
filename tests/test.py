@@ -4,9 +4,8 @@ from fun import *
 import datetime
 import unittest
 import os
-import subprocess
 from cffi import FFI
-
+import sys
 
 class Test(unittest.TestCase):
     def __init__(self, arg):
@@ -25,8 +24,15 @@ class Test(unittest.TestCase):
          self.assertEqual(idx, 1)
 
 if __name__ == "__main__":
-    unittest.main()
-
+    for arg in sys.argv:
+        print (arg)
+        if arg == "-l" or arg =="--list":
+            print ("categories")
+        if arg == "-c":
+            print("execute category")
+        if arg == "-s" or arg=="--sanity":
+            print ("valgrind")
+    #unittest.main()
     now = datetime.datetime.now()
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
