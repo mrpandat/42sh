@@ -1,12 +1,12 @@
-#include <ast.h>
-#include "../includes/global.h"
 #include "../includes/parser.h"
-#include "../includes/ast.h"
-#include "../includes/lexer.h"
 
-void parser()
+struct s_ast_node *parser(char *input)
 {
-    printf("working parser \n");
+    struct s_lexer *lexer = lexer_init(input);
+    struct s_ast_node *root = init_ast_node();
+    if (!read_input(root, lexer))
+        return NULL;
+    return root;
 }
 
 bool read_rule_if(struct s_ast_node *node, struct s_lexer *l)
@@ -415,6 +415,7 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
         if (!read_compound_list(list->right, l))
             free(list->right);
     }
+    return true;
 }
 
 bool read_input(struct s_ast_node *node, struct s_lexer *l)
