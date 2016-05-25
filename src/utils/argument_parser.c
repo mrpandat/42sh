@@ -70,10 +70,18 @@ void parse_long_option(char **argv, struct options *options, int i)
         fprintf(stderr, "unknown long option : %s\n", argv[i]);
 }
 
-void parse_options(int argc, char **argv, struct options *options, int start)
+/**
+ * Checks if the file is correct
+ */
+void check_correct(int argc, char **argv)
 {
     if (argc < 2)
         print_exit(-1,"42sh [ GNU long options ] [ options ] [ file ]\n");
+}
+
+void parse_options(int argc, char **argv, struct options *options, int start)
+{
+    check_correct(argc, argv);
     for (int i = start; i < argc; i++)
         if (strcmp(argv[i], "--norc") == 0)
             options->norc = 1;
@@ -93,6 +101,8 @@ void parse_options(int argc, char **argv, struct options *options, int start)
         }
         else if (argv[i][0] == '-' && argv[i][1] == '-')
             parse_long_option(argv, options, i);
+        else if (i == argc - 1)
+            options->file = argv[i];
         else
             print_exit(-1, "unknown option");
 }
