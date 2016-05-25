@@ -1,7 +1,5 @@
 from test_functions import *
-from static.colors import bcolors
-from fun import *
-import datetime
+from fun import print_colored
 import unittest
 import os
 from cffi import FFI
@@ -23,20 +21,30 @@ class Test(unittest.TestCase):
          idx = self.lib.test()
          self.assertEqual(idx, 1)
 
-if __name__ == "__main__":
-    for arg in sys.argv:
-        if arg == "-l" or arg =="--list":
-            print ("categories")
-        elif arg == "-c":
-            print("execute category")
-        elif arg == "-s" or arg=="--sanity":
-            print ("valgrind")
-        else:
-            print ("Unknow option")
-    #unittest.main()
-    now = datetime.datetime.now()
+
+def launch_all() :
+    unittest.main()
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-    print_colored("./static/nyan")
+if __name__ == "__main__":
+    sys.argv[0] = ""
+    for arg in sys.argv:
+        if arg=="":
+            continue
+        elif arg == "-l" or arg =="--list":
+            print ("categories")
+            exit(0)
+        elif arg == "-c":
+            print("execute category")
+            exit(0)
+        elif arg == "-s" or arg=="--sanity":
+            print ("valgrind")
+            exit(0)
+        else:
+            print ("Unknow option : " + arg)
+            exit(1)
+    launch_all()
+
+
 
 
