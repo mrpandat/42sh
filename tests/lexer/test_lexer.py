@@ -14,3 +14,6 @@ class TestLexer(unittest.TestCase):
         idx = self.lib.test()
         self.assertEqual(idx, 1)
 
+    def test_02_init_lexer(self):
+        self.lib.lexer_init(b"if a; then b; fi")
+
