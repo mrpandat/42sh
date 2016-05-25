@@ -49,6 +49,7 @@ enum e_token_type
             TK_UNTIL, /** "until" */
             TK_FOR, /** "for" */
             TK_IN, /** "in" */
+            TK_IONUMBER, /** 0, 1 or 2 */
 };
 
 /**
@@ -116,7 +117,7 @@ bool lexer_match_operator(struct s_lexer *lexer);
 
 bool lexer_match_and_or_not(struct s_lexer *lexer);
 
-bool lexer_match_symbol(struct s_lexer *lexer)
+bool lexer_match_symbol(struct s_lexer *lexer);
 
 /* File: lexer_utils.c */
 
