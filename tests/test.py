@@ -1,29 +1,21 @@
-from test_functions import *
 from fun import print_colored
-import unittest
 import os
-from cffi import FFI
 import sys
-
-class Test(unittest.TestCase):
-    def __init__(self, arg):
-        unittest.TestCase.__init__(self, arg)
-        self.ffi = FFI()
-        self.lib = self.ffi.dlopen("../build/libmy42sh.so")
-        source = get_source_all_files("../src/includes")
-        self.ffi.cdef(source)
-
-    def test_01_index(self):
-        proc = execute_cmd("git shortlog -s | wc -l")
-        self.assertEqual(proc.stdout.strip(), '4')
-
-    def test_02_index(self):
-         idx = self.lib.test()
-         self.assertEqual(idx, 1)
-
+import unittest
+from parser.test_parser import TestParser
+from lexer.test_lexer import TestLexer
+from execute.test_exec import TestExec
 
 def launch_all() :
-    unittest.main()
+
+    parser_suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestParser)
+    lexer_suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestLexer)
+    exec_suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestExec)
+
+    unittest.TextTestRunner().run(parser_suite)
+    unittest.TextTestRunner().run(lexer_suite)
+    unittest.TextTestRunner().run(exec_suite)
+    
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 if __name__ == "__main__":
