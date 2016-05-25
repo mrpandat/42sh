@@ -8,6 +8,7 @@ struct options
     int shopt_operation;
     char *command;
     char *shopt_option;
+    char *file;
 };
 
 void help(char *name);
