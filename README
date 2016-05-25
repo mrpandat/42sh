@@ -1,0 +1,13 @@
+   ___  _____  _____ _   _ 
+  /   |/ __  \/  ___| | | |
+ / /| |`' / /'\ `--.| |_| |
+/ /_| |  / /   `--. \  _  |
+\___  |./ /___/\__/ / | | |
+    |_/\_____/\____/\_| |_/
+                           
+                           
+By Treibert Jean, Domingues Thomas, Lucas Moisan and Martin Lees.
+
+To build :
+- launch cmake CMakeLists.txt
+- make
