@@ -12,7 +12,7 @@ void lexer_add_token(struct s_lexer *lexer, enum e_token_type type, char *val)
 
     /** Create new token */
     token->type = type;
-    token->value = strdup(val);
+    //token->value = strdup(val);
     token->next = NULL;
 
     if (NULL == lexer->tk_list)
@@ -27,7 +27,7 @@ void lexer_add_token(struct s_lexer *lexer, enum e_token_type type, char *val)
     }
 }
 
-struct s_lexer_token *lexer_peek_token(struct s_lexer *lexer)
+struct s_lexer_token *lexer_peek(struct s_lexer *lexer)
 {
     if (NULL == lexer || NULL == lexer->tk_current)
         return NULL;
@@ -35,16 +35,14 @@ struct s_lexer_token *lexer_peek_token(struct s_lexer *lexer)
     return lexer->tk_current;
 }
 
-struct s_lexer_token *lexer_consume_token(struct s_lexer *lexer)
+struct s_lexer_token *lexer_read(struct s_lexer *lexer)
 {
     if (NULL == lexer || NULL == lexer->tk_current)
         return NULL;
 
-    struct s_lexer_token *token = lexer->tk_current;
-
     lexer->tk_current = lexer->tk_current->next;
 
-    return token;
+    return lexer->tk_current;
 }
 
 struct s_lexer_token *lexer_next_token(struct s_lexer *lexer)

@@ -15,6 +15,7 @@ char *str_append(char *str_one, char *str_two)
     return str;
 }
 
-int test() {
+int test()
+{
     return 1;
 }
