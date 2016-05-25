@@ -73,15 +73,15 @@ void parse_long_option(char **argv, struct options *options, int i)
 /**
  * Checks if the file is correct
  */
-void check_correct(int argc, char **argv)
+void check_correct(int argc)
 {
     if (argc < 2)
-        print_exit(-1,"42sh [ GNU long options ] [ options ] [ file ]\n");
+        print_exit(-1,"42sh [ GNU long options ] [ options ] [ file ]");
 }
 
 void parse_options(int argc, char **argv, struct options *options, int start)
 {
-    check_correct(argc, argv);
+    check_correct(argc);
     for (int i = start; i < argc; i++)
         if (strcmp(argv[i], "--norc") == 0)
             options->norc = 1;
