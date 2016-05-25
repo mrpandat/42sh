@@ -1,11 +1,7 @@
 #ifndef LEXER_LEXER_H
 # define LEXER_LEXER_H
 
-#include <libgen.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+# include "../includes/global.h"
 
 enum e_token_type
 {
@@ -50,6 +46,9 @@ enum e_token_type
             TK_FOR, /** "for" */
             TK_IN, /** "in" */
             TK_IONUMBER, /** 0, 1 or 2 */
+            TK_HEREDOC,
+            TK_FUNCTION,
+            TK_ASSIGNEMENT
 };
 
 /**
@@ -89,9 +88,9 @@ void lexer_destroy(struct s_lexer *lexer);
 
 void lexer_add_token(struct s_lexer *lexer, enum e_token_type type, char *val);
 
-struct s_lexer_token *lexer_peek_token(struct s_lexer *lexer);
+struct s_lexer_token *lexer_peek(struct s_lexer *lexer);
 
-struct s_lexer_token *lexer_consume_token(struct s_lexer *lexer);
+struct s_lexer_token *lexer_read(struct s_lexer *lexer);
 
 struct s_lexer_token *lexer_next_token(struct s_lexer *lexer);
 
@@ -106,8 +105,6 @@ bool lexer_match_arith(struct s_lexer *lexer);
 bool lexer_match_expansion(struct s_lexer *lexer);
 
 bool lexer_match_word(struct s_lexer *lexer);
-
-bool lexer_match_symbol(struct s_lexer *lexer);
 
 /* File: lexer_match_operator.c */
 
