@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.2)
 project(42sh C)
 
 
-set(CMAKE_C_FLAGS "-Wall -Wextra -Werror -std=c99 -pedantic")
+if (BUILD_TYPE MATCHES DEBUG)
+    set(CMAKE_C_FLAGS "-Wall -Wextra -Werror -std=c99 -pedantic -g")
+else()
+    set(CMAKE_C_FLAGS "-Wall -Wextra -Werror -std=c99 -pedantic")
+endif (BUILD_TYPE MATCHES DEBUG)
 
 set(MAIN_SOURCES src/main.c)
 set(EXEC_DIR src/exec)
@@ -40,3 +44,5 @@ add_custom_target(check
 add_custom_target(doc
         COMMAND cd ../doc && mkdir -p doxygen && doxygen Doxyfile
         )
+
+

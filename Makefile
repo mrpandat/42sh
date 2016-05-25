@@ -20,3 +20,5 @@ run:
 check:
 	$(MAKE) -C build check
 
+debug:clean
+	mkdir build && cd build && cmake .. -DBUILD_TYPE:STRING=DEBUG && make && mv 42sh ..
