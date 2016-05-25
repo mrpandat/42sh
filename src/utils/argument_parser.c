@@ -72,6 +72,8 @@ void parse_long_option(char **argv, struct options *options, int i)
 
 void parse_options(int argc, char **argv, struct options *options, int start)
 {
+    if (argc < 2)
+        print_exit(-1,"42sh [ GNU long options ] [ options ] [ file ]\n");
     for (int i = start; i < argc; i++)
         if (strcmp(argv[i], "--norc") == 0)
             options->norc = 1;
