@@ -5,15 +5,23 @@ import unittest
 from parser.test_parser import TestParser
 from lexer.test_lexer import TestLexer
 from execute.test_exec import TestExec
+from utils.test_utils import TestUtils
 
-def launch_all() :
 
+def launch_all():
+
+    utils_suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestUtils)
     parser_suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestParser)
     lexer_suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestLexer)
     exec_suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestExec)
 
+    print("Launching utils tests....")
+    unittest.TextTestRunner().run(utils_suite)
+    print("Launching parser tests....")
     unittest.TextTestRunner().run(parser_suite)
+    print("Launching lexer tests....")
     unittest.TextTestRunner().run(lexer_suite)
+    print("Launching execution tests....")
     unittest.TextTestRunner().run(exec_suite)
     
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
