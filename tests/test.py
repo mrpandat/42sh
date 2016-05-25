@@ -25,13 +25,14 @@ class Test(unittest.TestCase):
 
 if __name__ == "__main__":
     for arg in sys.argv:
-        print (arg)
         if arg == "-l" or arg =="--list":
             print ("categories")
-        if arg == "-c":
+        elif arg == "-c":
             print("execute category")
-        if arg == "-s" or arg=="--sanity":
+        elif arg == "-s" or arg=="--sanity":
             print ("valgrind")
+        else:
+            print ("Unknow option")
     #unittest.main()
     now = datetime.datetime.now()
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
