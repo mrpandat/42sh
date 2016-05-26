@@ -28,10 +28,10 @@ static bool match_separator(struct s_lexer *lexer)
 struct s_lexer *lexer_init(const char *command)
 {
     struct s_lexer *lexer = NULL;
-    if (NULL == (lexer = malloc(sizeof(struct s_lexer))))
+    if (NULL == (lexer = malloc(sizeof (struct s_lexer))))
         return NULL;
 
-    if (NULL == (lexer->command = malloc(sizeof(char) * strlen(command) + 1)))
+    if (NULL == (lexer->command = malloc(sizeof (char) * strlen(command) + 1)))
     {
         free(lexer);
         return NULL;
@@ -95,7 +95,7 @@ void lexer_process(struct s_lexer *lexer)
     char *empty = strdup("EOF");
     lexer_add_token(lexer, TK_EOF, empty);
 
-    /** Reset cureent token to first element of list */
+    /** Reset current token to first element of list */
     lexer->tk_current = lexer->tk_list;
 }
 

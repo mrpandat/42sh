@@ -165,3 +165,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Custom files
+/src/lexer/lexer_utils.c
