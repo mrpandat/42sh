@@ -116,12 +116,4 @@ bool lexer_match_and_or_not(struct s_lexer *lexer);
 
 bool lexer_match_symbol(struct s_lexer *lexer);
 
-/* File: lexer_utils.c */
-
-void print_lexer(struct s_lexer *lexer);
-
-void print_token_list(struct s_lexer *lexer);
-
-void print_token(struct s_lexer_token *token);
-
 #endif /* !LEXER_LEXER_H */
