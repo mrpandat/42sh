@@ -36,14 +36,13 @@ char *str_append(char *str_one, char *str_two)
 
 char *file_to_str(char *file)
 {
-    FILE *f = NULL;
-    f = fopen(file, "r");
+    FILE *f = fopen(file, "r");
     char *str = NULL;
     if (f)
     {
         fseek(f, 0, SEEK_END);
         int length = ftell(f);
-        str = malloc(sizeof (char) * length + 1);
+        str = calloc(sizeof (char) * length + 1, sizeof (char));
         if (str != NULL)
         {
             fseek(f, 0, SEEK_SET);
