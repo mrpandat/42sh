@@ -12,6 +12,10 @@ class TestBinary(unittest.TestCase):
         self.assertEqual(result.stdout, "Version 0.5\n")
 
 
-    def test_02_index(self):
+    def test_02_expandable_options(self):
+        result = execute_cmd('./42sh --ver')
+        self.assertEqual(result.stdout, "Version 0.5\n")
+
+    def test_03_long_options(self):
         result = execute_cmd('./42sh --version')
         self.assertEqual(result.stdout, "Version 0.5\n")

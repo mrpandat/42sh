@@ -62,6 +62,64 @@ class TestLexer(unittest.TestCase):
                          '[ERROR]\n\t--expected: TK_IF(27)\n\t --my: ' +
                          str(ctokentype))
 
-    def test_02_init_lexer(self):
-        self.lib.lexer_init(b"if a; then b; fi")
+    def test_04_valid_if_command(self):
+        # Init lexer
+        clexer = self.lib.lexer_init(b'if toto; then titi; fi')
+        self.assertIsNotNone(clexer, '[ERROR] Lexer is NULL')
 
+        # Trigger lexing
+        self.lib.lexer_process(clexer)
+
+        # Check if token list is not null
+        self.assertIsNotNone(clexer.tk_list, '[ERROR] Token list is NULL')
+
+        # Check if current token is not null
+        self.assertIsNotNone(clexer.tk_current, '[ERROR] Current token is NULL')
+
+        # Check if first token type is TK_IF
+        ctokentype = clexer.tk_list.type
+        self.assertEqual(ctokentype, self.lib.TK_IF,
+                         '[ERROR]\n\t--expected: TK_IF(27)\n\t --my: ' +
+                         str(ctokentype))
+
+        # Check if returned token is word
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_WORD,
+                         '[ERROR]\n\t--expected: TK_WORD\n\t --my: ' +
+                         str(ctoken.type))
+
+        # Check if returned token is semi
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_SEMI,
+                         '[ERROR]\n\t--expected: TK_SEMI\n\t --my: ' +
+                         str(ctoken.type))
+
+        # Check if returned token is then
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_THEN,
+                         '[ERROR]\n\t--expected: TK_THEN\n\t --my: ' +
+                         str(ctoken.type))
+
+        # Check if returned token is word
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_WORD,
+                         '[ERROR]\n\t--expected: TK_WORD\n\t --my: ' +
+                         str(ctoken.type))
+
+        # Check if returned token is semi
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_SEMI,
+                         '[ERROR]\n\t--expected: TK_SEMI\n\t --my: ' +
+                         str(ctoken.type))
+
+        # Check if returned token is semi
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_FI,
+                         '[ERROR]\n\t--expected: TK_FI\n\t --my: ' +
+                         str(ctoken.type))
+
+        # Check if returned token is eof
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_EOF,
+                         '[ERROR]\n\t--expected: TK_EOF\n\t --my: ' +
+                         str(ctoken.type))

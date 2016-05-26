@@ -3,8 +3,7 @@
 
 #include <global.h>
 
-struct options
-{
+struct options {
     int norc;
     int ast_print;
     int shopt_operation;
@@ -18,5 +17,7 @@ void help(char *name);
 int is_command(char *name);
 
 void parse_options(int argc, char **argv, struct options *opt, int start);
+
 int print_exit(int code, char *str, FILE *out);
+
 #endif
