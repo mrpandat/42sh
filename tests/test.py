@@ -69,11 +69,11 @@ if __name__ == "__main__":
                 launch_exec_tests()
             elif "binary" in sys.argv:
                 launch_exec_tests()
-            print_nyan()
+            #print_nyan()
             exit(0)
         else:
             print ("Unknow option : " + arg)
             exit(1)
     launch_all()
-    print_nyan()
+    #print_nyan()
 
