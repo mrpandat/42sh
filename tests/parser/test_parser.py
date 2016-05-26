@@ -73,4 +73,64 @@ class TestParser(unittest.TestCase):
                                             b'(myword1);\n'
                                             b'(myword2);;esc')))
 
-
+    def test_04_redirection(self):
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1 > myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'0 > myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'2 > myword')))
+        self.assertFalse(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'3 > myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1 < myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1 >> myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1 << myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1 <<- myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1 >& myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1 <& myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1 >| myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1 <> myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1>myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1 >myword')))
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'1> myword')))

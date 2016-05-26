@@ -54,8 +54,15 @@ static bool match_io(struct s_lexer *lexer)
 
 static bool match_iohere(struct s_lexer *lexer)
 {
+    /** <<- */
+    if (0 == strncmp(lexer->current, "<<-", strlen("<<-")))
+    {
+        lexer_add_token(lexer, TK_DLESSDASH, "<<-");
+        lexer->current += strlen("<<-");
+        return true;
+    }
     /** << */
-    if (0 == strncmp(lexer->current, "<<", strlen("<<")))
+    else if (0 == strncmp(lexer->current, "<<", strlen("<<")))
     {
         lexer_add_token(lexer, TK_DLESS, "<<");
         lexer->current += strlen("<<");
@@ -66,13 +73,6 @@ static bool match_iohere(struct s_lexer *lexer)
     {
         lexer_add_token(lexer, TK_DGREAT, ">>");
         lexer->current += strlen(">>");
-        return true;
-    }
-    /** <<- */
-    else if (0 == strncmp(lexer->current, "<<-", strlen("<<-")))
-    {
-        lexer_add_token(lexer, TK_DLESSDASH, "<<-");
-        lexer->current += strlen("<<-");
         return true;
     }
     return false;
