@@ -76,20 +76,21 @@ void parse_long_option(char **argv, struct options *options, int i)
  */
 void check_correct(int argc)
 {
-    if (argc < 2)
-        print_exit(-1,"42sh [ GNU long options ] [ options ] [ file ]", stderr);
+    if (isatty(STDIN_FILENO))
+        if (argc < 2)
+            print_exit(-1,"42sh [ GNU long options ] [ options ] [ file ]", stderr);
 }
 
 void parse_file(struct options *options)
 {
     if (strcmp(options->command, "") == 0
         && strcmp(options->file, "") != 0)
-        options->command = file_to_str(options->file);
+        options->command = path_to_str(options->file);
 }
 
-void parse_options(int argc, char **argv, struct options *options, int start)
+void parse_small_options(int argc, char **argv, struct options *options
+        ,int start)
 {
-    check_correct(argc);
     for (int i = start; i < argc; i++)
         if (strcmp(argv[i], "--norc") == 0)
             options->norc = 1;
@@ -113,5 +114,19 @@ void parse_options(int argc, char **argv, struct options *options, int start)
             options->file = argv[i];
         else
             print_exit(-1, "unknown option", stderr);
-    parse_file(options);
+}
+
+void parse_options(int argc, char **argv, struct options *options, int start)
+{
+    if (!isatty(STDIN_FILENO))
+    {
+        options->file = "stdin";
+        options->command = file_to_str(stdin);
+    }
+    else
+    {
+        check_correct(argc);
+        parse_small_options(argc, argv, options, start);
+        parse_file(options);
+    }
 }

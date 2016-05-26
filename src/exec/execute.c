@@ -18,3 +18,9 @@ int execute(struct options opt)
     }
     return 0;
 }
+
+/*
+ *  A && B && C sense : ==>
+ *  A | B | C sens : <==
+ *  A | B | c sens : pipe puis le &&
+ */

@@ -34,16 +34,17 @@ char *str_append(char *str_one, char *str_two)
     return str;
 }
 
-char *file_to_str(char *file)
+
+
+char *path_to_str(char *file)
 {
-    FILE *f = NULL;
-    f = fopen(file, "r");
+    FILE *f = fopen(file, "r");
     char *str = NULL;
     if (f)
     {
         fseek(f, 0, SEEK_END);
         int length = ftell(f);
-        str = malloc(sizeof (char) * length + 1);
+        str = calloc(sizeof (char) * length + 1, sizeof (char));
         if (str != NULL)
         {
             fseek(f, 0, SEEK_SET);
@@ -55,6 +56,29 @@ char *file_to_str(char *file)
     }
     return NULL;
 }
+
+/**
+ * Be carefull this function does not closes the FILE
+ * Reason : ment to be used with stdin
+ */
+char *file_to_str(FILE *f)
+{
+    char *str = NULL;
+    if (f)
+    {
+        fseek(f, 0, SEEK_END);
+        int length = ftell(f);
+        str = calloc(sizeof (char) * length + 1, sizeof (char));
+        if (str != NULL)
+        {
+            fseek(f, 0, SEEK_SET);
+            fread(str, sizeof(char), length, f);
+            return str;
+        }
+    }
+    return NULL;
+}
+
 
 int test()
 {
