@@ -4,12 +4,6 @@
 #include <argument_parser.h>
 #include <util.h>
 
-
-void help(char *name)
-{
-    fprintf(stderr, "%s [ GNU long options ] [ options ] [ file ]\n", name);
-}
-
 int is_command(char *name)
 {
     if (strcmp(name, "-v") == 0 || strcmp(name, "--version") == 0
@@ -76,9 +70,8 @@ void parse_long_option(char **argv, struct options *options, int i)
  */
 void check_correct(int argc)
 {
-    if (isatty(STDIN_FILENO))
-        if (argc < 2)
-            print_exit(-1,"42sh [ GNU long options ] [ options ] [ file ]", stderr);
+    if (isatty(STDIN_FILENO)) if (argc < 2)
+        print_exit(1, "42sh [ GNU long options ] [ options ] [ file ]", stderr);
 }
 
 void parse_file(struct options *options)
@@ -88,8 +81,8 @@ void parse_file(struct options *options)
         options->command = path_to_str(options->file);
 }
 
-void parse_small_options(int argc, char **argv, struct options *options
-        ,int start)
+void parse_small_options(int argc, char **argv, struct options *options,
+                         int start)
 {
     for (int i = start; i < argc; i++)
         if (strcmp(argv[i], "--norc") == 0)
@@ -113,7 +106,7 @@ void parse_small_options(int argc, char **argv, struct options *options
         else if (i == argc - 1)
             options->file = argv[i];
         else
-            print_exit(-1, "unknown option", stderr);
+            print_exit(1, "unknown option", stderr);
 }
 
 void parse_options(int argc, char **argv, struct options *options, int start)
