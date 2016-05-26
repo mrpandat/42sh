@@ -6,7 +6,7 @@ int execute(struct options opt)
 {
     char **arguments = NULL;
     char *prog = NULL;
-    if (strcmp(opt.command,"") != 0)
+    if (strcmp(opt.command, "") != 0)
     {
         prog = args_from_str(opt.command, &arguments);
 

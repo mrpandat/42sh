@@ -11,11 +11,11 @@ char *args_from_str(char *str, char ***arguments)
 
     while (arg != NULL)
     {
-        *arguments = realloc(*arguments, sizeof(char *) * ++i);
+        *arguments = realloc(*arguments, sizeof (char *) * ++i);
         (*arguments)[i - 1] = arg;
         arg = strtok(NULL, " ");
     }
-    *arguments = realloc(*arguments, sizeof(char *) * (i + 1));
+    *arguments = realloc(*arguments, sizeof (char *) * (i + 1));
     (*arguments)[i] = NULL;
     return prog_name;
 }
@@ -48,7 +48,7 @@ char *path_to_str(char *file)
         if (str != NULL)
         {
             fseek(f, 0, SEEK_SET);
-            fread(str, sizeof(char), length, f);
+            fread(str, sizeof (char), length, f);
             fclose(f);
             return str;
         }
