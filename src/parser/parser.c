@@ -1,12 +1,12 @@
-#include <ast.h>
-#include "../includes/global.h"
 #include "../includes/parser.h"
-#include "../includes/ast.h"
-#include "../includes/lexer.h"
 
-void parser()
+struct s_ast_node *parser(char *input)
 {
-    printf("working parser \n");
+    struct s_lexer *lexer = lexer_init(input);
+    struct s_ast_node *root = init_ast_node();
+    if (!read_input(root, lexer))
+        return NULL;
+    return root;
 }
 
 bool read_rule_if(struct s_ast_node *node, struct s_lexer *l)
@@ -360,8 +360,11 @@ bool read_and_or(struct s_ast_node *node, struct s_lexer *l)
         while (lexer_read(l)->type == TK_NEWLINE)
             continue;
         and_or->right = init_ast_node();
-        if (!read_pipeline(and_or->right, l))
+        if (!read_and_or(and_or->right, l))
+        {
+            free(and_or->right);
             return false;
+        }
     }
     return true;
 }
@@ -382,15 +385,36 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
         else
             list->type = ND_OR;
         list->right = init_ast_node();
-        read_and_or(list->right, l);
+        if (!read_list(list->right, l))
+            free(list->right);
     }
     return true;
 }
 
 bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
 {
-    free(node);
-    free(l);
+    while (lexer_peek(l)->type == TK_NEWLINE)
+        lexer_read(l);
+    node->type = ND_LIST;
+    struct s_list_node *list = malloc(sizeof(struct s_list_node));
+    list->left = init_ast_node();
+    list->type = ND_LIST_NONE;
+    list->right = NULL;
+    if (!read_and_or(list->left, l))
+        return false;
+    if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_OR
+        || lexer_peek(l)->type == TK_NEWLINE)
+    {
+        if (lexer_peek(l)->type == TK_AND)
+            list->type = ND_AND;
+        else
+            list->type = ND_OR;
+        while(lexer_read(l)->type == TK_NEWLINE)
+            continue;
+        list->right = init_ast_node();
+        if (!read_compound_list(list->right, l))
+            free(list->right);
+    }
     return true;
 }
 

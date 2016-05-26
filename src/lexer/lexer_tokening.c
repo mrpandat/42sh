@@ -12,7 +12,7 @@ void lexer_add_token(struct s_lexer *lexer, enum e_token_type type, char *val)
 
     /** Create new token */
     token->type = type;
-    //token->value = strdup(val);
+    token->value = val;
     token->next = NULL;
 
     if (NULL == lexer->tk_list)
