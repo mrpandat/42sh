@@ -4,7 +4,7 @@
 
 int file_test(char *name)
 {
-    struct stat *stats = malloc(sizeof(struct stat));
+    struct stat *stats = malloc(sizeof (struct stat));
     int res = 0;
     if (stat(name, stats) > -1)
     {
