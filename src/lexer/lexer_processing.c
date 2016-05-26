@@ -2,19 +2,19 @@
 
 #include "../includes/lexer.h"
 
-static bool is_eof_symbol(char *str)
+static bool is_word_end(char *str)
 {
     if (NULL == str)
         return true;
 
-    /** \0, ;, ;; or \n */
-    if ('\0' == *str
-        || 0 == strncmp(str, ";", strlen(";"))
-        || 0 == strncmp(str, ";;", strlen(";;"))
-        || 0 == strncmp(str, "\n", strlen("\n")))
-        return true;
+    /** (a-zA-Z0-9_) */
+    if ((*str >= 'a' && *str <= 'z')
+        || (*str >= 'A' && *str <= 'Z')
+        || (*str >= '0' && *str <= '9')
+        || '_' == *str)
+        return false;
 
-    return false;
+    return true;
 }
 
 static bool match_eof_symbol(struct s_lexer *lexer)
@@ -97,7 +97,7 @@ bool lexer_match_word(struct s_lexer *lexer)
     char *val = NULL;
     char *copy = lexer->current;
 
-    while (!is_eof_symbol(copy))
+    while (!is_word_end(copy))
     {
         len++;
         copy++;

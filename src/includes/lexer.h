@@ -46,9 +46,9 @@ enum e_token_type
             TK_FOR, /** "for" */
             TK_IN, /** "in" */
             TK_IONUMBER, /** 0, 1 or 2 */
-            TK_HEREDOC,
-            TK_FUNCTION,
-            TK_ASSIGNEMENT
+            TK_HEREDOC, /** << with */
+            TK_FUNCTION, /** function */
+            TK_ASSIGNEMENT /** set */
 };
 
 /**
