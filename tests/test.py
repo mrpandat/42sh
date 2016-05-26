@@ -25,12 +25,12 @@ def launch_test(test, test_name):
     print ()
     print((" Launching " + test_name + " tests ").center(80, '*'))
     print ()
-    res = TestResult()
+    res = MyTestResult()
     parser_suite.run(res)
-    print (res)
     global nb_fail
     nb_fail += len(res.errors)
     nb_fail += len(res.failures)
+
 
 
 def launch_all():
@@ -45,7 +45,7 @@ def print_nyan():
     if nb_fail == 0:
         print_colored("./static/nyan")
     else:
-        print_colored("./static/dead")
+        print_file("./static/dead",bcolors.OKBLUE)
 
 if __name__ == "__main__":
     categorie = ["utils", "lexer", "parser", "execute", "binary"]
