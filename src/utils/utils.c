@@ -36,7 +36,8 @@ char *str_append(char *str_one, char *str_two)
 
 char *file_to_str(char *file)
 {
-    FILE *f = fopen(file, "r");
+    FILE *f = NULL;
+    f = fopen(file, "r");
     char *str = NULL;
     if (f)
     {
