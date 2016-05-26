@@ -139,8 +139,8 @@ void add_command_redirection(struct s_command_node *command,
 {
     command->nb_redirections++;
     command->redirections = realloc(command->redirections,
-                             command->nb_redirections
-                             * sizeof (struct s_redirection_node *));
+                                    command->nb_redirections
+                                    * sizeof (struct s_redirection_node *));
     command->redirections[command->nb_redirections - 1] = redirection;
 }
 
@@ -158,8 +158,8 @@ void add_pipeline_command(struct s_pipeline_node *pipeline,
 {
     pipeline->nb_commands++;
     pipeline->commands = realloc(pipeline->commands,
-                                     pipeline->nb_commands
-                                    * sizeof (struct s_ast_node *));
+                                 pipeline->nb_commands
+                                 * sizeof (struct s_ast_node *));
     pipeline->commands[pipeline->nb_commands - 1] = command;
 }
 

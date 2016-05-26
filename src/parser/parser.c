@@ -18,16 +18,27 @@ bool read_rule_if(struct s_ast_node *node, struct s_lexer *l)
     lexer_read(l);
     node->type = ND_IF;
     node->data.s_if_node = init_if_node();
-    if (!read_compound_list(node->data.s_if_node->predicate, l)
-        && lexer_peek(l)->type != TK_THEN
-        && !read_compound_list(node->data.s_if_node->true_statement, l))
+    if (!read_compound_list(node->data.s_if_node->predicate, l))
+        return false;
+    if (lexer_peek(l)->type != TK_THEN)
+        return false;
+    lexer_read(l);
+    if (!read_compound_list(node->data.s_if_node->true_statement, l))
         return false;
     if (lexer_peek(l)->type == TK_ELIF)
-        return read_rule_if(node->data.s_if_node->false_statement, l);
+    {
+        if (!read_rule_if(node->data.s_if_node->false_statement, l))
+            return false;
+    }
     else if (lexer_peek(l)->type == TK_ELSE)
-        return read_compound_list(node->data.s_if_node->false_statement, l);
-    else
+    {
+        if (!read_compound_list(node->data.s_if_node->false_statement, l))
+            return false;
+    }
+    if (lexer_peek(l)->type == TK_FI)
         return true;
+    else
+        return false;
 }
 
 bool read_rule_while(struct s_ast_node *node, struct s_lexer *l)
@@ -163,8 +174,8 @@ bool read_redirection(struct s_redirection_node *redirection, struct s_lexer *l)
 {
     //TODO if (lexer_peek(l)->type != TK_IONUMBER)
     if (!strcmp(lexer_peek(l)->value, "0")
-            || !strcmp(lexer_peek(l)->value, "1")
-            || !strcmp(lexer_peek(l)->value, "2"))
+        || !strcmp(lexer_peek(l)->value, "1")
+        || !strcmp(lexer_peek(l)->value, "2"))
     {
         redirection->io_number = lexer_peek(l)->value;
         lexer_read(l);
@@ -174,9 +185,11 @@ bool read_redirection(struct s_redirection_node *redirection, struct s_lexer *l)
     if (lexer_peek(l)->type != TK_GREAT && lexer_peek(l)->type != TK_LESS &&
         lexer_peek(l)->type != TK_DGREAT
         && lexer_peek(l)->type != TK_DLESS &&
-        lexer_peek(l)->type != TK_DLESSDASH && lexer_peek(l)->type != TK_GREATAND
+        lexer_peek(l)->type != TK_DLESSDASH &&
+        lexer_peek(l)->type != TK_GREATAND
         && lexer_peek(l)->type != TK_LESSAND &&
-        lexer_peek(l)->type != TK_CLOBBER && lexer_peek(l)->type != TK_LESSGREAT)
+        lexer_peek(l)->type != TK_CLOBBER &&
+        lexer_peek(l)->type != TK_LESSGREAT)
         return false;
     redirection->type = lexer_peek(l)->value;
     lexer_read(l);
@@ -387,7 +400,7 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
             list->type = ND_AND;
         else if (lexer_peek(l)->type == TK_SEMI)
             list->type = ND_OR;
-        while(lexer_read(l)->type == TK_NEWLINE)
+        while (lexer_read(l)->type == TK_NEWLINE)
             continue;
         list->right = init_ast_node();
         if (!read_compound_list(list->right, l))
