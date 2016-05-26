@@ -380,12 +380,12 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
     struct s_list_node *list = init_list_node();
     if (!read_and_or(list->left, l))
         return false;
-    if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_OR
+    if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_SEMI
         || lexer_peek(l)->type == TK_NEWLINE)
     {
         if (lexer_peek(l)->type == TK_AND)
             list->type = ND_AND;
-        else
+        else if (lexer_peek(l)->type == TK_SEMI)
             list->type = ND_OR;
         while(lexer_read(l)->type == TK_NEWLINE)
             continue;
