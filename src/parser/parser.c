@@ -161,13 +161,16 @@ bool read_rule_for(struct s_ast_node *node, struct s_lexer *l)
 
 bool read_redirection(struct s_redirection_node *redirection, struct s_lexer *l)
 {
-    if (lexer_peek(l)->type != TK_IONUMBER)
-        redirection->io_number = NULL;
-    else
+    //TODO if (lexer_peek(l)->type != TK_IONUMBER)
+    if (!strcmp(lexer_peek(l)->value, "0")
+            || !strcmp(lexer_peek(l)->value, "1")
+            || !strcmp(lexer_peek(l)->value, "2"))
     {
         redirection->io_number = lexer_peek(l)->value;
         lexer_read(l);
     }
+    else
+        redirection->io_number = NULL;
     if (lexer_peek(l)->type != TK_GREAT && lexer_peek(l)->type != TK_LESS &&
         lexer_peek(l)->type != TK_DGREAT
         && lexer_peek(l)->type != TK_DLESS &&
@@ -377,12 +380,12 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
     struct s_list_node *list = init_list_node();
     if (!read_and_or(list->left, l))
         return false;
-    if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_OR
+    if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_SEMI
         || lexer_peek(l)->type == TK_NEWLINE)
     {
         if (lexer_peek(l)->type == TK_AND)
             list->type = ND_AND;
-        else
+        else if (lexer_peek(l)->type == TK_SEMI)
             list->type = ND_OR;
         while(lexer_read(l)->type == TK_NEWLINE)
             continue;
