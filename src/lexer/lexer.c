@@ -1,10 +1,41 @@
+#define _GNU_SOURCE
+
 #include "../includes/lexer.h"
+
+static bool match_separator(struct s_lexer *lexer)
+{
+    if (NULL == lexer || NULL == lexer->current || !strlen(lexer->current))
+        return false;
+
+    int len = 0;
+    char *copy = lexer->current;
+
+    while (!strncmp(" ", copy, strlen(" "))
+           && !strncmp("\t", copy, strlen("\t")))
+    {
+        len++;
+        copy++;
+    }
+
+    if (len > 0)
+    {
+        *lexer->current += len;
+        return true;
+    }
+    return false;
+}
 
 struct s_lexer *lexer_init(const char *command)
 {
     struct s_lexer *lexer = NULL;
     if (NULL == (lexer = malloc(sizeof(struct s_lexer))))
         return NULL;
+
+    if (NULL == (lexer->command = malloc(sizeof(char) * strlen(command) + 1)))
+    {
+        free(lexer);
+        return NULL;
+    }
 
     strcpy(lexer->command, command);
     lexer->current = lexer->command;
@@ -37,7 +68,8 @@ int lexer_current_position(struct s_lexer *lexer)
 
 bool lexer_match_expr(struct s_lexer *lexer)
 {
-    return lexer_match_eof(lexer)
+    return match_separator(lexer)
+           || lexer_match_eof(lexer)
            || lexer_match_and_or_not(lexer)
            || lexer_match_symbol(lexer)
            || lexer_match_arith(lexer)
@@ -51,13 +83,17 @@ void lexer_process(struct s_lexer *lexer)
     if (NULL == lexer || NULL == lexer->command || NULL == lexer->current)
         return;
 
-    while ('\0' != lexer->current)
+    while ('\0' != *lexer->current)
     {
         if (!lexer_match_expr(lexer))
         {
+            fprintf(stderr, "[ERROR][LEXER] String not matching at all.\n");
             return;
         }
     }
+
+    char *empty = strdup("EOF");
+    lexer_add_token(lexer, TK_EOF, empty);
 }
 
 void lexer_destroy(struct s_lexer *lexer)
@@ -74,5 +110,6 @@ void lexer_destroy(struct s_lexer *lexer)
         }
     }
 
+    free(lexer->command);
     free(lexer);
 }
