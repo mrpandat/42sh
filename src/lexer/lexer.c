@@ -11,7 +11,7 @@ static bool match_separator(struct s_lexer *lexer)
     char *copy = lexer->current;
 
     while (!strncmp(" ", copy, strlen(" "))
-           && !strncmp("\t", copy, strlen("\t")))
+           || !strncmp("\t", copy, strlen("\t")))
     {
         len++;
         copy++;
@@ -19,7 +19,7 @@ static bool match_separator(struct s_lexer *lexer)
 
     if (len > 0)
     {
-        *lexer->current += len;
+        lexer->current += len;
         return true;
     }
     return false;
