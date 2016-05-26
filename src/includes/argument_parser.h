@@ -3,7 +3,8 @@
 
 #include <global.h>
 
-struct options {
+struct options
+{
     int norc;
     int ast_print;
     int shopt_operation;

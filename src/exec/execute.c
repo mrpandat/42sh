@@ -2,6 +2,41 @@
 #include <util.h>
 #include <sys/stat.h>
 
+int file_test(char *name)
+{
+    struct stat *stats = malloc(sizeof(struct stat));
+    int res = 0;
+    if (stat(name, stats) > -1)
+    {
+        if (S_ISREG(stats->st_mode))
+            res = 0;
+        else
+            res = 199;
+    }
+    else
+        res = 199;
+    if (res == 0 && !(stats->st_mode & S_IXUSR))
+        res = 168;
+    free(stats);
+
+    return res;
+
+}
+
+void children(char *prog, char **arguments, struct options opt)
+{
+    int res = file_test(prog);
+    if (res != 0)
+    {
+        free(arguments);
+        free(prog);
+        if (strcmp(opt.file, "") != 0)
+            free(opt.command);
+        exit(res);
+    }
+    execve(prog, arguments, NULL);
+}
+
 int execute(struct options opt)
 {
     char **arguments = NULL;
@@ -9,27 +44,9 @@ int execute(struct options opt)
     if (strcmp(opt.command, "") != 0)
     {
         prog = args_from_str(opt.command, &arguments);
-
-        // TODO @drov refactor all this please
-
-        if (NULL == fopen(prog, "r+"))
-        {
-            // File does not exist
-            // TODO Check if error code is valid
-            return 168;
-        }
-
-        struct stat sb;
-        if (stat(prog, &sb) == 0 && !(sb.st_mode & S_IXUSR))
-        {
-            // File is not executable
-            // TODO Check if error code is valid
-            return 199;
-        }
-
-            int pid = fork();
+        int pid = fork();
         if (pid == 0)
-            execve(prog, arguments, NULL);
+            children(prog, arguments, opt);
         if (strcmp(opt.file, "") != 0)
             free(opt.command);
         free(arguments);

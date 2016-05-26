@@ -4,18 +4,18 @@ char *args_from_str(char *str, char ***arguments)
 {
     char *prog = NULL;
     prog = strtok(str, " ");
-    char *prog_name = malloc(sizeof (char) * strlen(prog) + 1);
+    char *prog_name = malloc(sizeof(char) * strlen(prog) + 1);
     strcpy(prog_name, prog);
     int i = 0;
     char *arg = prog;
 
     while (arg != NULL)
     {
-        *arguments = realloc(*arguments, sizeof (char *) * ++i);
+        *arguments = realloc(*arguments, sizeof(char *) * ++i);
         (*arguments)[i - 1] = arg;
         arg = strtok(NULL, " ");
     }
-    *arguments = realloc(*arguments, sizeof (char *) * (i + 1));
+    *arguments = realloc(*arguments, sizeof(char *) * (i + 1));
     (*arguments)[i] = NULL;
     return prog_name;
 }
@@ -35,7 +35,6 @@ char *str_append(char *str_one, char *str_two)
 }
 
 
-
 char *path_to_str(char *file)
 {
     FILE *f = fopen(file, "r");
@@ -44,11 +43,11 @@ char *path_to_str(char *file)
     {
         fseek(f, 0, SEEK_END);
         int length = ftell(f);
-        str = calloc(sizeof (char) * length + 1, sizeof (char));
+        str = calloc(sizeof(char) * length + 1, sizeof(char));
         if (str != NULL)
         {
             fseek(f, 0, SEEK_SET);
-            fread(str, sizeof (char), length, f);
+            fread(str, sizeof(char), length, f);
             fclose(f);
             return str;
         }
@@ -68,7 +67,7 @@ char *file_to_str(FILE *f)
     {
         fseek(f, 0, SEEK_END);
         int length = ftell(f);
-        str = calloc(sizeof (char) * length + 1, sizeof (char));
+        str = calloc(sizeof(char) * length + 1, sizeof(char));
         if (str != NULL)
         {
             fseek(f, 0, SEEK_SET);
