@@ -19,18 +19,18 @@ static bool is_word_end(char *str)
 
 static bool match_eof_symbol(struct s_lexer *lexer)
 {
-    /** ; */
-    if (0 == strncmp(lexer->current, ";", strlen(";")))
-    {
-        lexer_add_token(lexer, TK_SEMI, ";");
-        lexer->current += strlen(";");
-        return true;
-    }
     /** ;; */
-    else if (0 == strncmp(lexer->current, ";;", strlen(";;")))
+    if (0 == strncmp(lexer->current, ";;", strlen(";;")))
     {
         lexer_add_token(lexer, TK_DSEMI, ";;");
         lexer->current += strlen(";;");
+        return true;
+    }
+    /** ; */
+    else if (0 == strncmp(lexer->current, ";", strlen(";")))
+    {
+        lexer_add_token(lexer, TK_SEMI, ";");
+        lexer->current += strlen(";");
         return true;
     }
     /** \n */
