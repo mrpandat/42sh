@@ -35,5 +35,42 @@ class TestParser(unittest.TestCase):
         self.assertTrue(self.lib.read_case_item(
             case_node, self.init_and_process_lexer(b'(myword|myword|myword)')))
 
+    def test_03_rule_case(self):
+        self.assertTrue(
+            self.lib.read_rule_case(
+                self.lib.init_ast_node(),
+                self.init_and_process_lexer(b'case myvar in\n'
+                                            b'(myword1);;\n'
+                                            b'(myword2)esac')))
+        self.assertTrue(
+            self.lib.read_rule_case(
+                self.lib.init_ast_node(),
+                self.init_and_process_lexer(b'case myvar in\n'
+                                            b'(myword1);;\n'
+                                            b'(myword2);;esac')))
+        self.assertFalse(
+            self.lib.read_rule_case(
+                self.lib.init_ast_node(),
+                self.init_and_process_lexer(b'cas myvar in\n'
+                                            b'(myword1);;\n'
+                                            b'(myword2);;esac')))
+        self.assertFalse(
+            self.lib.read_rule_case(
+                self.lib.init_ast_node(),
+                self.init_and_process_lexer(b'case myvar in\n'
+                                            b'(myword1);;\n'
+                                            b'(myword2);;esc')))
+        self.assertTrue(
+            self.lib.read_rule_case(
+                self.lib.init_ast_node(),
+                self.init_and_process_lexer(b'case myvar in\n'
+                                            b'(myword1);;'
+                                            b'(myword2);;esac')))
+        self.assertFalse(
+            self.lib.read_rule_case(
+                self.lib.init_ast_node(),
+                self.init_and_process_lexer(b'case myvar in\n'
+                                            b'(myword1);\n'
+                                            b'(myword2);;esc')))
 
 

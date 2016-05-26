@@ -73,30 +73,34 @@ bool read_do_group(struct s_ast_node *node, struct s_lexer *l)
 
 bool read_rule_case(struct s_ast_node *node, struct s_lexer *l)
 {
-    if (lexer_peek(l)->type == TK_CASE && lexer_read(l)->type == TK_WORD)
+    if (lexer_peek(l)->type != TK_CASE)
+        return false;
+    lexer_read(l);
+    if (lexer_peek(l)->type != TK_WORD)
+        return false;
+    node->type = ND_CASE;
+    struct s_case_node *case_node = init_case_node(lexer_peek(l)->value);
+    node->data.s_case_node = case_node;
+    while (lexer_read(l)->type == TK_NEWLINE)
+        continue;
+    if (lexer_peek(l)->type != TK_IN)
+        return false;
+    while (lexer_read(l)->type == TK_NEWLINE)
+        continue;
+    if (read_case_item(case_node, l))
     {
-        node->type = ND_CASE;
-        struct s_case_node *case_node = init_case_node(lexer_peek(l)->value);
-        node->data.s_case_node = case_node;
-        while (lexer_read(l)->type == TK_NEWLINE)
-            continue;
-        if (read_case_item(case_node, l))
+        while (lexer_peek(l)->type == TK_DSEMI)
         {
-            while (lexer_peek(l)->type == TK_DSEMI)
-            {
-                while (lexer_read(l)->type == TK_NEWLINE)
-                    continue;
-                read_case_item(case_node, l);
-            }
             while (lexer_read(l)->type == TK_NEWLINE)
                 continue;
+            read_case_item(case_node, l);
         }
-        if (lexer_peek(l)->type != TK_ESAC)
-            return false;
-        return true;
+        while (lexer_peek(l)->type == TK_NEWLINE)
+            lexer_read(l);
     }
-    else
+    if (lexer_peek(l)->type != TK_ESAC)
         return false;
+    return true;
 }
 
 bool read_case_item(struct s_case_node *node, struct s_lexer *l)
@@ -120,7 +124,8 @@ bool read_case_item(struct s_case_node *node, struct s_lexer *l)
         return false;
     while (lexer_peek(l)->type == TK_NEWLINE)
         lexer_read(l);
-    read_compound_list(item->statement, l);
+    if (!read_compound_list(item->statement, l))
+        lexer_read(l);
     return true;
 }
 
