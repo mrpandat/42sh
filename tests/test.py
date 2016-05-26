@@ -40,30 +40,32 @@ def launch_all():
 
 
 if __name__ == "__main__":
+    categorie = ["utils", "lexer", "parser", "execute"]
     sys.argv[0] = ""
     for arg in sys.argv:
         if arg == "":
             continue
         elif arg == "-l" or arg == "--list":
             print("categories")
-            exit(0)
-        elif arg == "-c":
-            print("execute category")
+            print (', '.join(categorie))
             exit(0)
         elif arg == "-s" or arg=="--sanity":
             print("valgrind")
+        elif arg == "-c":
+            print("execute category")
+            if "utils" in sys.argv:
+                launch_utils_tests()
+            elif "lexer" in sys.argv:
+                launch_lexer_tests()
+            elif "parser" in sys.argv:
+                launch_parser_tests()
+            elif "execute" in sys.argv:
+                launch_exec_tests()
             exit(0)
-    if any(["utils", "lexer", "parser", "execute"]) in sys.argv:
-        if "utils" in sys.argv:
-            launch_utils_tests()
-        if "lexer" in sys.argv:
-            launch_lexer_tests()
-        if "parser" in sys.argv:
-            launch_parser_tests()
-        if "execute" in sys.argv:
-            launch_exec_tests()
-    else:
-        launch_all()
+        else:
+            print ("Unknow option : " + arg)
+            exit(1)
+    launch_all()
 
 
 
