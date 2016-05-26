@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     parse_options(argc, argv, &opt, 1);
     if (strcmp(opt.command, "") == 0)
     {
-        print_exit(-1, "42sh [ GNU long options ] [ options ] [ file ]");
+        print_exit(-1, "42sh [ GNU long options ] [ options ] [ file ]", stderr);
         return -1;
     }
 

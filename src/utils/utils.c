@@ -47,6 +47,7 @@ char *file_to_str(char *file)
         {
             fseek(f, 0, SEEK_SET);
             fread(str, sizeof(char), length, f);
+            fclose(f);
             return str;
         }
         fclose(f);
