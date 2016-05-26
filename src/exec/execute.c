@@ -1,5 +1,6 @@
 #include <execute.h>
 #include <util.h>
+#include <sys/stat.h>
 
 int execute(struct options opt)
 {
@@ -8,7 +9,25 @@ int execute(struct options opt)
     if (strcmp(opt.command,"") != 0)
     {
         prog = args_from_str(opt.command, &arguments);
-        int pid = fork();
+
+        // TODO @drov refactor all this please
+
+        if (NULL == fopen(prog, "r+"))
+        {
+            // File does not exist
+            // TODO Check if error code is valid
+            return 168;
+        }
+
+        struct stat sb;
+        if (stat(prog, &sb) == 0 && !(sb.st_mode & S_IXUSR))
+        {
+            // File is not executable
+            // TODO Check if error code is valid
+            return 199;
+        }
+
+            int pid = fork();
         if (pid == 0)
             execve(prog, arguments, NULL);
         if (strcmp(opt.file, "") != 0)
