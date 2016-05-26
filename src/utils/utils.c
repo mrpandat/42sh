@@ -35,7 +35,6 @@ char *str_append(char *str_one, char *str_two)
 }
 
 
-
 char *path_to_str(char *file)
 {
     FILE *f = fopen(file, "r");
@@ -72,7 +71,7 @@ char *file_to_str(FILE *f)
         if (str != NULL)
         {
             fseek(f, 0, SEEK_SET);
-            fread(str, sizeof(char), length, f);
+            fread(str, sizeof (char), length, f);
             return str;
         }
     }
