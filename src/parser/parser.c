@@ -103,24 +103,25 @@ bool read_case_item(struct s_case_node *node, struct s_lexer *l)
 {
     if (lexer_peek(l)->type == TK_LPAR)
         lexer_read(l);
-    if (lexer_peek(l)->type == TK_WORD)
+    if (lexer_peek(l)->type != TK_WORD)
+        return false;
+    lexer_read(l);
+    struct s_case_item_node *item = init_case_item_node();
+    add_case_item(node, item);
+    add_case_item_word(item, lexer_peek(l)->value);
+    while (lexer_peek(l)->type == TK_OR)
     {
-        lexer_read(l);
-        struct s_case_item_node *item = init_case_item_node();
-        add_case_item(node, item);
+        if (lexer_read(l)->type != TK_WORD)
+            return false;
         add_case_item_word(item, lexer_peek(l)->value);
-        while (lexer_peek(l)->type == TK_OR)
-        {
-            if (lexer_read(l)->type != TK_WORD)
-                return false;
-            add_case_item_word(item, lexer_peek(l)->value);
-        }
-        while (lexer_peek(l)->type == TK_NEWLINE)
-            lexer_read(l);
-        read_compound_list(item->statement, l);
-        return true;
+        lexer_read(l);
     }
-    return false;
+    if (lexer_peek(l)->type != TK_RPAR)
+        return false;
+    while (lexer_peek(l)->type == TK_NEWLINE)
+        lexer_read(l);
+    read_compound_list(item->statement, l);
+    return true;
 }
 
 bool read_rule_for(struct s_ast_node *node, struct s_lexer *l)
