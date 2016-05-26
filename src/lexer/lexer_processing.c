@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include "../includes/lexer.h"
 
 static bool is_eof_symbol(char *str)

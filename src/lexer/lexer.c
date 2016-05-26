@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include "../includes/lexer.h"
 
 static bool match_separator(struct s_lexer *lexer)
@@ -90,7 +92,8 @@ void lexer_process(struct s_lexer *lexer)
         }
     }
 
-    lexer_add_token(lexer, TK_EOF, strdup("\0"));
+    char *empty = strdup("EOF");
+    lexer_add_token(lexer, TK_EOF, empty);
 }
 
 void lexer_destroy(struct s_lexer *lexer)
