@@ -2,6 +2,7 @@
 
 #include <global.h>
 #include <argument_parser.h>
+#include <util.h>
 
 
 void help(char *name)
@@ -27,9 +28,9 @@ int parse_command(char **argv, int i, struct options *options1)
     return i;
 }
 
-int print_exit(int code, char *str)
+int print_exit(int code, char *str, FILE *out)
 {
-    fprintf(stderr, "%s\n", str);
+    fprintf(out, "%s\n", str);
     exit(code);
 }
 
@@ -64,7 +65,7 @@ void parse_long_option(char **argv, struct options *options, int i)
         char *compare = "--version";
         ok = match(compare, argv[i]);
         if (ok == 1)
-            print_exit(0, "Version 0.5");
+            print_exit(0, "Version 0.5", stdout);
     }
     if (ok == 0)
         fprintf(stderr, "unknown long option : %s\n", argv[i]);
@@ -76,7 +77,14 @@ void parse_long_option(char **argv, struct options *options, int i)
 void check_correct(int argc)
 {
     if (argc < 2)
-        print_exit(-1,"42sh [ GNU long options ] [ options ] [ file ]");
+        print_exit(-1,"42sh [ GNU long options ] [ options ] [ file ]", stderr);
+}
+
+void parse_file(struct options *options)
+{
+    if (strcmp(options->command, "") == 0
+        && strcmp(options->file, "") != 0)
+        options->command = file_to_str(options->file);
 }
 
 void parse_options(int argc, char **argv, struct options *options, int start)
@@ -89,7 +97,7 @@ void parse_options(int argc, char **argv, struct options *options, int start)
             options->ast_print = 1;
         else if (strcmp(argv[i], "-v") == 0
                  || strcmp(argv[i], "--version") == 0)
-            print_exit(0, "Version 0.5");
+            print_exit(0, "Version 0.5", stdout);
         else if (strcmp(argv[i], "-c") == 0)
             i = parse_command(argv, i, options);
         else if ((argv[i][0] == '-' || argv[i][0] == '+')
@@ -104,5 +112,6 @@ void parse_options(int argc, char **argv, struct options *options, int start)
         else if (i == argc - 1)
             options->file = argv[i];
         else
-            print_exit(-1, "unknown option");
+            print_exit(-1, "unknown option", stderr);
+    parse_file(options);
 }

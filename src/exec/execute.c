@@ -11,7 +11,8 @@ int execute(struct options opt)
         int pid = fork();
         if (pid == 0)
             execve(prog, arguments, NULL);
-
+        if (strcmp(opt.file, "") != 0)
+            free(opt.command);
         free(arguments);
         free(prog);
     }

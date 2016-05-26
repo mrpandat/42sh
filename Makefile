@@ -16,8 +16,11 @@ doc:
 run:
 	cd build && make && mv 42sh .. && cd .. && ./42sh $(ARGS)
 
+compile:
+	$(MAKE) -C build all
 
 check:
+	$(MAKE) -C build all
 	$(MAKE) -C build check
 
 debug:clean

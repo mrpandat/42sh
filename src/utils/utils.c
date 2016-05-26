@@ -34,6 +34,27 @@ char *str_append(char *str_one, char *str_two)
     return str;
 }
 
+char *file_to_str(char *file)
+{
+    FILE *f = fopen(file, "r");
+    char *str = NULL;
+    if (f)
+    {
+        fseek(f, 0, SEEK_END);
+        int length = ftell(f);
+        str = malloc(sizeof (char) * length + 1);
+        if (str != NULL)
+        {
+            fseek(f, 0, SEEK_SET);
+            fread(str, sizeof(char), length, f);
+            fclose(f);
+            return str;
+        }
+        fclose(f);
+    }
+    return NULL;
+}
+
 int test()
 {
     return 1;
