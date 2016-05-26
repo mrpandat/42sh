@@ -26,7 +26,7 @@ struct s_case_node
 {
     char *word;
     int nb_items;
-    struct s_ast_node **items;
+    struct s_case_item_node **items;
 };
 
 struct s_case_item_node
@@ -70,22 +70,24 @@ enum e_element_type
     EL_REDIRECTION
 };
 
+union u_element_data
+{
+    char* word;
+    char* assignement_word;
+    struct s_ast_node *s_redirection_node;
+};
+
 struct s_element_node
 {
     enum e_element_type type;
-    union
-    {
-        char* word;
-        char* assignement_word;
-        struct s_ast_node *s_redirection_node;
-    } data;
+    union u_element_data data;
 };
 
 struct s_command_node
 {
     struct s_ast_node *content;
     int nb_redirections;
-    struct s_ast_node **redirections;
+    struct s_redirection_node **redirections;
 };
 
 struct s_pipeline_node
@@ -125,6 +127,7 @@ struct s_list_node
 
 enum e_node_type
 {
+    ND_NONE,
     ND_IF,
     ND_WORD,
     ND_PREDICATE,
@@ -166,5 +169,30 @@ struct s_ast_node
 };
 
 struct s_ast_node* init_ast_node(void);
+struct s_if_node *init_if_node(void);
+struct s_while_node *init_while_node(void);
+struct s_until_node *init_until_node(void);
+struct s_case_node *init_case_node(char *word);
+void add_case_item(struct s_case_node *node, struct s_case_item_node *item);
+struct s_case_item_node *init_case_item_node(void);
+void add_case_item_word(struct s_case_item_node *item, char *word);
+struct s_for_node *init_for_node(char *iterator);
+void add_for_word(struct s_for_node *node, char *word);
+struct s_redirection_node *init_redirection_node(void);
+struct s_funcdec_node *init_funcdec_node(char *name);
+struct s_simple_command_node *init_simple_command_node(char *name);
+void add_simple_command_element(struct s_simple_command_node *node,
+                                struct s_element_node *element);
+struct s_element_node *init_element_node(enum e_element_type type,
+                                         union u_element_data data);
+struct s_command_node *init_command_node(void);
+void add_command_redirection(struct s_command_node *command,
+                             struct s_redirection_node *redirection);
+struct s_pipeline_node *init_pipeline_node(bool banged);
+void add_pipeline_command(struct s_pipeline_node *pipeline, struct s_ast_node *command);
+struct s_and_or_node *init_and_or_node(void);
+struct s_list_node *init_list_node(void);
+
+
 
 #endif /* !INC_42SH_AST_H */

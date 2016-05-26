@@ -13,7 +13,7 @@ struct s_if_node *init_if_node(void)
     node->true_statement = init_ast_node();
     node->predicate = init_ast_node();
     return node;
-};
+}
 
 struct s_while_node *init_while_node(void)
 {
@@ -21,7 +21,7 @@ struct s_while_node *init_while_node(void)
     node->predicate = init_ast_node();
     node->statement = init_ast_node();
     return node;
-};
+}
 
 struct s_until_node *init_until_node(void)
 {
@@ -29,7 +29,7 @@ struct s_until_node *init_until_node(void)
     node->predicate = init_ast_node();
     node->statement = init_ast_node();
     return node;
-};
+}
 
 struct s_case_node *init_case_node(char *word)
 {
@@ -38,7 +38,7 @@ struct s_case_node *init_case_node(char *word)
     node->nb_items = 0;
     node->items = NULL;
     return node;
-};
+}
 
 void add_case_item(struct s_case_node *node, struct s_case_item_node *item)
 {
@@ -55,7 +55,7 @@ struct s_case_item_node *init_case_item_node(void)
     node->statement = init_ast_node();
     node->words = NULL;
     return node;
-};
+}
 
 void add_case_item_word(struct s_case_item_node *item, char *word)
 {
@@ -72,7 +72,7 @@ struct s_for_node *init_for_node(char *iterator)
     node->words = NULL;
     node->do_group = init_ast_node();
     return node;
-};
+}
 
 void add_for_word(struct s_for_node *node, char *word)
 {
@@ -89,7 +89,7 @@ struct s_redirection_node *init_redirection_node(void)
     node->type = NULL;
     node->word = NULL;
     return node;
-};
+}
 
 struct s_funcdec_node *init_funcdec_node(char *name)
 {
@@ -106,7 +106,7 @@ struct s_simple_command_node *init_simple_command_node(char *name)
     node->nb_elements = 0;
     node->elements = NULL;
     return node;
-};
+}
 
 void add_simple_command_element(struct s_simple_command_node *node,
                                 struct s_element_node *element)
@@ -125,16 +125,16 @@ struct s_element_node *init_element_node(enum e_element_type type,
     node->type = type;
     node->data = data;
     return node;
-};
+}
 
-struct s_command_node *init_command_node()
+struct s_command_node *init_command_node(void)
 {
     struct s_command_node *node = malloc(sizeof (struct s_command_node *));
     node->content = init_ast_node();
     node->nb_redirections = 0;
     node->redirections = NULL;
     return node;
-};
+}
 
 void add_command_redirection(struct s_command_node *command,
                              struct s_redirection_node *redirection)
@@ -153,7 +153,7 @@ struct s_pipeline_node *init_pipeline_node(bool banged)
     node->nb_commands = 0;
     node->commands = NULL;
     return node;
-};
+}
 
 void add_pipeline_command(struct s_pipeline_node *pipeline,
                           struct s_ast_node *command)
@@ -172,7 +172,7 @@ struct s_and_or_node *init_and_or_node(void)
     node->left = init_ast_node();
     node->right = NULL;
     return node;
-};
+}
 
 struct s_list_node *init_list_node(void)
 {
@@ -181,5 +181,5 @@ struct s_list_node *init_list_node(void)
     node->left = init_ast_node();
     node->right = NULL;
     return node;
-};
+}
 
