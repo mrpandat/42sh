@@ -94,6 +94,9 @@ void lexer_process(struct s_lexer *lexer)
 
     char *empty = strdup("EOF");
     lexer_add_token(lexer, TK_EOF, empty);
+
+    /** Reset cureent token to first element of list */
+    lexer->tk_current = lexer->tk_list;
 }
 
 void lexer_destroy(struct s_lexer *lexer)

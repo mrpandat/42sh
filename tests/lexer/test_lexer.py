@@ -1,6 +1,6 @@
 import unittest
 from cffi import FFI
-from ..test_functions import *
+from test_functions import *
 
 
 class TestLexer(unittest.TestCase):
@@ -56,8 +56,8 @@ class TestLexer(unittest.TestCase):
         # Check if current token is not null
         self.assertIsNotNone(clexer.tk_current, '[ERROR] Current token is NULL')
 
-        # Check if current token type is TK_IF
-        ctokentype = clexer.tk_current.type
+        # Check if first token type is TK_IF
+        ctokentype = clexer.tk_list.type
         self.assertEqual(ctokentype, self.lib.TK_IF,
                          '[ERROR]\n\t--expected: TK_IF(27)\n\t --my: ' +
                          str(ctokentype))
