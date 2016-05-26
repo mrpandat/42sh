@@ -97,9 +97,9 @@ struct s_funcdec_node *init_funcdec_node(char *name)
     node->name = name;
     node->shell_command = init_ast_node();
     return node;
-};
+}
 
-struct s_simple_command_node *init_simple_command_node(char *name)
+struct s_simple_command_node *init_simple_command_node(void)
 {
     struct s_simple_command_node *node =
             malloc(sizeof (struct s_simple_command_node *));
@@ -118,12 +118,10 @@ void add_simple_command_element(struct s_simple_command_node *node,
     node->elements[node->nb_elements - 1] = element;
 }
 
-struct s_element_node *init_element_node(enum e_element_type type,
-                                         union u_element_data data)
+struct s_element_node *init_element_node(void)
 {
     struct s_element_node *node = malloc(sizeof (struct s_element_node *));
-    node->type = type;
-    node->data = data;
+    node->type = EL_NONE;
     return node;
 }
 
@@ -146,10 +144,10 @@ void add_command_redirection(struct s_command_node *command,
     command->redirections[command->nb_redirections - 1] = redirection;
 }
 
-struct s_pipeline_node *init_pipeline_node(bool banged)
+struct s_pipeline_node *init_pipeline_node(void)
 {
     struct s_pipeline_node *node = malloc(sizeof (struct s_pipeline_node *));
-    node->banged = banged;
+    node->banged = false;
     node->nb_commands = 0;
     node->commands = NULL;
     return node;

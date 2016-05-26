@@ -65,6 +65,7 @@ struct s_simple_command_node
 
 enum e_element_type
 {
+    EL_NONE,
     EL_WORD,
     EL_ASSIGNEMENT_WORD,
     EL_REDIRECTION
@@ -74,7 +75,7 @@ union u_element_data
 {
     char* word;
     char* assignement_word;
-    struct s_ast_node *s_redirection_node;
+    struct s_redirection_node *s_redirection_node;
 };
 
 struct s_element_node
@@ -180,15 +181,14 @@ struct s_for_node *init_for_node(char *iterator);
 void add_for_word(struct s_for_node *node, char *word);
 struct s_redirection_node *init_redirection_node(void);
 struct s_funcdec_node *init_funcdec_node(char *name);
-struct s_simple_command_node *init_simple_command_node(char *name);
+struct s_simple_command_node *init_simple_command_node(void);
 void add_simple_command_element(struct s_simple_command_node *node,
                                 struct s_element_node *element);
-struct s_element_node *init_element_node(enum e_element_type type,
-                                         union u_element_data data);
+struct s_element_node *init_element_node(void);
 struct s_command_node *init_command_node(void);
 void add_command_redirection(struct s_command_node *command,
                              struct s_redirection_node *redirection);
-struct s_pipeline_node *init_pipeline_node(bool banged);
+struct s_pipeline_node *init_pipeline_node(void);
 void add_pipeline_command(struct s_pipeline_node *pipeline, struct s_ast_node *command);
 struct s_and_or_node *init_and_or_node(void);
 struct s_list_node *init_list_node(void);
