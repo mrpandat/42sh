@@ -1,21 +1,23 @@
 #include "../includes/global.h"
 
-void args_from_str(char *str, char **arguments, char *prog)
+char *args_from_str(char *str, char ***arguments)
 {
-    char *save = malloc(sizeof(char) * strlen(str) + 1);
-    strcpy(save, str);
+    char *prog = NULL;
     prog = strtok(str, " ");
+    char *prog_name = malloc(sizeof (char) * strlen(prog) + 1);
+    strcpy(prog_name, prog);
     int i = 0;
-    char *arg = strtok(save, " ");
+    char *arg = prog;
 
     while (arg != NULL)
     {
-        arguments = realloc(arguments, sizeof(char *) * ++i);
-        arguments[i - 1] = arg;
+        *arguments = realloc(*arguments, sizeof(char *) * ++i);
+        (*arguments)[i - 1] = arg;
         arg = strtok(NULL, " ");
     }
-    arguments = realloc(arguments, sizeof(char *) * (i + 1));
-    arguments[i] = 0;
+    *arguments = realloc(*arguments, sizeof(char *) * (i + 1));
+    (*arguments)[i] = NULL;
+    return prog_name;
 }
 
 char *str_append(char *str_one, char *str_two)
