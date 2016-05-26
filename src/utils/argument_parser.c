@@ -2,6 +2,7 @@
 
 #include <global.h>
 #include <argument_parser.h>
+#include <util.h>
 
 
 void help(char *name)
@@ -79,6 +80,17 @@ void check_correct(int argc)
         print_exit(-1,"42sh [ GNU long options ] [ options ] [ file ]");
 }
 
+void parse_file(struct options *options)
+{
+    if (strcmp(options->command, "") == 0
+        && strcmp(options->file, "") != 0)
+    {
+        char *content = file_to_str(options->file);
+        options->command = content;
+        printf("efed:%s\n", options->command);
+    }
+}
+
 void parse_options(int argc, char **argv, struct options *options, int start)
 {
     check_correct(argc);
@@ -105,4 +117,5 @@ void parse_options(int argc, char **argv, struct options *options, int start)
             options->file = argv[i];
         else
             print_exit(-1, "unknown option");
+    parse_file(options);
 }
