@@ -16,60 +16,32 @@ class TestShellCommand(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_01_pars(self):
+    def test_01_simple_funcdec(self):
         node = self.lib.init_ast_node()
-        self.assertTrue(
-            self.lib.read_shell_command(
-                node,
-                self.init_and_process_lexer(b'(myword || myword || myword)')))
-
-    def test_02_pars(self):
-        node = self.lib.init_ast_node()
-        self.assertTrue(
-            self.lib.read_shell_command(
-                node,
-                self.init_and_process_lexer(b'{myword || myword || myword}')))
-
-    def test_03_braces_and_pars(self):
-        node = self.lib.init_ast_node()
-        self.assertFalse(
-            self.lib.read_shell_command(
-                node,
-                self.init_and_process_lexer(b'{myword || myword)')))
-
-    def test_04_braces_and_pars(self):
-        node = self.lib.init_ast_node()
-        self.assertFalse(
-            self.lib.read_shell_command(
-                node,
-                self.init_and_process_lexer(b'(myword || myword || myword}')))
-
-    def test_05_until(self):
-        node = self.lib.init_ast_node()
-        command = b'until variable do shit done'
+        command = b'function myword() if a then b fi'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_shell_command(node, clexer))
+        self.assertTrue(self.lib.read_funcdec(node, clexer))
 
-    def test_06_while(self):
+    def test_02_no_funcdec_word(self):
         node = self.lib.init_ast_node()
-        command = b'while variable do shit done'
+        command = b'myword() if a then b fi'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_shell_command(node, clexer))
+        self.assertTrue(self.lib.read_funcdec(node, clexer))
 
-    def test_07_if(self):
+    def test_03_no_pars(self):
         node = self.lib.init_ast_node()
-        command = b'if a then b fi'
+        command = b'function myword if a then b fi'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_shell_command(node, clexer))
+        self.assertTrue(self.lib.read_funcdec(node, clexer))
 
-    def test_08_case(self):
+    def test_04_no_pars_no_funcdec_word(self):
         node = self.lib.init_ast_node()
-        command = b'case myvar in\n(myword1);;\n(myword2)esac'
+        command = b'myword if a then b fi'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_shell_command(node, clexer))
+        self.assertTrue(self.lib.read_funcdec(node, clexer))
 
-    def test_09_wrong_case(self):
+    def test_05_wrong_command(self):
         node = self.lib.init_ast_node()
-        command = b'case myvar in\n(myword1);;\n(myword2)esc'
+        command = b'function myword() if a then b'
         clexer = self.init_and_process_lexer(command)
-        self.assertFalse(self.lib.read_shell_command(node, clexer))
+        self.assertFalse(self.lib.read_funcdec(node, clexer))

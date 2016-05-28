@@ -229,7 +229,6 @@ bool read_funcdec(struct s_ast_node *node, struct s_lexer *l)
         lexer_read(l);
     if (lexer_peek(l)->type != TK_WORD)
         return false;
-    lexer_read(l);
     struct s_funcdec_node *funcdec_node =
             init_funcdec_node(lexer_peek(l)->value);
     if (lexer_read(l)->type != TK_LPAR || lexer_read(l)->type != TK_RPAR)
