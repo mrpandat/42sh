@@ -20,7 +20,6 @@ int file_test(char *name)
     free(stats);
 
     return res;
-
 }
 
 void children(char *prog, char **arguments, struct options opt)
