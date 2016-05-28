@@ -2,7 +2,7 @@ import os
 import sys
 import unittest
 from static.colors import bcolors
-
+from test_functions import execute_cmd
 from fun import *
 
 nb_fail = 0
@@ -30,6 +30,11 @@ def launch_test(test_name):
     unittest.TextTestRunner(verbosity=3, resultclass=MyTestResult) \
         .run(testsuite)
 
+def launch_sanity_test():
+    a = execute_cmd("valgrind ../42sh")
+    print (a.stdout)
+    print (a.stderr)
+
 
 def launch_all():
     launch_test("binary")
@@ -44,7 +49,7 @@ def print_nyan():
     if nb_fail == 0:
         print_colored("./static/nyan")
     else:
-        print_file("./static/spider", bcolors.OKBLUE,   )
+        print_file("./static/spider", bcolors.OKBLUE)
 
 
 if __name__ == "__main__":
@@ -59,18 +64,19 @@ if __name__ == "__main__":
             print (', '.join(categorie))
             exit(0)
         elif arg == "-s" or arg == "--sanity":
-            print("valgrind")
+            launch_sanity_test()
+            exit(0)
         elif arg == "-c":
             if "utils" in sys.argv:
-                launch_utils_tests()
+             launch_test("utils")
             elif "lexer" in sys.argv:
-                launch_lexer_tests()
+                launch_test("lexer")
             elif "parser" in sys.argv:
-                launch_parser_tests()
+                launch_test("parser")
             elif "execute" in sys.argv:
-                launch_exec_tests()
+                launch_test("execute")
             elif "binary" in sys.argv:
-                launch_exec_tests()
+                launch_test("binary")
             print_nyan()
             exit(0)
         else:
