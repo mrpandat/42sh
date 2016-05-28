@@ -43,11 +43,22 @@ class TestBinary(unittest.TestCase):
         self.assertEqual(result.stdout, '')
         self.assertEquals(result.returncode, 0)
 
-    def test_08_shopt_2(self):
+    def test_09_shopt_2(self):
         result = execute_cmd('../42sh +0 dotglob')
         self.assertEqual(result.stdout, '')
         self.assertEquals(result.returncode, 0)
 
+    def test_10_inexistant_script(self):
+        result = execute_cmd('../42sh inexistent.sh')
+        self.assertEqual(result.stderr, 'No such file or directory\n')
+        self.assertEquals(result.returncode, 127)
 
+    def test_11_inexistant_command(self):
+        result = execute_cmd('../42sh -c "foiehofihe"')
+        self.assertEqual(result.stdout, 'No such file or directory\n')
+        self.assertEquals(result.returncode, 127)
 
-
+    def test_12_inexistant_command_wth_arg(self):
+        result = execute_cmd('../42sh -c "diejoide ded ded"')
+        self.assertEqual(result.stdout, 'No such file or directory\n')
+        self.assertEquals(result.returncode, 127)
