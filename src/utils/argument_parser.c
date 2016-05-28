@@ -65,14 +65,6 @@ void parse_long_option(char **argv, struct options *options, int i)
         fprintf(stderr, "unknown long option : %s\n", argv[i]);
 }
 
-/**
- * Checks if the file is correct
- */
-void check_correct(int argc)
-{
-    if (isatty(STDIN_FILENO)) if (argc < 2)
-        print_exit(1, "42sh [ GNU long options ] [ options ] [ file ]", stderr);
-}
 
 void parse_file(struct options *options)
 {
@@ -94,6 +86,9 @@ void parse_small_options(int argc, char **argv, struct options *options,
         else if (strcmp(argv[i], "-v") == 0
                  || strcmp(argv[i], "--version") == 0)
             print_exit(0, "Version 0.5", stdout);
+        else if (strcmp(argv[i], "-h") == 0)
+            print_exit(0, "42sh [ GNU long options ] [ options ] [ file ]",
+                       stdout);
         else if (strcmp(argv[i], "-c") == 0)
             i = parse_command(argv, i, options);
         else if ((argv[i][0] == '-' || argv[i][0] == '+')
@@ -103,7 +98,7 @@ void parse_small_options(int argc, char **argv, struct options *options,
             i++;
             options->shopt_option = argv[i];
         }
-        else if (argv[i][0] == '-' && argv[i][1] == '-')
+        else if (argv[i][0] == '-' && argv[i][1] == '-') // long option
             parse_long_option(argv, options, i);
         else if (i == argc - 1)
             options->file = argv[i];
@@ -120,7 +115,6 @@ void parse_options(int argc, char **argv, struct options *options, int start)
     }
     else
     {
-        check_correct(argc);
         parse_small_options(argc, argv, options, start);
         parse_file(options);
     }
