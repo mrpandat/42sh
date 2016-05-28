@@ -49,18 +49,18 @@ static bool match_for(struct s_lexer *lexer)
         lexer->current += strlen("in");
         return true;
     }
-    /** do */
-    else if (0 == strncmp(lexer->current, "do", strlen("do")))
-    {
-        lexer_add_token(lexer, TK_DO, "do");
-        lexer->current += strlen("do");
-        return true;
-    }
     /** done */
     else if (0 == strncmp(lexer->current, "done", strlen("done")))
     {
         lexer_add_token(lexer, TK_DONE, "done");
         lexer->current += strlen("done");
+        return true;
+    }
+    /** do */
+    else if (0 == strncmp(lexer->current, "do", strlen("do")))
+    {
+        lexer_add_token(lexer, TK_DO, "do");
+        lexer->current += strlen("do");
         return true;
     }
     return false;

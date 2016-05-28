@@ -9,7 +9,7 @@ nb_fail = 0
 
 class MyTestResult(unittest.TestResult):
     def addFailure(self, test, err):
-        print ("--> " + bcolors.FAIL + "ERROR", end=" ")
+        print ("--> " + bcolors.FAIL + "ERROR ", end=" ")
         print (test)
         print (str(err[1]) + bcolors.ENDC)
         unittest.TestResult.addFailure(self, test, err)

@@ -189,7 +189,8 @@ struct s_command_node *init_command_node(void);
 void add_command_redirection(struct s_command_node *command,
                              struct s_redirection_node *redirection);
 struct s_pipeline_node *init_pipeline_node(void);
-void add_pipeline_command(struct s_pipeline_node *pipeline, struct s_ast_node *command);
+void add_pipeline_command(struct s_pipeline_node *pipeline,
+                          struct s_ast_node *command);
 struct s_and_or_node *init_and_or_node(void);
 struct s_list_node *init_list_node(void);
 

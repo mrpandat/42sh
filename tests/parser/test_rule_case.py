@@ -16,40 +16,50 @@ class TestRuleCase(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_03_rule_case(self):
+    def test_01_simple_case(self):
         self.assertTrue(
             self.lib.read_rule_case(
                 self.lib.init_ast_node(),
                 self.init_and_process_lexer(b'case myvar in\n'
                                             b'(myword1);;\n'
                                             b'(myword2)esac')))
+
+    def test_02_ending_dsemi(self):
         self.assertTrue(
             self.lib.read_rule_case(
                 self.lib.init_ast_node(),
                 self.init_and_process_lexer(b'case myvar in\n'
                                             b'(myword1);;\n'
                                             b'(myword2);;esac')))
+
+    def test_03_case_typo(self):
         self.assertFalse(
             self.lib.read_rule_case(
                 self.lib.init_ast_node(),
                 self.init_and_process_lexer(b'cas myvar in\n'
                                             b'(myword1);;\n'
                                             b'(myword2);;esac')))
+
+    def test_04_esac_typo(self):
         self.assertFalse(
             self.lib.read_rule_case(
                 self.lib.init_ast_node(),
                 self.init_and_process_lexer(b'case myvar in\n'
                                             b'(myword1);;\n'
                                             b'(myword2);;esc')))
+
+    def test_05_no_newline(self):
         self.assertTrue(
             self.lib.read_rule_case(
                 self.lib.init_ast_node(),
                 self.init_and_process_lexer(b'case myvar in\n'
                                             b'(myword1);;'
                                             b'(myword2);;esac')))
+
+    def test_06_simple_semi(self):
         self.assertFalse(
             self.lib.read_rule_case(
                 self.lib.init_ast_node(),
                 self.init_and_process_lexer(b'case myvar in\n'
                                             b'(myword1);\n'
-                                            b'(myword2);;esc')))
+                                            b'(myword2);;esac')))
