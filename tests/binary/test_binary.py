@@ -1,8 +1,8 @@
 import unittest
 from test_functions import *
 
-class TestBinary(unittest.TestCase):
 
+class TestBinary(unittest.TestCase):
     def test_01_noarg(self):
         result = execute_cmd('../42sh')
         self.assertEqual(result.stdout, '')
@@ -25,7 +25,8 @@ class TestBinary(unittest.TestCase):
 
     def test_05_help(self):
         result = execute_cmd('../42sh -h')
-        self.assertEqual(result.stdout, "42sh [ GNU long options ] [ options ] [ file ]\n")
+        self.assertEqual(result.stdout,
+                         "42sh [ GNU long options ] [ options ] [ file ]\n")
         self.assertEquals(result.returncode, 0)
 
     def test_06_norc(self):
@@ -63,13 +64,12 @@ class TestBinary(unittest.TestCase):
         self.assertEqual(result.stdout, '')
         self.assertEquals(result.returncode, 127)
 
-     def test_13_existant_command(self):
-         result = execute_cmd('../42sh -c "/bin/echo"')
-         self.assertEqual(result.stdout, '\n')
-         self.assertEquals(result.returncode, 1)
+    def test_13_existant_command(self):
+        result = execute_cmd('../42sh -c "/bin/echo"')
+        self.assertEqual(result.stdout, '\n')
+        self.assertEquals(result.returncode, 0)
 
     def test_14_existant_command_wth_arg(self):
         result = execute_cmd('../42sh -c "/bin/echo yolo"')
         self.assertEqual(result.stdout, 'yolo\n')
         self.assertEquals(result.returncode, 0)
-
