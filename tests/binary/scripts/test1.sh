@@ -1,2 +1,4 @@
-let arg1=12
-let arg2=11
+/bin/echo test
+/bin/echo test
+/bin/echo test
+/bin/echo test
