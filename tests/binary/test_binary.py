@@ -73,3 +73,8 @@ class TestBinary(unittest.TestCase):
         result = execute_cmd('../42sh -c "/bin/echo yolo"')
         self.assertEqual(result.stdout, 'yolo\n')
         self.assertEquals(result.returncode, 0)
+
+    def test_15_script(self):
+        result = execute_cmd('../42sh binary/scripts/test1.sh')
+        self.assertEqual(result.stdout, 'test\n')
+        self.assertEquals(result.returncode, 0)

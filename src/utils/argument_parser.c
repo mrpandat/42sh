@@ -72,13 +72,12 @@ void parse_file(struct options *options)
         && strcmp(options->file, "") != 0)
     {
         if (file_test(options->file) == 127)
-        {
             print_exit(127, "No such file or directory", stderr);
-            options->command = path_to_str(options->file);
-        }
-        else
-            options->file = "";
+        options->command = path_to_str(options->file);
     }
+    else
+        options->file = "";
+
 }
 
 void parse_small_options(int argc, char **argv, struct options *options,
