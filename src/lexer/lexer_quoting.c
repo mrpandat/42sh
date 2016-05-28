@@ -59,6 +59,24 @@ bool lexer_match_quote(struct s_lexer *lexer)
 
 bool lexer_match_dquote(struct s_lexer *lexer)
 {
+    if (NULL == lexer || NULL == lexer->current || !*lexer->current)
+        return false;
+
+    size_t len = 0;
+    char *val = NULL;
+    char *copy = lexer->current;
+
+    if (0 == strncmp(lexer->current, "\"", strlen("\"")))
+    {
+        lexer->current++;
+
+        while (*copy && 0 != strncmp(copy, "'", strlen("'")))
+        {
+            len++;
+            copy++;
+        }
+    }
+
     return false;
 }
 
