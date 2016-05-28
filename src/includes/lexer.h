@@ -31,6 +31,7 @@ enum e_token_type
             TK_LESSGREAT, /** <> */
             TK_LARITH, /** $(( */
             TK_RARITH, /** )) */
+            TK_ESC_WORD, /** Word without any expansion done into */
             TK_WORD, /** (a-zA-Z_)[(a-zA-Z0-9_)]* */
             TK_IF, /** "if" */
             TK_THEN, /** "then" */
@@ -45,6 +46,7 @@ enum e_token_type
             TK_UNTIL, /** "until" */
             TK_FOR, /** "for" */
             TK_IN, /** "in" */
+            TK_FUNCTION, /** "function" */
             TK_IONUMBER, /** 0, 1 or 2 */
             TK_HEREDOC, /** << with */
             TK_FUNCTION, /** function */
@@ -115,5 +117,10 @@ bool lexer_match_operator(struct s_lexer *lexer);
 bool lexer_match_and_or_not(struct s_lexer *lexer);
 
 bool lexer_match_symbol(struct s_lexer *lexer);
+
+/* File: lexer_quoting.c */
+
+bool lexer_match_quote(struct s_lexer *lexer);
+bool lexer_match_dquote(struct s_lexer *lexer);
 
 #endif /* !LEXER_LEXER_H */
