@@ -26,7 +26,7 @@ class TestUntilRule(unittest.TestCase):
         node = self.lib.init_ast_node()
         command = b'unti variable do shit done'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_rule_until(node, clexer))
+        self.assertFalse(self.lib.read_rule_until(node, clexer))
 
     def test_03_two_ors(self):
         node = self.lib.init_ast_node()
