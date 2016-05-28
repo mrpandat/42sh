@@ -79,6 +79,8 @@ void parse_file(struct options *options)
     if (strcmp(options->command, "") == 0
         && strcmp(options->file, "") != 0)
         options->command = path_to_str(options->file);
+    else
+        options->file = "";
 }
 
 void parse_small_options(int argc, char **argv, struct options *options,
