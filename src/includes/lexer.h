@@ -120,6 +120,7 @@ bool lexer_match_symbol(struct s_lexer *lexer);
 
 /* File: lexer_quoting.c */
 
-
+bool lexer_match_quote(struct s_lexer *lexer);
+bool lexer_match_dquote(struct s_lexer *lexer);
 
 #endif /* !LEXER_LEXER_H */
