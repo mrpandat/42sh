@@ -15,33 +15,27 @@ class TestForRule(unittest.TestCase):
         clexer = self.lib.lexer_init(command)
         self.lib.lexer_process(clexer)
         return clexer
-    #
-    # def test_01_simple_for(self):
-    #     node = self.lib.init_ast_node()
-    #     command = b'for variable do shit done'
-    #     clexer = self.init_and_process_lexer(command)
-    #     self.assertTrue(self.lib.read_rule_for(node, clexer))
-    #
-    # def test_02_for_typo(self):
-    #     node = self.lib.init_ast_node()
-    #     command = b'fo variable do shit done'
-    #     clexer = self.init_and_process_lexer(command)
-    #     self.assertTrue(self.lib.read_rule_for(node, clexer))
-    #
-    # def test_03_multiple_words_with_semi(self):
-    #     node = self.lib.init_ast_node()
-    #     command = b'for variable in one; two; three; do shit done'
-    #     clexer = self.init_and_process_lexer(command)
-    #     self.assertTrue(self.lib.read_rule_for(node, clexer))
-    #
-    # def test_03_multiple_words_with_newlines(self):
-    #     node = self.lib.init_ast_node()
-    #     command = b'for variable in one\ntwo\nthree\n\ndo shit done'
-    #     clexer = self.init_and_process_lexer(command)
-    #     self.assertTrue(self.lib.read_rule_for(node, clexer))
-    #
-    # def test_04_multiple_words_no_separator(self):
-    #     node = self.lib.init_ast_node()
-    #     command = b'for variable in one two three\ndo shit done'
-    #     clexer = self.init_and_process_lexer(command)
-    #     self.assertFalse(self.lib.read_rule_for(node, clexer))
+
+    def test_01_simple_for(self):
+        node = self.lib.init_ast_node()
+        command = b'for variable do shit done'
+        clexer = self.init_and_process_lexer(command)
+        self.assertTrue(self.lib.read_rule_for(node, clexer))
+
+    def test_02_for_typo(self):
+        node = self.lib.init_ast_node()
+        command = b'fo variable do shit done'
+        clexer = self.init_and_process_lexer(command)
+        self.assertFalse(self.lib.read_rule_for(node, clexer))
+
+    def test_03_multiple_words_with_semi(self):
+        node = self.lib.init_ast_node()
+        command = b'for variable in one two; do shit done'
+        clexer = self.init_and_process_lexer(command)
+        self.assertTrue(self.lib.read_rule_for(node, clexer))
+
+    def test_04_multiple_words_no_separator(self):
+        node = self.lib.init_ast_node()
+        command = b'for variable in one two three\ndo shit done'
+        clexer = self.init_and_process_lexer(command)
+        self.assertTrue(self.lib.read_rule_for(node, clexer))
