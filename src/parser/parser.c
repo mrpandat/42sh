@@ -378,12 +378,13 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
     node->data.s_list_node = list;
     if (!read_and_or(list->left, l))
         return false;
-    if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_OR)
+    if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_SEMI)
     {
         if (lexer_peek(l)->type == TK_AND)
             list->type = ND_AND;
         else
             list->type = ND_OR;
+        lexer_read(l);
         list->right = init_ast_node();
         if (!read_list(list->right, l))
             free(list->right);
