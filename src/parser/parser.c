@@ -386,8 +386,7 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
             list->type = ND_OR;
         lexer_read(l);
         list->right = init_ast_node();
-        if (!read_list(list->right, l))
-            free(list->right);
+        read_list(list->right, l);
     }
     return true;
 }
@@ -409,8 +408,7 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
         lexer_read(l);
         read_newlines(l);
         list->right = init_ast_node();
-        if (!read_compound_list(list->right, l))
-            free(list->right);
+        read_compound_list(list->right, l);
     }
     return true;
 }
