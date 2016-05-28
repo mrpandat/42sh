@@ -16,28 +16,28 @@ class TestParser(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_01(self):
+    def test_01_simple_or(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_compound_list(
                 node,
                 self.init_and_process_lexer(b'myword || myword')))
 
-    def test_02(self):
+    def test_02_ending_semi(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_compound_list(
                 node,
                 self.init_and_process_lexer(b'myword || myword;')))
 
-    def test_03(self):
+    def test_03_and_plus_or(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_compound_list(
                 node,
                 self.init_and_process_lexer(b'myword || myword & myword')))
 
-    def test_04(self):
+    def test_04_with_newlines(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_compound_list(

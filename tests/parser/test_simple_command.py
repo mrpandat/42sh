@@ -16,35 +16,35 @@ class TestSimpleCommand(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_01(self):
+    def test_01_simple_command(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_simple_command(
                 node,
                 self.init_and_process_lexer(b'1 > myword > myword')))
 
-    def test_02(self):
+    def test_02_simple_word(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_simple_command(
                 node,
                 self.init_and_process_lexer(b'myword')))
 
-    def test_03(self):
+    def test_03_redirection(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_simple_command(
                 node,
                 self.init_and_process_lexer(b'1 > 2 myword')))
 
-    def test_04(self):
+    def test_04_redirection_double_word(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_simple_command(
                 node,
                 self.init_and_process_lexer(b'1 > myword > myword myword')))
 
-    def test_05(self):
+    def test_05_multiple_redirections(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_simple_command(

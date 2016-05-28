@@ -16,37 +16,26 @@ class TestParser(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_01(self):
+    def test_01_simple_do(self):
         node = self.lib.init_ast_node()
-        self.assertTrue(
-            self.lib.read_rule_if(
-                node,
-                self.init_and_process_lexer(b'if a then b fi')))
+        command = b'do echo mdr done'
+        clexer = self.init_and_process_lexer(command)
+        self.assertTrue(self.lib.read_do_group(node, clexer))
 
-    def test_02(self):
+    def test_02_simple_do(self):
         node = self.lib.init_ast_node()
-        self.assertFalse(
-            self.lib.read_rule_if(
-                node,
-                self.init_and_process_lexer(b'if a then then b fi')))
+        command = b'do echo mdr || echo lol done'
+        clexer = self.init_and_process_lexer(command)
+        self.assertTrue(self.lib.read_do_group(node, clexer))
 
-    def test_03(self):
+    def test_03_no_ending_done(self):
         node = self.lib.init_ast_node()
-        self.assertFalse(
-            self.lib.read_rule_if(
-                node,
-                self.init_and_process_lexer(b'if if a then b fi')))
+        command = b'do echo mdr'
+        clexer = self.init_and_process_lexer(command)
+        self.assertFalse(self.lib.read_do_group(node, clexer))
 
-    def test_04(self):
+    def test_04_no_starting_do(self):
         node = self.lib.init_ast_node()
-        self.assertFalse(
-            self.lib.read_rule_if(
-                node,
-                self.init_and_process_lexer(b'if a then b if')))
-
-    def test_05(self):
-        node = self.lib.init_ast_node()
-        self.assertFalse(
-            self.lib.read_rule_if(
-                node,
-                self.init_and_process_lexer(b'if a then b')))
+        command = b'echo mdr done'
+        clexer = self.init_and_process_lexer(command)
+        self.assertFalse(self.lib.read_do_group(node, clexer))
