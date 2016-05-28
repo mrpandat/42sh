@@ -1,8 +1,8 @@
 import unittest
 from test_functions import *
 
-
 class TestBinary(unittest.TestCase):
+
     def test_01_noarg(self):
         result = execute_cmd('../42sh')
         self.assertEqual(result.stdout, '')
@@ -25,8 +25,7 @@ class TestBinary(unittest.TestCase):
 
     def test_05_help(self):
         result = execute_cmd('../42sh -h')
-        self.assertEqual(result.stdout,
-                         "42sh [ GNU long options ] [ options ] [ file ]\n")
+        self.assertEqual(result.stdout, "42sh [ GNU long options ] [ options ] [ file ]\n")
         self.assertEquals(result.returncode, 0)
 
     def test_06_norc(self):
@@ -55,26 +54,15 @@ class TestBinary(unittest.TestCase):
         self.assertEquals(result.returncode, 127)
 
     def test_11_inexistant_command(self):
-        result = execute_cmd('../42sh -c "foiehofihe"')
-        self.assertEqual(result.stdout, '')
-        self.assertEquals(result.returncode, 127)
+        self.assertEqual(execute_cmd_cmp("foiehofihe"), 0)
+
 
     def test_12_inexistant_command_wth_arg(self):
-        result = execute_cmd('../42sh -c "diejoide ded ded"')
-        self.assertEqual(result.stdout, '')
-        self.assertEquals(result.returncode, 127)
+        self.assertEqual(execute_cmd_cmp("diejoide ded ded"), 0)
+
 
     def test_13_existant_command(self):
-        result = execute_cmd('../42sh -c "/bin/echo"')
-        self.assertEqual(result.stdout, '\n')
-        self.assertEquals(result.returncode, 0)
+        self.assertEqual(execute_cmd_cmp("/bin/echo"), 0)
 
     def test_14_existant_command_wth_arg(self):
-        result = execute_cmd('../42sh -c "/bin/echo yolo"')
-        self.assertEqual(result.stdout, 'yolo\n')
-        self.assertEquals(result.returncode, 0)
-
-    def test_15_script(self):
-        result = execute_cmd('../42sh binary/scripts/test1.sh')
-        self.assertEqual(result.stdout, 'test\n')
-        self.assertEquals(result.returncode, 0)
+        self.assertEqual(execute_cmd_cmp("/bin/echo yolo"), 0)
