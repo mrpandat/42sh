@@ -66,7 +66,6 @@ void parse_long_option(char **argv, struct options *options, int i)
         fprintf(stderr, "unknown long option : %s\n", argv[i]);
 }
 
-
 void parse_file(struct options *options)
 {
     if (strcmp(options->command, "") == 0
