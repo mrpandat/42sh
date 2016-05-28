@@ -32,7 +32,7 @@ class TestSimpleCommand(unittest.TestCase):
 
     def test_03_redirection(self):
         node = self.lib.init_ast_node()
-        self.assertTrue(
+        self.assertFalse(
             self.lib.read_simple_command(
                 node,
                 self.init_and_process_lexer(b'1 > 2 myword')))

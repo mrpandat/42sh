@@ -3,7 +3,7 @@ from cffi import FFI
 from test_functions import *
 
 
-class TestParser(unittest.TestCase):
+class TestCompoundList(unittest.TestCase):
     def __init__(self, arg):
         unittest.TestCase.__init__(self, arg)
         self.ffi = FFI()
@@ -43,3 +43,10 @@ class TestParser(unittest.TestCase):
             self.lib.read_compound_list(
                 node,
                 self.init_and_process_lexer(b'myword || myword \n myword')))
+
+    def test_05_simple_word(self):
+        node = self.lib.init_ast_node()
+        self.assertTrue(
+            self.lib.read_compound_list(
+                node,
+                self.init_and_process_lexer(b'myword')))
