@@ -1,53 +1,54 @@
+import os
 import sys
 import unittest
 from static.colors import bcolors
 from fun import *
-from binary.test_binary import TestBinary
-from execute.test_exec import TestExec
-from lexer.test_lexer import TestLexer
-from parser.test_parser import TestParser
-from utils.test_utils import TestUtils
 
 nb_fail = 0
 
+
 class MyTestResult(unittest.TestResult):
     def addFailure(self, test, err):
-        print ("--> " + bcolors.FAIL + "FAIL" + bcolors.ENDC, end=" ")
+        print ("--> " + bcolors.FAIL + "ERROR", end=" ")
         print (test)
+        print (str(err[1]) + bcolors.ENDC)
+        unittest.TestResult.addFailure(self, test, err)
 
     def addSuccess(self, test):
         print ("--> " + bcolors.OKGREEN + "PASSED" + bcolors.ENDC, end=" ")
         print (test)
+        unittest.TestResult.addSuccess(self, test)
 
-
-def launch_test(test, test_name):
-    parser_suite = unittest.defaultTestLoader.loadTestsFromTestCase(test)
+def launch_test(test_name):
     print ()
     print((" Launching " + test_name + " tests ").center(80, '*'))
     print ()
     res = MyTestResult()
-    parser_suite.run(res)
-    global nb_fail
-    nb_fail += len(res.errors)
-    nb_fail += len(res.failures)
-
+    testsuite = unittest.TestLoader().discover('./' + test_name)
+    unittest.TextTestRunner(verbosity=3, resultclass=MyTestResult)\
+        .run(testsuite)
+    #print (res)
 
 
 def launch_all():
-    launch_test(TestBinary, "binary")
-    launch_test(TestUtils, "utils")
-    launch_test(TestLexer, "lexer")
-    launch_test(TestParser, "parser")
-    launch_test(TestExec, "exe")
+    launch_test("binary")
+    launch_test("utils")
+    launch_test("lexer")
+    launch_test("parser")
+    launch_test("execute")
+
 
 def print_nyan():
     global nb_fail
     if nb_fail == 0:
         print_colored("./static/nyan")
     else:
-        print_file("./static/dead",bcolors.OKBLUE)
+        print_file("./static/dead", bcolors.OKBLUE)
+
 
 if __name__ == "__main__":
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
     categorie = ["utils", "lexer", "parser", "execute", "binary"]
     sys.argv[0] = ""
     for arg in sys.argv:
@@ -76,4 +77,3 @@ if __name__ == "__main__":
             exit(1)
     launch_all()
     #print_nyan()
-
