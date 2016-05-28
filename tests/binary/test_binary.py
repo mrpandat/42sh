@@ -48,6 +48,6 @@ class TestBinary(unittest.TestCase):
         self.assertEqual(result.stdout, '')
         self.assertEquals(result.returncode, 0)
 
-   
+
 
 

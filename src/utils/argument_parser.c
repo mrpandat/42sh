@@ -98,7 +98,7 @@ void parse_small_options(int argc, char **argv, struct options *options,
             i++;
             options->shopt_option = argv[i];
         }
-        else if (argv[i][0] == '-' && argv[i][1] == '-')
+        else if (argv[i][0] == '-' && argv[i][1] == '-') // long option
             parse_long_option(argv, options, i);
         else if (i == argc - 1)
             options->file = argv[i];
