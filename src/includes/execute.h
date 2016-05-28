@@ -5,5 +5,5 @@
 #include "../includes/global.h"
 
 int execute(struct options opt);
-
+int file_test(char *name);
 #endif //INC_42SH_EXECUTE_H

@@ -3,6 +3,7 @@
 #include <global.h>
 #include <argument_parser.h>
 #include <util.h>
+#include <execute.h>
 
 int is_command(char *name)
 {
@@ -70,9 +71,15 @@ void parse_file(struct options *options)
 {
     if (strcmp(options->command, "") == 0
         && strcmp(options->file, "") != 0)
-        options->command = path_to_str(options->file);
-    else
-        options->file = "";
+    {
+        if (file_test(options->file) == 127)
+        {
+            print_exit(127, "No such file or directory", stderr);
+            options->command = path_to_str(options->file);
+        }
+        else
+            options->file = "";
+    }
 }
 
 void parse_small_options(int argc, char **argv, struct options *options,
