@@ -16,97 +16,91 @@ class TestRedirection(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_01_redirection(self):
+    def test_01_from_one(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 > myword')))
 
-    def test_02_redirection(self):
+    def test_02_from_zero(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'0 > myword')))
 
-    def test_03_redirection(self):
+    def test_03_from_two(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'2 > myword')))
 
-    def test_04_redirection(self):
+    def test_04_from_three(self):
         self.assertFalse(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'3 > myword')))
 
-    def test_05_redirection(self):
+    def test_05_to_one(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 < myword')))
 
-    def test_06_redirection(self):
+    def test_06_dgreat(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 >> myword')))
 
-    def test_07_redirection(self):
+    def test_07_dless(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 << myword')))
 
-    def test_08_redirection(self):
-        self.assertTrue(
-            self.lib.read_redirection(
-                self.lib.init_redirection_node(),
-                self.init_and_process_lexer(b'1 >> myword')))
-
-    def test_09_redirection(self):
+    def test_09_dlessminus(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 <<- myword')))
 
-    def test_10_redirection(self):
+    def test_10_greatand(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 >& myword')))
 
-    def test_11_redirection(self):
+    def test_11_lessand(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 <& myword')))
 
-    def test_12_redirection(self):
+    def test_12_greator(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 >| myword')))
 
-    def test_13_redirection(self):
+    def test_13_lessgreat(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 <> myword')))
 
-    def test_14_redirection(self):
+    def test_14_no_space(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1>myword')))
 
-    def test_15_redirection(self):
+    def test_15_left_space(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 >myword')))
 
-    def test_16_redirection(self):
+    def test_16_right_space(self):
         self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),

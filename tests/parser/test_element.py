@@ -16,17 +16,17 @@ class TestElement(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_01(self):
+    def test_01_simple_word(self):
         element_node = self.lib.init_element_node()
         self.assertTrue(self.lib.read_element(
             element_node, self.init_and_process_lexer(b'myword')))
 
-    def test_02(self):
+    def test_02_redirection_and_word(self):
         element_node = self.lib.init_element_node()
         self.assertTrue(self.lib.read_element(
             element_node, self.init_and_process_lexer(b'1 > myword')))
 
-    def test_03(self):
+    def test_03_word_with_pars(self):
         element_node = self.lib.init_element_node()
         self.assertFalse(self.lib.read_element(
             element_node, self.init_and_process_lexer(b'(myword)')))

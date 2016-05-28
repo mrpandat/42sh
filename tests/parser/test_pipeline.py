@@ -16,35 +16,35 @@ class TestParser(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_01(self):
+    def test_01_simple_word(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_pipeline(
                 node,
                 self.init_and_process_lexer(b'myword')))
 
-    def test_02(self):
+    def test_02_pipe_with_newlines(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_pipeline(
                 node,
                 self.init_and_process_lexer(b'myword |\n\n myword')))
 
-    def test_03(self):
+    def test_03_banged_no_space(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_pipeline(
                 node,
                 self.init_and_process_lexer(b'!myword | myword')))
 
-    def test_04(self):
+    def test_04_spaced_bang(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_pipeline(
                 node,
                 self.init_and_process_lexer(b'! myword | myword')))
 
-    def test_05(self):
+    def test_05_double_pipe_with_no_command(self):
         node = self.lib.init_ast_node()
         self.assertFalse(
             self.lib.read_pipeline(

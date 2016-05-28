@@ -16,35 +16,35 @@ class TestParser(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_01(self):
+    def test_01_simple_if(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_rule_if(
                 node,
                 self.init_and_process_lexer(b'if a then b fi')))
 
-    def test_02(self):
+    def test_02_two_thens(self):
         node = self.lib.init_ast_node()
         self.assertFalse(
             self.lib.read_rule_if(
                 node,
                 self.init_and_process_lexer(b'if a then then b fi')))
 
-    def test_03(self):
+    def test_03_two_ifs(self):
         node = self.lib.init_ast_node()
         self.assertFalse(
             self.lib.read_rule_if(
                 node,
                 self.init_and_process_lexer(b'if if a then b fi')))
 
-    def test_04(self):
+    def test_04_ending_if(self):
         node = self.lib.init_ast_node()
         self.assertFalse(
             self.lib.read_rule_if(
                 node,
                 self.init_and_process_lexer(b'if a then b if')))
 
-    def test_05(self):
+    def test_05_no_ending_fi(self):
         node = self.lib.init_ast_node()
         self.assertFalse(
             self.lib.read_rule_if(
