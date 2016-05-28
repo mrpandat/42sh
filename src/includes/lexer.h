@@ -116,4 +116,8 @@ bool lexer_match_and_or_not(struct s_lexer *lexer);
 
 bool lexer_match_symbol(struct s_lexer *lexer);
 
+/* File: lexer_quoting.c */
+
+
+
 #endif /* !LEXER_LEXER_H */
