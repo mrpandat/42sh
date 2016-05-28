@@ -11,7 +11,7 @@ nb_fail = 0
 
 class MyTestResult(unittest.TestResult):
     def addFailure(self, test, err):
-        print("--> " + bcolors.FAIL + "ERROR ", end=" ")
+        print("--> " + bcolors.FAIL + "FAILURE ", end=" ")
         print(test)
         print(str(err[1]) + bcolors.ENDC)
         global nb_fail
@@ -21,6 +21,14 @@ class MyTestResult(unittest.TestResult):
         print("--> " + bcolors.OKGREEN + "PASSED" + bcolors.ENDC, end=" ")
         print(test)
         unittest.TestResult.addSuccess(self, test)
+
+    def addError(self, test, err):
+        print("--> " + bcolors.WARNING + "ERROR " + bcolors.ENDC, end=" ")
+        print(test)
+        print(str(err[1]) + bcolors.ENDC)
+        global nb_fail
+        nb_fail += 1
+        unittest.TestResult.addError(self, test, err)
 
 
 def launch_test(test_name):
@@ -39,6 +47,7 @@ def launch_sanity_test():
     for file in [os.path.join("binary/scripts", fn) for fn in next(os.walk("binary/scripts"))[2]]:
         if file.endswith(".sh"):
             res = execute_cmd("valgrind ../42sh " + file)
+
             if "All heap blocks were freed -- no leaks are possible" in res.stderr:
                 print("--> " + bcolors.OKGREEN + "SANITY OK ON FILE " + file + bcolors.ENDC, end=" ")
             else:
