@@ -21,14 +21,14 @@ class TestShellCommand(unittest.TestCase):
         self.assertTrue(
             self.lib.read_shell_command(
                 node,
-                self.init_and_process_lexer(b'(word1 || word2 || word3)')))
+                self.init_and_process_lexer(b'(myword || myword || myword)')))
 
     def test_02_pars(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_shell_command(
                 node,
-                self.init_and_process_lexer(b'{word1 || word2 || word3}')))
+                self.init_and_process_lexer(b'{myword || myword || myword}')))
 
     def test_03_braces_and_pars(self):
         node = self.lib.init_ast_node()
@@ -42,7 +42,7 @@ class TestShellCommand(unittest.TestCase):
         self.assertFalse(
             self.lib.read_shell_command(
                 node,
-                self.init_and_process_lexer(b'(word1 || word2 || word3}')))
+                self.init_and_process_lexer(b'(myword || myword || myword}')))
 
     def test_05_until(self):
         node = self.lib.init_ast_node()
