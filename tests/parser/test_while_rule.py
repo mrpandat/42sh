@@ -26,10 +26,10 @@ class TestWhileRule(unittest.TestCase):
         node = self.lib.init_ast_node()
         command = b'whil variable do shit done'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_rule_while(node, clexer))
+        self.assertFalse(self.lib.read_rule_while(node, clexer))
 
     def test_03_two_ors(self):
         node = self.lib.init_ast_node()
-        command = b'while variable1 || variable2 do shit done'
+        command = b'while var1 || var2 do shit done'
         clexer = self.init_and_process_lexer(command)
         self.assertTrue(self.lib.read_rule_while(node, clexer))

@@ -20,16 +20,16 @@ class TestUntilRule(unittest.TestCase):
         node = self.lib.init_ast_node()
         command = b'until variable do shit done'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_rule_while(node, clexer))
+        self.assertTrue(self.lib.read_rule_until(node, clexer))
 
     def test_02_until_typo(self):
         node = self.lib.init_ast_node()
         command = b'unti variable do shit done'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_rule_while(node, clexer))
+        self.assertTrue(self.lib.read_rule_until(node, clexer))
 
     def test_03_two_ors(self):
         node = self.lib.init_ast_node()
-        command = b'until variable1 || variable2 do shit done'
+        command = b'until var1 || var2 do shit done'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_rule_while(node, clexer))
+        self.assertTrue(self.lib.read_rule_until(node, clexer))
