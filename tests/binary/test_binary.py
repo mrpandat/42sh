@@ -54,11 +54,15 @@ class TestBinary(unittest.TestCase):
         self.assertEquals(result.returncode, 127)
 
     def test_11_inexistant_command(self):
-        result = execute_cmd('../42sh -c "foiehofihe"')
-        self.assertEqual(result.stdout, '')
-        self.assertEquals(result.returncode, 127)
+        self.assertEqual(execute_cmd_cmp("foiehofihe"), 0)
+
 
     def test_12_inexistant_command_wth_arg(self):
-        result = execute_cmd('../42sh -c "diejoide ded ded"')
-        self.assertEqual(result.stdout, '')
-        self.assertEquals(result.returncode, 127)
+        self.assertEqual(execute_cmd_cmp("diejoide ded ded"), 0)
+
+
+    def test_13_existant_command(self):
+        self.assertEqual(execute_cmd_cmp("/bin/echo"), 0)
+
+    def test_14_existant_command_wth_arg(self):
+        self.assertEqual(execute_cmd_cmp("/bin/echo yolo"), 0)
