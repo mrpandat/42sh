@@ -2,6 +2,7 @@ import os
 import sys
 import unittest
 from static.colors import bcolors
+
 from fun import *
 
 nb_fail = 0
@@ -12,22 +13,22 @@ class MyTestResult(unittest.TestResult):
         print ("--> " + bcolors.FAIL + "ERROR ", end=" ")
         print (test)
         print (str(err[1]) + bcolors.ENDC)
-        unittest.TestResult.addFailure(self, test, err)
+        global nb_fail
+        nb_fail += 1
 
     def addSuccess(self, test):
         print ("--> " + bcolors.OKGREEN + "PASSED" + bcolors.ENDC, end=" ")
         print (test)
         unittest.TestResult.addSuccess(self, test)
 
+
 def launch_test(test_name):
     print ()
     print((" Launching " + test_name + " tests ").center(80, '*'))
     print ()
-    res = MyTestResult()
     testsuite = unittest.TestLoader().discover('./' + test_name)
-    unittest.TextTestRunner(verbosity=3, resultclass=MyTestResult)\
+    unittest.TextTestRunner(verbosity=3, resultclass=MyTestResult) \
         .run(testsuite)
-    #print (res)
 
 
 def launch_all():
@@ -43,7 +44,7 @@ def print_nyan():
     if nb_fail == 0:
         print_colored("./static/nyan")
     else:
-        print_file("./static/dead", bcolors.OKBLUE)
+        print_file("./static/spider", bcolors.OKBLUE,   )
 
 
 if __name__ == "__main__":
@@ -70,10 +71,10 @@ if __name__ == "__main__":
                 launch_exec_tests()
             elif "binary" in sys.argv:
                 launch_exec_tests()
-            #print_nyan()
+            print_nyan()
             exit(0)
         else:
             print ("Unknow option : " + arg)
             exit(1)
     launch_all()
-    #print_nyan()
+    print_nyan()
