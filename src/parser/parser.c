@@ -203,12 +203,17 @@ bool read_redirection(struct s_redirection_node *redirection, struct s_lexer *l)
 
 bool read_shell_command(struct s_ast_node *node, struct s_lexer *l)
 {
-    if (lexer_peek(l)->type == TK_LBRACE || lexer_peek(l)->type == TK_LPAR)
+    if (lexer_peek(l)->type == TK_LBRACE)
     {
         lexer_read(l);
         return (read_compound_list(node, l)
-                && (lexer_peek(l)->type == TK_RBRACE
-                    || lexer_peek(l)->type == TK_RPAR));
+                && (lexer_peek(l)->type == TK_RBRACE));
+    }
+    if (lexer_peek(l)->type == TK_LPAR)
+    {
+        lexer_read(l);
+        return (read_compound_list(node, l)
+                && (lexer_peek(l)->type == TK_RPAR));
     }
     return (read_rule_for(node, l)
             || read_rule_while(node, l)
