@@ -18,10 +18,9 @@ class TestIfRule(unittest.TestCase):
 
     def test_01_simple_if(self):
         node = self.lib.init_ast_node()
-        self.assertTrue(
-            self.lib.read_rule_if(
-                node,
-                self.init_and_process_lexer(b'if a then b fi')))
+        command = b'if a then b fi'
+        clexer = self.init_and_process_lexer(command)
+        self.assertTrue(self.lib.read_rule_if(node, clexer))
 
     def test_02_two_thens(self):
         node = self.lib.init_ast_node()
@@ -50,3 +49,15 @@ class TestIfRule(unittest.TestCase):
             self.lib.read_rule_if(
                 node,
                 self.init_and_process_lexer(b'if a then b')))
+
+    def test_06_simple_if_else(self):
+        node = self.lib.init_ast_node()
+        command = b'if a then b else c fi'
+        clexer = self.init_and_process_lexer(command)
+        self.assertTrue(self.lib.read_rule_if(node, clexer))
+
+    def test_07_two_else(self):
+        node = self.lib.init_ast_node()
+        command = b'if a then b else else c fi'
+        clexer = self.init_and_process_lexer(command)
+        self.assertFalse(self.lib.read_rule_if(node, clexer))

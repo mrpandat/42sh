@@ -3,7 +3,7 @@ from cffi import FFI
 from test_functions import *
 
 
-class TestWhileRule(unittest.TestCase):
+class TestUntilRule(unittest.TestCase):
     def __init__(self, arg):
         unittest.TestCase.__init__(self, arg)
         self.ffi = FFI()
@@ -16,20 +16,20 @@ class TestWhileRule(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_01_simple_while(self):
+    def test_01_simple_until(self):
         node = self.lib.init_ast_node()
-        command = b'while variable do shit done'
+        command = b'until variable do shit done'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_rule_while(node, clexer))
+        self.assertTrue(self.lib.read_rule_until(node, clexer))
 
-    def test_02_while_typo(self):
+    def test_02_until_typo(self):
         node = self.lib.init_ast_node()
-        command = b'whil variable do shit done'
+        command = b'unti variable do shit done'
         clexer = self.init_and_process_lexer(command)
-        self.assertFalse(self.lib.read_rule_while(node, clexer))
+        self.assertFalse(self.lib.read_rule_until(node, clexer))
 
     def test_03_two_ors(self):
         node = self.lib.init_ast_node()
-        command = b'while var1 || var2 do shit done'
+        command = b'until var1 || var2 do shit done'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_rule_while(node, clexer))
+        self.assertTrue(self.lib.read_rule_until(node, clexer))

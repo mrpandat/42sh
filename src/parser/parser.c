@@ -33,11 +33,13 @@ bool read_rule_if(struct s_ast_node *node, struct s_lexer *l)
         return false;
     if (lexer_peek(l)->type == TK_ELIF)
     {
+        lexer_read(l);
         if (!read_rule_if(node->data.s_if_node->false_statement, l))
             return false;
     }
     else if (lexer_peek(l)->type == TK_ELSE)
     {
+        lexer_read(l);
         if (!read_compound_list(node->data.s_if_node->false_statement, l))
             return false;
     }
@@ -201,12 +203,17 @@ bool read_redirection(struct s_redirection_node *redirection, struct s_lexer *l)
 
 bool read_shell_command(struct s_ast_node *node, struct s_lexer *l)
 {
-    if (lexer_peek(l)->type == TK_LBRACE || lexer_peek(l)->type == TK_LPAR)
+    if (lexer_peek(l)->type == TK_LBRACE)
     {
         lexer_read(l);
         return (read_compound_list(node, l)
-                && (lexer_peek(l)->type == TK_RBRACE
-                    || lexer_peek(l)->type == TK_RPAR));
+                && (lexer_peek(l)->type == TK_RBRACE));
+    }
+    if (lexer_peek(l)->type == TK_LPAR)
+    {
+        lexer_read(l);
+        return (read_compound_list(node, l)
+                && (lexer_peek(l)->type == TK_RPAR));
     }
     return (read_rule_for(node, l)
             || read_rule_while(node, l)
@@ -222,7 +229,6 @@ bool read_funcdec(struct s_ast_node *node, struct s_lexer *l)
         lexer_read(l);
     if (lexer_peek(l)->type != TK_WORD)
         return false;
-    lexer_read(l);
     struct s_funcdec_node *funcdec_node =
             init_funcdec_node(lexer_peek(l)->value);
     if (lexer_read(l)->type != TK_LPAR || lexer_read(l)->type != TK_RPAR)
@@ -372,15 +378,15 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
     node->data.s_list_node = list;
     if (!read_and_or(list->left, l))
         return false;
-    if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_OR)
+    if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_SEMI)
     {
         if (lexer_peek(l)->type == TK_AND)
             list->type = ND_AND;
         else
             list->type = ND_OR;
+        lexer_read(l);
         list->right = init_ast_node();
-        if (!read_list(list->right, l))
-            free(list->right);
+        read_list(list->right, l);
     }
     return true;
 }
@@ -402,8 +408,7 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
         lexer_read(l);
         read_newlines(l);
         list->right = init_ast_node();
-        if (!read_compound_list(list->right, l))
-            free(list->right);
+        read_compound_list(list->right, l);
     }
     return true;
 }
