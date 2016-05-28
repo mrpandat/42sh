@@ -3,7 +3,7 @@ from cffi import FFI
 from test_functions import *
 
 
-class TestParser(unittest.TestCase):
+class TestPipeline(unittest.TestCase):
     def __init__(self, arg):
         unittest.TestCase.__init__(self, arg)
         self.ffi = FFI()

@@ -1,15 +1,14 @@
 import unittest
 from cffi import FFI
 import os
-import tests
-
+from test_functions import *
 
 class TestCaseItem(unittest.TestCase):
     def __init__(self, arg):
         unittest.TestCase.__init__(self, arg)
         self.ffi = FFI()
         self.lib = self.ffi.dlopen("../build/libmy42sh.so")
-        source = tests.test_functions.get_source_all_files("../src/includes")
+        source = get_source_all_files("../src/includes")
         self.ffi.cdef(source)
 
     def init_and_process_lexer(self, command):

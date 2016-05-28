@@ -11,16 +11,15 @@ int file_test(char *name)
         if (S_ISREG(stats->st_mode))
             res = 0;
         else
-            res = 199;
+            res = 127;
     }
     else
-        res = 199;
+        res = 127;
     if (res == 0 && !(stats->st_mode & S_IXUSR))
-        res = 168;
+        res = 126;
     free(stats);
 
     return res;
-
 }
 
 void children(char *prog, char **arguments, struct options opt)
@@ -44,6 +43,9 @@ int execute(struct options opt)
     if (strcmp(opt.command, "") != 0)
     {
         prog = args_from_str(opt.command, &arguments);
+        int res = file_test(prog);
+        if (res != 0)
+            exit(res);
         int pid = fork();
         if (pid == 0)
             children(prog, arguments, opt);

@@ -34,4 +34,3 @@ def get_source_all_files(path):
             if "#" not in line:
                 source += line
     return source
-
