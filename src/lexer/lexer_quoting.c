@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include "../includes/lexer.h"
 
 bool match_escaped_quote(struct s_lexer *lexer)
@@ -56,7 +58,7 @@ bool lexer_match_quote(struct s_lexer *lexer)
     if (NULL != val && strlen(val) > 0)
     {
         lexer_add_token(lexer, TK_ESC_WORD, val);
-        lexer->current += strlen(val) + 1;
+        lexer->current += (strlen(val) + 1);
         return true;
     }
 
@@ -85,13 +87,13 @@ bool lexer_match_dquote(struct s_lexer *lexer)
             copy++;
         }
 
-        val = strndup(lexer->current, copy - lexer->current);
+        val = strndup(lexer->current, (copy - lexer->current));
     }
 
     if (NULL != val && strlen(val) > 0)
     {
         lexer_add_token(lexer, TK_WORD, val);
-        lexer->current += strlen(val) + 1;
+        lexer->current += (strlen(val) + 1);
         return true;
     }
     return false;
