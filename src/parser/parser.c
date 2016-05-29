@@ -1,3 +1,4 @@
+#include <ast.h>
 #include "../includes/ast.h"
 #include "../includes/parser.h"
 
@@ -399,6 +400,7 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
     read_newlines(l);
     node->type = ND_LIST;
     struct s_list_node *list = init_list_node();
+    node->data.s_list_node = list;
     if (!read_and_or(list->left, l))
         return false;
     if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_SEMI
@@ -406,7 +408,7 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
     {
         if (lexer_peek(l)->type == TK_AND)
             list->type = ND_AND;
-        else if (lexer_peek(l)->type == TK_SEMI)
+        else
             list->type = ND_OR;
         lexer_read(l);
         read_newlines(l);
