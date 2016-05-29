@@ -100,9 +100,9 @@ struct s_pipeline_node
 
 enum e_and_or_type
 {
+    ND_IF_NONE,
     ND_AND_IF,
-    ND_OR_IF,
-    ND_IF_NONE
+    ND_OR_IF
 };
 
 struct s_and_or_node
