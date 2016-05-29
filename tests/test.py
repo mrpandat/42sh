@@ -1,79 +1,107 @@
+import os
 import sys
 import unittest
 from static.colors import bcolors
+
 from fun import *
-from binary.test_binary import TestBinary
-from execute.test_exec import TestExec
-from lexer.test_lexer import TestLexer
-from parser.test_parser import TestParser
-from utils.test_utils import TestUtils
+from test_functions import *
 
 nb_fail = 0
 
+
 class MyTestResult(unittest.TestResult):
     def addFailure(self, test, err):
-        print ("--> " + bcolors.FAIL + "FAIL" + bcolors.ENDC, end=" ")
-        print (test)
+        print("--> " + bcolors.FAIL + "FAILURE ", end=" ")
+        print(test)
+        print(str(err[1]) + bcolors.ENDC)
+        global nb_fail
+        nb_fail += 1
 
     def addSuccess(self, test):
-        print ("--> " + bcolors.OKGREEN + "PASSED" + bcolors.ENDC, end=" ")
-        print (test)
+        print("--> " + bcolors.OKGREEN + "PASSED" + bcolors.ENDC, end=" ")
+        print(test)
+        unittest.TestResult.addSuccess(self, test)
+
+    def addError(self, test, err):
+        print("--> " + bcolors.WARNING + "ERROR " + bcolors.ENDC, end=" ")
+        print(test)
+        print(str(err[1]) + bcolors.ENDC)
+        global nb_fail
+        nb_fail += 1
+        unittest.TestResult.addError(self, test, err)
 
 
-def launch_test(test, test_name):
-    parser_suite = unittest.defaultTestLoader.loadTestsFromTestCase(test)
-    print ()
+def launch_test(test_name):
+    print()
     print((" Launching " + test_name + " tests ").center(80, '*'))
-    print ()
-    res = MyTestResult()
-    parser_suite.run(res)
-    global nb_fail
-    nb_fail += len(res.errors)
-    nb_fail += len(res.failures)
+    print()
+    testsuite = unittest.TestLoader().discover('./' + test_name)
+    unittest.TextTestRunner(verbosity=3, resultclass=MyTestResult) \
+        .run(testsuite)
 
+
+def launch_sanity_test():
+    print()
+    print((" Launching sanity tests ").center(80, '*'))
+    print()
+    for file in [os.path.join("binary/scripts", fn) for fn in next(os.walk("binary/scripts"))[2]]:
+        if file.endswith(".sh"):
+            res = execute_cmd("valgrind ../42sh " + file)
+
+            if "All heap blocks were freed -- no leaks are possible" in res.stderr:
+                print("--> " + bcolors.OKGREEN + "SANITY OK ON FILE " + file + bcolors.ENDC, end=" ")
+            else:
+                print("--> " + bcolors.FAIL + "INSAIN FILE " + file + bcolors.ENDC)
+                global nb_fail
+                nb_fail += 1
 
 
 def launch_all():
-    launch_test(TestBinary, "binary")
-    launch_test(TestUtils, "utils")
-    launch_test(TestLexer, "lexer")
-    launch_test(TestParser, "parser")
-    launch_test(TestExec, "exe")
+    launch_test("binary")
+    launch_test("utils")
+    launch_test("lexer")
+    launch_test("parser")
+    launch_test("execute")
+    launch_sanity_test()
+
 
 def print_nyan():
     global nb_fail
     if nb_fail == 0:
         print_colored("./static/nyan")
     else:
-        print_file("./static/dead",bcolors.OKBLUE)
+        print_file("./static/spider", bcolors.OKBLUE)
+
 
 if __name__ == "__main__":
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
     categorie = ["utils", "lexer", "parser", "execute", "binary"]
     sys.argv[0] = ""
     for arg in sys.argv:
         if arg == "":
             continue
         elif arg == "-l" or arg == "--list":
-            print (', '.join(categorie))
+            print(', '.join(categorie))
             exit(0)
         elif arg == "-s" or arg == "--sanity":
-            print("valgrind")
+            launch_sanity_test()
+            exit(0)
         elif arg == "-c":
             if "utils" in sys.argv:
-                launch_utils_tests()
+                launch_test("utils")
             elif "lexer" in sys.argv:
-                launch_lexer_tests()
+                launch_test("lexer")
             elif "parser" in sys.argv:
-                launch_parser_tests()
+                launch_test("parser")
             elif "execute" in sys.argv:
-                launch_exec_tests()
+                launch_test("execute")
             elif "binary" in sys.argv:
-                launch_exec_tests()
-            #print_nyan()
+                launch_test("binary")
+            print_nyan()
             exit(0)
         else:
-            print ("Unknow option : " + arg)
+            print("Unknow option : " + arg)
             exit(1)
     launch_all()
-    #print_nyan()
-
+    print_nyan()

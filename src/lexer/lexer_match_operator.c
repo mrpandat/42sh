@@ -49,18 +49,18 @@ static bool match_for(struct s_lexer *lexer)
         lexer->current += strlen("in");
         return true;
     }
-    /** do */
-    else if (0 == strncmp(lexer->current, "do", strlen("do")))
-    {
-        lexer_add_token(lexer, TK_DO, "do");
-        lexer->current += strlen("do");
-        return true;
-    }
     /** done */
     else if (0 == strncmp(lexer->current, "done", strlen("done")))
     {
         lexer_add_token(lexer, TK_DONE, "done");
         lexer->current += strlen("done");
+        return true;
+    }
+    /** do */
+    else if (0 == strncmp(lexer->current, "do", strlen("do")))
+    {
+        lexer_add_token(lexer, TK_DO, "do");
+        lexer->current += strlen("do");
         return true;
     }
     return false;
@@ -111,12 +111,22 @@ static bool match_while_until(struct s_lexer *lexer)
     return false;
 }
 
+static bool match_function(struct s_lexer *lexer)
+{
+    if (0 == strncmp(lexer->current, "function", strlen("function")))
+    {
+        lexer_add_token(lexer, TK_FUNCTION, "function");
+        lexer->current += strlen("function");
+        return true;
+    }
+    return false;
+}
+
 bool lexer_match_operator(struct s_lexer *lexer)
 {
     if (NULL == lexer || NULL == lexer->current || !strlen(lexer->current))
         return false;
 
     return match_if(lexer) || match_for(lexer) || match_case(lexer)
-           || match_while_until(lexer);
+           || match_while_until(lexer) || match_function(lexer);
 }
-

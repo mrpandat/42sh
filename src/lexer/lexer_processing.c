@@ -7,11 +7,12 @@ static bool is_word_end(char *str)
     if (NULL == str)
         return true;
 
-    /** (a-zA-Z0-9_) */
+    /** (a-zA-Z0-9_) or / for programs */
     if ((*str >= 'a' && *str <= 'z')
         || (*str >= 'A' && *str <= 'Z')
         || (*str >= '0' && *str <= '9')
-        || '_' == *str)
+        || '_' == *str
+        || '/' == *str)
         return false;
 
     return true;

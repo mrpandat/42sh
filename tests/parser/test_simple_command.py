@@ -16,38 +16,70 @@ class TestSimpleCommand(unittest.TestCase):
         self.lib.lexer_process(clexer)
         return clexer
 
-    def test_01(self):
+    def test_01_simple_command(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_simple_command(
                 node,
                 self.init_and_process_lexer(b'1 > myword > myword')))
 
-    def test_02(self):
+    def test_02_simple_word(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_simple_command(
                 node,
                 self.init_and_process_lexer(b'myword')))
 
-    def test_03(self):
+    def test_03_redirection(self):
         node = self.lib.init_ast_node()
-        self.assertTrue(
+        self.assertFalse(
             self.lib.read_simple_command(
                 node,
                 self.init_and_process_lexer(b'1 > 2 myword')))
 
-    def test_04(self):
+    def test_04_redirection_double_word(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_simple_command(
                 node,
                 self.init_and_process_lexer(b'1 > myword > myword myword')))
 
-    def test_05(self):
+    def test_05_multiple_redirections(self):
         node = self.lib.init_ast_node()
         self.assertTrue(
             self.lib.read_simple_command(
                 node,
-                self.init_and_process_lexer(b'1 > 2 < 4 myword')))
+                self.init_and_process_lexer(b'1 > word < word myword')))
+
+    def test_06_node_attributes(self):
+        node = self.lib.init_ast_node()
+        self.lib.read_simple_command(
+                node,
+                self.init_and_process_lexer(b'1 > word1 < word2 word3'))
+        command = node.data.s_simple_command_node
+        self.assertEqual(command.nb_elements, 3)
+        self.assertEqual(command.elements[0].type, self.lib.EL_REDIRECTION)
+        self.assertEqual(
+            self.ffi.string(
+                command.elements[0].data.s_redirection_node.io_number),
+            b'1')
+        self.assertEqual(
+            self.ffi.string(command.elements[0].data.s_redirection_node.type),
+            b'>')
+        self.assertEqual(
+            self.ffi.string(command.elements[0].data.s_redirection_node.word),
+            b'word1')
+        self.assertEqual(command.elements[1].type, self.lib.EL_REDIRECTION)
+        self.assertEqual(command.elements[1].data.s_redirection_node.io_number,
+                         None)
+        self.assertEqual(
+            self.ffi.string(command.elements[1].data.s_redirection_node.type),
+            self.ffi.string(b'<'))
+        self.assertEqual(
+            self.ffi.string(command.elements[1].data.s_redirection_node.word),
+            self.ffi.string(b'word2'))
+        self.assertEqual(command.elements[2].type, self.lib.EL_WORD)
+        self.assertEqual(self.ffi.string(command.elements[2].word),
+                         self.ffi.string(b'word3'))
+
 

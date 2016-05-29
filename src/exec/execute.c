@@ -11,16 +11,15 @@ int file_test(char *name)
         if (S_ISREG(stats->st_mode))
             res = 0;
         else
-            res = 199;
+            res = 127;
     }
     else
-        res = 199;
+        res = 127;
     if (res == 0 && !(stats->st_mode & S_IXUSR))
-        res = 168;
+        res = 126;
     free(stats);
 
     return res;
-
 }
 
 void children(char *prog, char **arguments, struct options opt)
@@ -37,6 +36,26 @@ void children(char *prog, char **arguments, struct options opt)
     execve(prog, arguments, NULL);
 }
 
+void not_found(char *name, char **arguments, struct options opt)
+{
+    int res = file_test(name);
+    if (res == 127)
+    {
+        char *message = str_append("/bin/sh: 1: ", name);
+        char *message1 = str_append(message, ": not found");
+        fprintf(stderr, "%s\n", message1);
+
+        if (strcmp(opt.file, "") != 0)
+            free(opt.command);
+
+        free(message);
+        free(message1);
+        free(name);
+        free(arguments);
+        exit(res);
+    }
+}
+
 int execute(struct options opt)
 {
     char **arguments = NULL;
@@ -44,6 +63,7 @@ int execute(struct options opt)
     if (strcmp(opt.command, "") != 0)
     {
         prog = args_from_str(opt.command, &arguments);
+        not_found(prog, arguments, opt);
         int pid = fork();
         if (pid == 0)
             children(prog, arguments, opt);
