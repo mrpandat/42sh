@@ -39,14 +39,14 @@ class TestBinary(unittest.TestCase):
         self.assertEquals(result.returncode, 0)
 
     def test_08_shopt_1(self):
-        result = execute_cmd('../42sh -0 dotglob')
+        result = execute_cmd('../42sh -O dotdadglob')
         self.assertEqual(result.stdout, '')
-        self.assertEquals(result.returncode, 0)
+        self.assertEquals(result.returncode, 2)
 
     def test_09_shopt_2(self):
-        result = execute_cmd('../42sh +0 dotglob')
+        result = execute_cmd('../42sh +O dodazdztglob')
         self.assertEqual(result.stdout, '')
-        self.assertEquals(result.returncode, 0)
+        self.assertEquals(result.returncode, 2)
 
     def test_10_inexistant_script(self):
         result = execute_cmd('../42sh inexistent.sh')
@@ -66,3 +66,13 @@ class TestBinary(unittest.TestCase):
 
     def test_14_existant_command_wth_arg(self):
         self.assertEqual(execute_cmd_cmp("/bin/echo yolo"), 0)
+
+    def test_15_shopt_3(self):
+        result = execute_cmd('../42sh -O dotglob')
+        self.assertEqual(result.stdout, '')
+        self.assertEquals(result.returncode, 0)
+
+    def test_16_shopt_4(self):
+        result = execute_cmd('../42sh +O dotglob')
+        self.assertEqual(result.stdout, '')
+        self.assertEquals(result.returncode, 0)
