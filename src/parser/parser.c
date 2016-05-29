@@ -15,6 +15,7 @@ struct s_ast_node *parser(char *input)
     struct s_ast_node *root = init_ast_node();
     if (!read_input(root, lexer))
         return NULL;
+    lexer_destroy(lexer);
     return root;
 }
 
