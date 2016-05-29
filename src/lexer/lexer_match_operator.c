@@ -130,4 +130,3 @@ bool lexer_match_operator(struct s_lexer *lexer)
     return match_if(lexer) || match_for(lexer) || match_case(lexer)
            || match_while_until(lexer) || match_function(lexer);
 }
-
