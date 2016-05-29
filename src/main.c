@@ -3,12 +3,16 @@
 #include "includes/global.h"
 #include "includes/argument_parser.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     struct options opt = {0, 0, 0, "", "", ""};
     parse_options(argc, argv, &opt, 1);
-   // if (parser(opt.command) == NULL)
-   //     return 1;
-    execute(opt);
+    struct s_lexer *lexer = lexer_init(opt.command);
+    lexer_process(lexer);
+    struct s_ast_node *root = parser(lexer);
+    if (root == NULL)
+        return 1;
+    execute(opt, root, lexer);
     return 0;
 }
 

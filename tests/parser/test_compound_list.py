@@ -50,3 +50,35 @@ class TestCompoundList(unittest.TestCase):
             self.lib.read_compound_list(
                 node,
                 self.init_and_process_lexer(b'myword')))
+
+    def test_06_or_node_attributes(self):
+        node = self.lib.init_ast_node()
+        self.lib.read_compound_list(node, self.init_and_process_lexer(b'word1; word2'))
+        list_node_1 = node.data.s_list_node
+        and_or_1 = list_node_1.left.data.s_and_or_node
+        command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(list_node_1.type, self.lib.ND_OR)
+        self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'word1')
+        list_node_2 = list_node_1.right.data.s_list_node
+        and_or_2 = list_node_2.left.data.s_and_or_node
+        command_2 = and_or_2.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(list_node_2.type, self.lib.ND_LIST_NONE)
+        self.assertEqual(self.ffi.string(command_2.elements[0].data.word), b'word2')
+
+    def test_07_and_node_attributes(self):
+        node = self.lib.init_ast_node()
+        self.lib.read_compound_list(node, self.init_and_process_lexer(b'word1 & word2'))
+        list_node_1 = node.data.s_list_node
+        and_or_1 = list_node_1.left.data.s_and_or_node
+        command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(list_node_1.type, self.lib.ND_AND)
+        self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'word1')
+        list_node_2 = list_node_1.right.data.s_list_node
+        and_or_2 = list_node_2.left.data.s_and_or_node
+        command_2 = and_or_2.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(list_node_2.type, self.lib.ND_LIST_NONE)
+        self.assertEqual(self.ffi.string(command_2.elements[0].data.word), b'word2')

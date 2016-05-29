@@ -5,16 +5,6 @@
 #include <util.h>
 #include <execute.h>
 
-int is_command(char *name)
-{
-    if (strcmp(name, "-v") == 0 || strcmp(name, "--version") == 0
-        || strcmp(name, "-c") == 0
-        || strcmp(name, "--command") == 0 || strcmp(name, "--norc") == 0
-        || strcmp(name, "--ast-print") == 0)
-        return 1;
-    else
-        return 0;
-}
 
 int parse_command(char **argv, int i, struct options *options1)
 {
@@ -80,6 +70,25 @@ void parse_file(struct options *options)
 
 }
 
+int shopt_parse(struct options *options, int i, char** argv)
+{
+    char *name = argv[i + 1];
+
+    if (strcmp(name, "ast_print") == 0 || strcmp(name, "dotglob") == 0
+        || strcmp(name, "expand_aliases") == 0
+        || strcmp(name, "extglob") == 0 || strcmp(name, "nocaseglob") == 0
+        || strcmp(name, "nullglob") == 0 || strcmp(name, "sourcepath") == 0
+        || strcmp(name, "xpg_echo") == 0)
+    {
+        options->shopt_operation = (argv[i][0] == '+' ? 1 : -1);
+        i++;
+        options->shopt_option = argv[i];
+        return i;
+    }
+    else
+        exit(2);
+}
+
 void parse_small_options(int argc, char **argv, struct options *options,
                          int start)
 {
@@ -97,12 +106,8 @@ void parse_small_options(int argc, char **argv, struct options *options,
         else if (strcmp(argv[i], "-c") == 0)
             i = parse_command(argv, i, options);
         else if ((argv[i][0] == '-' || argv[i][0] == '+')
-                 && argv[i][1] == '0')
-        {
-            options->shopt_operation = (argv[i][0] == '+' ? 1 : -1);
-            i++;
-            options->shopt_option = argv[i];
-        }
+                 && argv[i][1] == 'O')
+            i = shopt_parse(options, i, argv);
         else if (argv[i][0] == '-' && argv[i][1] == '-') // long option
             parse_long_option(argv, options, i);
         else if (i == argc - 1)

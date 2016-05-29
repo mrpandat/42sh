@@ -1,6 +1,7 @@
 #include <execute.h>
 #include <util.h>
 #include <sys/stat.h>
+#include <lexer.h>
 
 int file_test(char *name)
 {
@@ -22,32 +23,21 @@ int file_test(char *name)
     return res;
 }
 
-void children(char *prog, char **arguments, struct options opt)
-{
-    int res = file_test(prog);
-    if (res != 0)
-    {
-        free(arguments);
-        free(prog);
-        if (strcmp(opt.file, "") != 0)
-            free(opt.command);
-        exit(res);
-    }
-    execve(prog, arguments, NULL);
-}
 
-void not_found(char *name, char **arguments, struct options opt)
+void not_found(char *name, char **arguments, struct options opt,
+               struct s_ast_node *root, struct s_lexer *lexer)
 {
     int res = file_test(name);
     if (res == 127)
     {
-        char *message = str_append("/bin/sh: 1: ", name);
-        char *message1 = str_append(message, ": not found");
+        char *message = str_append("/bin/sh: ", name);
+        char *message1 = str_append(message, ": command not found");
         fprintf(stderr, "%s\n", message1);
 
         if (strcmp(opt.file, "") != 0)
             free(opt.command);
-
+        free_ast_node(root);
+        lexer_destroy(lexer);
         free(message);
         free(message1);
         free(name);
@@ -56,27 +46,29 @@ void not_found(char *name, char **arguments, struct options opt)
     }
 }
 
-int execute(struct options opt)
+int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer)
 {
     char **arguments = NULL;
     char *prog = NULL;
     if (strcmp(opt.command, "") != 0)
     {
         prog = args_from_str(opt.command, &arguments);
-        not_found(prog, arguments, opt);
+        not_found(prog, arguments, opt, root, lexer);
         int pid = fork();
         if (pid == 0)
-            children(prog, arguments, opt);
+            execve(prog, arguments, NULL);
         if (strcmp(opt.file, "") != 0)
             free(opt.command);
         free(arguments);
         free(prog);
+        free_ast_node(root);
+        lexer_destroy(lexer);
     }
     return 0;
 }
 
 /*
- *  A && B && C sense : ==>
+ *  A && B && C sens : ==>
  *  A | B | C sens : <==
  *  A | B | c sens : pipe puis le &&
  */
