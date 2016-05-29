@@ -62,6 +62,6 @@ class TestPipeline(unittest.TestCase):
         command1 = pipe.commands[0].data.s_command_node.content.data.s_simple_command_node
         self.assertEqual(self.ffi.string(command1.elements[0].data.word),
                          b'word1')
-        command2 = pipe.commands[0].data.s_command_node.content.data.s_simple_command_node
+        command2 = pipe.commands[1].data.s_command_node.content.data.s_simple_command_node
         self.assertEqual(self.ffi.string(command2.elements[0].data.word),
                          b'word2')
