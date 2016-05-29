@@ -54,4 +54,5 @@ class TestCaseItem(unittest.TestCase):
         self.assertEqual(b'word1', self.ffi.string(case_node.items[0].words[0]))
         self.assertEqual(b'word2', self.ffi.string(case_node.items[0].words[1]))
         self.assertEqual(b'word3', self.ffi.string(case_node.items[0].words[2]))
+        self.assertEqual(3, case_node.items[0].nb_words)
 
