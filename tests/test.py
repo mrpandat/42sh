@@ -1,10 +1,10 @@
 import os
 import sys
 import unittest
+import time
+
 from my_test_runner import MyTestRunner
 from static.colors import bcolors
-
-import time
 from fun import *
 from test_functions import *
 

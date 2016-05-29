@@ -39,6 +39,7 @@ def get_source_all_files(path):
 def execute_cmd_cmp(cmd):
     result = execute_cmd('../42sh -c \"' + cmd + '\"')
     ref = execute_cmd(cmd)
+    ref.stdout = ref.stdout.replace("/bin/sh", "42sh")
     if ref.stdout == result.stdout and ref.stderr == result.stderr and ref.returncode == result.returncode:
         return 0
     print("--> " + bcolors.FAIL + "FAILURE")
@@ -46,6 +47,7 @@ def execute_cmd_cmp(cmd):
     print("stdout: \"" + ref.stdout + "\" returncode: " + str(ref.returncode) + " stderr: \"" + ref.stderr.strip(
         "\n") + "\"")
     print("got:", end=" ")
-    print("stdout: \"" + result.stdout + "\" returncode: " + str(result.returncode) + " stderr: \"" + result.stderr.strip(
-        "\n") + "\"" + bcolors.ENDC)
+    print(
+        "stdout: \"" + result.stdout + "\" returncode: " + str(result.returncode) + " stderr: \"" + result.stderr.strip(
+            "\n") + "\"" + bcolors.ENDC)
     return 1
