@@ -98,6 +98,3 @@ bool lexer_match_dquote(struct s_lexer *lexer)
     }
     return false;
 }
-
-
-
