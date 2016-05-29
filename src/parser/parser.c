@@ -127,10 +127,10 @@ bool read_case_item(struct s_case_node *node, struct s_lexer *l)
         lexer_read(l);
     if (lexer_peek(l)->type != TK_WORD)
         return false;
-    lexer_read(l);
     struct s_case_item_node *item = init_case_item_node();
     add_case_item(node, item);
     add_case_item_word(item, lexer_peek(l)->value);
+    lexer_read(l);
     while (lexer_peek(l)->type == TK_OR)
     {
         if (lexer_read(l)->type != TK_WORD)
@@ -248,6 +248,7 @@ bool read_prefix(struct s_element_node *element, struct s_lexer *l)
     }
     else
     {
+        element->type = EL_REDIRECTION;
         element->data.s_redirection_node = init_redirection_node();
         if (read_redirection(element->data.s_redirection_node, l))
             return true;
@@ -270,6 +271,7 @@ bool read_element(struct s_element_node *element, struct s_lexer *l)
     }
     else
     {
+        element->type = EL_REDIRECTION;
         element->data.s_redirection_node = init_redirection_node();
         if (read_redirection(element->data.s_redirection_node, l))
             return true;

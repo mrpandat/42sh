@@ -111,3 +111,23 @@ class TestRedirection(unittest.TestCase):
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 > 2')))
+
+    def test_18_no_ionumber(self):
+        self.assertTrue(
+            self.lib.read_redirection(
+                self.lib.init_redirection_node(),
+                self.init_and_process_lexer(b'> myword')))
+
+    def test_18_node_attributes(self):
+        element_node = self.lib.init_element_node()
+        self.lib.read_element(element_node,
+                              self.init_and_process_lexer(b'1 > myword'))
+        self.assertEqual(b'1',
+                         self.ffi.string(
+                             element_node.data.s_redirection_node.io_number))
+        self.assertEqual(b'>',
+                         self.ffi.string(
+                             element_node.data.s_redirection_node.type))
+        self.assertEqual(b'myword',
+                         self.ffi.string(
+                             element_node.data.s_redirection_node.word))

@@ -32,11 +32,11 @@ class TestShellCommand(unittest.TestCase):
         node = self.lib.init_ast_node()
         command = b'function myword if a then b fi'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_funcdec(node, clexer))
+        self.assertFalse(self.lib.read_funcdec(node, clexer))
 
-    def test_04_no_pars_no_funcdec_word(self):
+    def test_04_no_pars_no_function_word(self):
         node = self.lib.init_ast_node()
-        command = b'myword if a then b fi'
+        command = b'myword() if a then b fi'
         clexer = self.init_and_process_lexer(command)
         self.assertTrue(self.lib.read_funcdec(node, clexer))
 
