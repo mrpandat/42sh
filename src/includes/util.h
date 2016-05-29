@@ -1,14 +1,56 @@
+/**
+ ** @file util.h
+ ** @brief General functions which are used in all kind of scenarios
+ ** in the project
+ ** @author Moisan L, Lees M
+ */
+
 #ifndef INC_42SH_UTIL_H
 #define INC_42SH_UTIL_H
 
+
+/**
+ ** @fn void handle_action(char *action, struct list *lst)
+ ** @brief appends two strings together
+ ** @param string 1
+ ** @param string 2
+ ** @return the resulting string
+ */
 char *str_append(char *str_one, char *str_two);
+
+/**
+ ** @fn char *args_from_str(char *str, char ***arguments)
+ ** @brief extracts words from a string
+ ** @param string to extract the words from
+ ** @param array of string containing the words
+ ** @return the first word
+ */
+char *args_from_str(char *str, char ***arguments);
+
+/**
+ ** @fn char *file_to_str(FILE *file)
+ ** @brief reads a whole file in an str
+ ** @param File to read from
+ ** @return the red string
+ */
+char *file_to_str(FILE *file);
+
+/**
+ ** @fn char *path_to_str(char *file)
+ ** @brief reads a whole file in an str
+ ** @param path of the files to read from
+ ** @return the red string
+ */
+char *path_to_str(char *file);
+
+
+/**
+ ** @fn test()
+ ** @brief Used to debug some functions and the testsuite
+ ** @return always 1
+ */
 
 int test();
 
-char *args_from_str(char *str, char ***arguments);
-
-char *file_to_str(FILE *file);
-
-char *path_to_str(char *file);
 
 #endif
