@@ -61,3 +61,44 @@ class TestIfRule(unittest.TestCase):
         command = b'if a then b else else c fi'
         clexer = self.init_and_process_lexer(command)
         self.assertFalse(self.lib.read_rule_if(node, clexer))
+
+    def test_08_if_then_else_node_attributes(self):
+        node = self.lib.init_ast_node()
+        command = b'if a then b else c fi'
+        clexer = self.init_and_process_lexer(command)
+        self.lib.read_rule_if(node, clexer)
+        if_node = node.data.s_if_node
+        list_node_1 = if_node.predicate.data.s_list_node
+        and_or_1 = list_node_1.left.data.s_and_or_node
+        command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'a')
+        list_node_2 = if_node.true_statement.data.s_list_node
+        and_or_2 = list_node_2.left.data.s_and_or_node
+        command_2 = and_or_2.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(self.ffi.string(command_2.elements[0].data.word), b'b')
+        list_node_3 = if_node.false_statement.data.s_list_node
+        and_or_3 = list_node_3.left.data.s_and_or_node
+        command_3 = and_or_3.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(self.ffi.string(command_3.elements[0].data.word), b'c')
+
+    def test_09_if_then_node_attributes(self):
+        node = self.lib.init_ast_node()
+        command = b'if a then b fi'
+        clexer = self.init_and_process_lexer(command)
+        self.lib.read_rule_if(node, clexer)
+        if_node = node.data.s_if_node
+        list_node_1 = if_node.predicate.data.s_list_node
+        and_or_1 = list_node_1.left.data.s_and_or_node
+        command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'a')
+        list_node_2 = if_node.true_statement.data.s_list_node
+        and_or_2 = list_node_2.left.data.s_and_or_node
+        command_2 = and_or_2.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(self.ffi.string(command_2.elements[0].data.word), b'b')
+        self.assertEqual(if_node.false_statement, self.ffi.NULL)
+

@@ -1,3 +1,4 @@
+#include <ast.h>
 #include "../includes/ast.h"
 #include "../includes/parser.h"
 
@@ -34,12 +35,14 @@ bool read_rule_if(struct s_ast_node *node, struct s_lexer *l)
     if (lexer_peek(l)->type == TK_ELIF)
     {
         lexer_read(l);
+        node->data.s_if_node->false_statement = init_ast_node();
         if (!read_rule_if(node->data.s_if_node->false_statement, l))
             return false;
     }
     else if (lexer_peek(l)->type == TK_ELSE)
     {
         lexer_read(l);
+        node->data.s_if_node->false_statement = init_ast_node();
         if (!read_compound_list(node->data.s_if_node->false_statement, l))
             return false;
     }
@@ -198,6 +201,7 @@ bool read_redirection(struct s_redirection_node *redirection, struct s_lexer *l)
     if (lexer_peek(l)->type != TK_HEREDOC && lexer_peek(l)->type != TK_WORD)
         return false;
     redirection->word = lexer_peek(l)->value;
+    lexer_read(l);
     return true;
 }
 
@@ -398,6 +402,7 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
     read_newlines(l);
     node->type = ND_LIST;
     struct s_list_node *list = init_list_node();
+    node->data.s_list_node = list;
     if (!read_and_or(list->left, l))
         return false;
     if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_SEMI
@@ -405,7 +410,7 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
     {
         if (lexer_peek(l)->type == TK_AND)
             list->type = ND_AND;
-        else if (lexer_peek(l)->type == TK_SEMI)
+        else
             list->type = ND_OR;
         lexer_read(l);
         read_newlines(l);
