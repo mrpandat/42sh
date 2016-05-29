@@ -29,8 +29,8 @@ void not_found(char *name, char **arguments, struct options opt
     int res = file_test(name);
     if (res == 127)
     {
-        char *message = str_append("/bin/sh: 1: ", name);
-        char *message1 = str_append(message, ": not found");
+        char *message = str_append("/bin/sh: ", name);
+        char *message1 = str_append(message, ": command not found");
         fprintf(stderr, "%s\n", message1);
 
         if (strcmp(opt.file, "") != 0)
@@ -65,7 +65,7 @@ int execute(struct options opt, struct s_ast_node *root)
 }
 
 /*
- *  A && B && C sense : ==>
+ *  A && B && C sens : ==>
  *  A | B | C sens : <==
  *  A | B | c sens : pipe puis le &&
  */
