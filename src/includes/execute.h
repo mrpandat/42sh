@@ -1,14 +1,14 @@
 /**
- ** @file execute.h
- ** @brief Functions related to the execution part
- ** @author Moisan L, Lees M
- */
+** @file execute.h
+** @brief Functions related to the execution part
+** @author Moisan L, Lees M
+*/
 
 
 #ifndef INC_42SH_EXECUTE_H
-#define INC_42SH_EXECUTE_H
+# define INC_42SH_EXECUTE_H
 
-#include "argument_parser.h"
+# include "argument_parser.h"
 #include "../includes/global.h"
 #include "../includes/lexer.h"
 #include "ast.h"
