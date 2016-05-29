@@ -3,6 +3,7 @@ from cffi import FFI
 import os
 from test_functions import *
 
+
 class TestCaseItem(unittest.TestCase):
     def __init__(self, arg):
         unittest.TestCase.__init__(self, arg)
@@ -45,4 +46,12 @@ class TestCaseItem(unittest.TestCase):
         case_node = self.lib.init_case_node(b'mycase')
         self.assertTrue(self.lib.read_case_item(
             case_node, self.init_and_process_lexer(b'(myword|myword|myword)')))
+
+    def test_07_node_words(self):
+        command = b'(word1|word2|word3) myword || myword & myword'
+        case_node = self.lib.init_case_node(b'mycase')
+        self.lib.read_case_item(case_node, self.init_and_process_lexer(command))
+        self.assertEqual(b'word1', self.ffi.string(case_node.items[0].words[0]))
+        self.assertEqual(b'word2', self.ffi.string(case_node.items[0].words[1]))
+        self.assertEqual(b'word3', self.ffi.string(case_node.items[0].words[2]))
 

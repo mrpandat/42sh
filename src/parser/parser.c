@@ -127,10 +127,10 @@ bool read_case_item(struct s_case_node *node, struct s_lexer *l)
         lexer_read(l);
     if (lexer_peek(l)->type != TK_WORD)
         return false;
-    lexer_read(l);
     struct s_case_item_node *item = init_case_item_node();
     add_case_item(node, item);
     add_case_item_word(item, lexer_peek(l)->value);
+    lexer_read(l);
     while (lexer_peek(l)->type == TK_OR)
     {
         if (lexer_read(l)->type != TK_WORD)
