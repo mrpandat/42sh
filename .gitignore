@@ -167,4 +167,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # Custom files
-/src/lexer/lexer_utils.c
+vgcore*
