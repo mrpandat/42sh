@@ -12,7 +12,11 @@ struct s_ast_node *parser(struct s_lexer *lexer)
 {
     struct s_ast_node *root = init_ast_node();
     if (!read_input(root, lexer))
+    {
+        free_ast_node(root);
+        lexer_destroy(lexer);
         return NULL;
+    }
     return root;
 }
 
