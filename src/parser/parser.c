@@ -15,6 +15,7 @@ struct s_ast_node *parser(char *input)
     struct s_ast_node *root = init_ast_node();
     if (!read_input(root, lexer))
         return NULL;
+    lexer_destroy(lexer);
     return root;
 }
 
@@ -235,6 +236,7 @@ bool read_funcdec(struct s_ast_node *node, struct s_lexer *l)
         return false;
     struct s_funcdec_node *funcdec_node =
             init_funcdec_node(lexer_peek(l)->value);
+    node->data.s_funcdec_node = funcdec_node;
     if (lexer_read(l)->type != TK_LPAR || lexer_read(l)->type != TK_RPAR)
         return false;
     lexer_read(l);
