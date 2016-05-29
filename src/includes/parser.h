@@ -5,7 +5,7 @@
 # include "../includes/lexer.h"
 # include "../includes/global.h"
 
-struct s_ast_node *parser(char *command);
+struct s_ast_node *parser(struct s_lexer *lexer);
 bool read_input(struct s_ast_node *node, struct s_lexer *l);
 bool read_list(struct s_ast_node *node, struct s_lexer *l);
 bool read_and_or(struct s_ast_node *node, struct s_lexer *l);

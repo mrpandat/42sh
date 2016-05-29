@@ -3,7 +3,7 @@
 
 struct s_ast_node *init_ast_node(void)
 {
-    return malloc(sizeof (struct s_ast_node));
+    return calloc(1, sizeof (struct s_ast_node));
 }
 
 struct s_if_node *init_if_node(void)

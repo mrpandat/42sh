@@ -10,6 +10,7 @@
 
 #include "argument_parser.h"
 #include "../includes/global.h"
+#include "../includes/lexer.h"
 #include "ast.h"
 
 /**
@@ -18,7 +19,7 @@
  ** @param the option structure corresponding to the command
  ** @return the result code
  */
-int execute(struct options opt, struct s_ast_node *root);
+int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer);
 
 /**
  ** @fn int file_test(char *name);

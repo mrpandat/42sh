@@ -7,10 +7,12 @@ int main(int argc, char *argv[])
 {
     struct options opt = {0, 0, 0, "", "", ""};
     parse_options(argc, argv, &opt, 1);
-    struct s_ast_node *root = parser(opt.command);
+    struct s_lexer *lexer = lexer_init(opt.command);
+    lexer_process(lexer);
+    struct s_ast_node *root = parser(lexer);
     if (root == NULL)
         return 1;
-    execute(opt, root);
+    execute(opt, root, lexer);
     return 0;
 }
 
