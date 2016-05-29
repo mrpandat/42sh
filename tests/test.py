@@ -9,7 +9,8 @@ from fun import *
 from test_functions import *
 
 nb_fail = 0
-
+mtimeout = 300
+begin = time.time()
 
 class MyTestResult(unittest.TestResult):
     def addFailure(self, test, err):
@@ -35,18 +36,20 @@ class MyTestResult(unittest.TestResult):
 
 def launch_test(test_name):
     print()
+    print()
     print((" Launching " + test_name + " tests ").center(80, '*'))
     print()
     # test_suite = unittest.TestLoader().discover('./' + test_name)
     # MyTestRunner(verbosity=3, resultclass=MyTestResult).run(test_suite, a)
     for test in [os.path.join(test_name, fn) for fn in next(os.walk(test_name))[2]]:
         if "test_" in test:
-            a = time.time();
+            a = time.time()
             test = test.replace("/", ".").replace(".py", "")
             print(test)
             my_test = unittest.TestLoader().loadTestsFromName(test)
-            MyTestRunner(verbosity=3, resultclass=MyTestResult).run(my_test, a)
-
+            if not MyTestRunner(verbosity=3, resultclass=MyTestResult).run(my_test, a,begin, mtimeout):
+                print("Timeout...")
+                exit(1)
 
 
 def launch_sanity_test():
@@ -87,12 +90,28 @@ if __name__ == "__main__":
 
     categorie = ["utils", "lexer", "parser", "execute", "binary"]
     sys.argv[0] = ""
-    for arg in sys.argv:
+    loop = enumerate(sys.argv)
+    skip = False
+    for id, arg in loop:
+        if skip:
+            skip = False
+            continue
         if arg == "":
             continue
-        elif arg == "-l" or arg == "--list":
+        if arg == "-l" or arg == "--list":
             print(', '.join(categorie))
             exit(0)
+        elif arg == "-t" or arg == "--timeout":
+            if len(sys.argv) < id + 1:
+                print("Missing operator after " + arg)
+                exit(1)
+            try:
+                mtimeout = float(sys.argv[id + 1])
+            except ValueError:
+                print("Error: " + sys.argv[id + 1] + " is not a number")
+                exit(1)
+            skip = True
+            continue
         elif arg == "-s" or arg == "--sanity":
             launch_sanity_test()
             print_nyan()
