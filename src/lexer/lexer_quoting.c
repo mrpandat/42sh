@@ -61,7 +61,7 @@ bool lexer_match_quote(struct s_lexer *lexer)
         lexer->current += (strlen(val) + 1);
         return true;
     }
-
+    free(val);
     return false;
 }
 
