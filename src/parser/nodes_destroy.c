@@ -79,8 +79,6 @@ void free_case_node(struct s_case_node *node)
             free_case_item_node(node->items[i]);
         free(node->items);
     }
-    //if (node->word != NULL)
-    //    free(node->word);
     free(node);
 }
 
@@ -95,8 +93,6 @@ void free_case_item_node(struct s_case_item_node *node)
             free(node->words[i]);
         free(node->words);
     }
-    //if (node->statement != NULL)
-    //    free_ast_node(node->statement);
     free(node);
 }
 
@@ -104,10 +100,6 @@ void free_for_node(struct s_for_node *node)
 {
     if (node == NULL)
         return;
-//    if (node->iterator != NULL)
-//        free(node->iterator);
-//    for (int i = 0; i < node->nb_words; i++)
-//        free(node->words[i]);
     if (node->do_group != NULL)
         free_ast_node(node->do_group);
     free(node);
@@ -117,12 +109,6 @@ void free_redirection_node(struct s_redirection_node *node)
 {
     if (node == NULL)
         return;
-//    if (node->io_number != NULL)
-//        free(node->io_number);
-//    if (node->type != NULL)
-//        free(node->type);
-//    if (node->word != NULL)
-//        free(node->word);
     free(node);
 }
 
@@ -130,8 +116,6 @@ void free_funcdec_node(struct s_funcdec_node *node)
 {
     if (node == NULL)
         return;
-//    if (node->name != NULL)
-//        free(node->name);
     if (node->shell_command != NULL)
         free_ast_node(node->shell_command);
     free(node);
@@ -200,10 +184,6 @@ void free_element_node(struct s_element_node *node)
 {
     if (node == NULL)
         return;
-//    else if (node->type == EL_WORD)
-//        free(node->data.word);
-//    else if (node->type == EL_ASSIGNEMENT_WORD)
-//        free(node->data.assignement_word);
     else if (node->type == EL_REDIRECTION)
         free_redirection_node(node->data.s_redirection_node);
     free(node);

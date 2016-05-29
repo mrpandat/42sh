@@ -1,7 +1,7 @@
 /**
  ** @file execute.h
  ** @brief Functions related to the execution part
- ** @author Moisan L, Lees M
+ ** @author Lees M
  */
 
 
