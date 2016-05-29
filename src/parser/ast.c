@@ -9,7 +9,7 @@ struct s_ast_node *init_ast_node(void)
 struct s_if_node *init_if_node(void)
 {
     struct s_if_node *node = malloc(sizeof (struct s_if_node *));
-    node->false_statement = init_ast_node();
+    node->false_statement = NULL;
     node->true_statement = init_ast_node();
     node->predicate = init_ast_node();
     return node;

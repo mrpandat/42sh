@@ -35,12 +35,14 @@ bool read_rule_if(struct s_ast_node *node, struct s_lexer *l)
     if (lexer_peek(l)->type == TK_ELIF)
     {
         lexer_read(l);
+        node->data.s_if_node->false_statement = init_ast_node();
         if (!read_rule_if(node->data.s_if_node->false_statement, l))
             return false;
     }
     else if (lexer_peek(l)->type == TK_ELSE)
     {
         lexer_read(l);
+        node->data.s_if_node->false_statement = init_ast_node();
         if (!read_compound_list(node->data.s_if_node->false_statement, l))
             return false;
     }
