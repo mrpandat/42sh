@@ -30,3 +30,28 @@ class TestElement(unittest.TestCase):
         element_node = self.lib.init_element_node()
         self.assertFalse(self.lib.read_element(
             element_node, self.init_and_process_lexer(b'(myword)')))
+
+    def test_04_word_node_attributes(self):
+        element_node = self.lib.init_element_node()
+        self.lib.read_element(element_node,
+                              self.init_and_process_lexer(b'myword'))
+        self.assertEqual(self.lib.EL_WORD, element_node.type)
+        self.assertEqual(b'myword',
+                         self.ffi.string(element_node.data.word))
+
+    def test_05_redirection_node_attributes(self):
+        element_node = self.lib.init_element_node()
+        self.lib.read_element(element_node,
+                              self.init_and_process_lexer(b'1 > myword'))
+        self.assertEqual(self.lib.EL_REDIRECTION, element_node.type)
+        self.assertEqual(b'1',
+                         self.ffi.string(
+                             element_node.data.s_redirection_node.io_number))
+        self.assertEqual(b'>',
+                         self.ffi.string(
+                             element_node.data.s_redirection_node.type))
+        self.assertEqual(b'myword',
+                         self.ffi.string(
+                             element_node.data.s_redirection_node.word))
+
+

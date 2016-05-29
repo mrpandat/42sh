@@ -248,6 +248,7 @@ bool read_prefix(struct s_element_node *element, struct s_lexer *l)
     }
     else
     {
+        element->type = EL_REDIRECTION;
         element->data.s_redirection_node = init_redirection_node();
         if (read_redirection(element->data.s_redirection_node, l))
             return true;
@@ -270,6 +271,7 @@ bool read_element(struct s_element_node *element, struct s_lexer *l)
     }
     else
     {
+        element->type = EL_REDIRECTION;
         element->data.s_redirection_node = init_redirection_node();
         if (read_redirection(element->data.s_redirection_node, l))
             return true;
