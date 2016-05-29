@@ -1,6 +1,7 @@
 #include <execute.h>
 #include <util.h>
 #include <sys/stat.h>
+#include <lexer.h>
 
 int file_test(char *name)
 {
@@ -23,8 +24,8 @@ int file_test(char *name)
 }
 
 
-void not_found(char *name, char **arguments, struct options opt
-        , struct s_ast_node *root)
+void not_found(char *name, char **arguments, struct options opt,
+               struct s_ast_node *root, struct s_lexer *lexer)
 {
     int res = file_test(name);
     if (res == 127)
@@ -36,6 +37,7 @@ void not_found(char *name, char **arguments, struct options opt
         if (strcmp(opt.file, "") != 0)
             free(opt.command);
         free_ast_node(root);
+        lexer_destroy(lexer);
         free(message);
         free(message1);
         free(name);
@@ -44,14 +46,14 @@ void not_found(char *name, char **arguments, struct options opt
     }
 }
 
-int execute(struct options opt, struct s_ast_node *root)
+int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer)
 {
     char **arguments = NULL;
     char *prog = NULL;
     if (strcmp(opt.command, "") != 0)
     {
         prog = args_from_str(opt.command, &arguments);
-        not_found(prog, arguments, opt, root);
+        not_found(prog, arguments, opt, root, lexer);
         int pid = fork();
         if (pid == 0)
             execve(prog, arguments, NULL);
@@ -60,6 +62,7 @@ int execute(struct options opt, struct s_ast_node *root)
         free(arguments);
         free(prog);
         free_ast_node(root);
+        lexer_destroy(lexer);
     }
     return 0;
 }

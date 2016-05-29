@@ -51,3 +51,17 @@ class TestCommand(unittest.TestCase):
         command = b'while variable do shit don'
         clexer = self.init_and_process_lexer(command)
         self.assertFalse(self.lib.read_command(node, clexer))
+
+    def test_07_node_attributes(self):
+        node = self.lib.init_ast_node()
+        command = b'myfunction() if a then b fi > output'
+        clexer = self.init_and_process_lexer(command)
+        self.lib.read_command(node, clexer)
+        command = node.data.s_command_node
+        funcdec = command.content.data.s_funcdec_node
+        self.assertEqual(self.ffi.string(funcdec.name), b'myfunction')
+        self.assertEqual(command.nb_redirections, 1)
+        redirection = command.redirections[0]
+        self.assertEqual(redirection.io_number, self.ffi.NULL)
+        self.assertEqual(self.ffi.string(redirection.type), b'>')
+        self.assertEqual(self.ffi.string(redirection.word), b'output')

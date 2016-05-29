@@ -8,14 +8,11 @@ void read_newlines(struct s_lexer *lexer)
         lexer_read(lexer);
 }
 
-struct s_ast_node *parser(char *input)
+struct s_ast_node *parser(struct s_lexer *lexer)
 {
-    struct s_lexer *lexer = lexer_init(input);
-    lexer_process(lexer);
     struct s_ast_node *root = init_ast_node();
     if (!read_input(root, lexer))
         return NULL;
-    lexer_destroy(lexer);
     return root;
 }
 
@@ -48,7 +45,10 @@ bool read_rule_if(struct s_ast_node *node, struct s_lexer *l)
             return false;
     }
     if (lexer_peek(l)->type == TK_FI)
+    {
+        lexer_read(l);
         return true;
+    }
     else
         return false;
 }
@@ -122,6 +122,7 @@ bool read_rule_case(struct s_ast_node *node, struct s_lexer *l)
     }
     if (lexer_peek(l)->type != TK_ESAC)
         return false;
+    lexer_read(l);
     return true;
 }
 
@@ -232,7 +233,10 @@ bool read_funcdec(struct s_ast_node *node, struct s_lexer *l)
     node->type = ND_FUNCDEC;
     if (lexer_peek(l)->type == TK_FUNCTION)
         lexer_read(l);
-    if (lexer_peek(l)->type != TK_WORD)
+    if (lexer_peek(l)->type != TK_WORD || lexer_peek(l)->next == NULL
+        || lexer_peek(l)->next->type != TK_LPAR
+        || lexer_peek(l)->next->next == NULL
+        || lexer_peek(l)->next->next->type != TK_RPAR)
         return false;
     struct s_funcdec_node *funcdec_node =
             init_funcdec_node(lexer_peek(l)->value);
@@ -260,7 +264,8 @@ bool read_prefix(struct s_element_node *element, struct s_lexer *l)
             return true;
         else
         {
-            free(element->data.s_redirection_node);
+            element->type = EL_NONE;
+            free_redirection_node(element->data.s_redirection_node);
             return false;
         }
     }
@@ -283,7 +288,8 @@ bool read_element(struct s_element_node *element, struct s_lexer *l)
             return true;
         else
         {
-            free(element->data.s_redirection_node);
+            element->type = EL_NONE;
+            free_redirection_node(element->data.s_redirection_node);
             return false;
         }
     }
@@ -308,6 +314,7 @@ bool read_simple_command(struct s_ast_node *node, struct s_lexer *l)
         element = init_element_node();
         ret = true;
     }
+    free_element_node(element);
     return ret;
 }
 
@@ -316,8 +323,6 @@ bool read_command(struct s_ast_node *node, struct s_lexer *l)
     node->type = ND_COMMAND;
     struct s_command_node *command = init_command_node();
     node->data.s_command_node = command;
-    if (read_simple_command(command->content, l))
-        return true;
     if (read_shell_command(command->content, l)
         || read_funcdec(command->content, l))
     {
@@ -330,6 +335,8 @@ bool read_command(struct s_ast_node *node, struct s_lexer *l)
         free(redirection);
         return true;
     }
+    if (read_simple_command(command->content, l))
+        return true;
     return false;
 }
 
@@ -372,7 +379,8 @@ bool read_and_or(struct s_ast_node *node, struct s_lexer *l)
         and_or->right = init_ast_node();
         if (!read_and_or(and_or->right, l))
         {
-            free(and_or->right);
+            and_or->type = ND_IF_NONE;
+            //free_ast_node(and_or->right);
             return false;
         }
     }
@@ -394,7 +402,8 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
             list->type = ND_OR;
         lexer_read(l);
         list->right = init_ast_node();
-        read_list(list->right, l);
+        if (!read_list(list->right, l))
+            free_ast_node(list->right);
     }
     return true;
 }
