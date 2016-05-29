@@ -41,10 +41,11 @@ def launch_test(test_name):
     # MyTestRunner(verbosity=3, resultclass=MyTestResult).run(test_suite, a)
     for test in [os.path.join(test_name, fn) for fn in next(os.walk(test_name))[2]]:
         if "test_" in test:
+            a = time.time();
             test = test.replace("/", ".").replace(".py", "")
             print(test)
             my_test = unittest.TestLoader().loadTestsFromName(test)
-            MyTestRunner(verbosity=3, resultclass=MyTestResult).run(my_test, time.time())
+            MyTestRunner(verbosity=3, resultclass=MyTestResult).run(my_test, a)
 
 
 
@@ -94,6 +95,7 @@ if __name__ == "__main__":
             exit(0)
         elif arg == "-s" or arg == "--sanity":
             launch_sanity_test()
+            print_nyan()
             exit(0)
         elif arg == "-c":
             if "utils" in sys.argv:
