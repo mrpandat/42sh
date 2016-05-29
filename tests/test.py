@@ -1,8 +1,10 @@
 import os
 import sys
 import unittest
+from my_test_runner import MyTestRunner
 from static.colors import bcolors
 
+import time
 from fun import *
 from test_functions import *
 
@@ -35,21 +37,27 @@ def launch_test(test_name):
     print()
     print((" Launching " + test_name + " tests ").center(80, '*'))
     print()
-    testsuite = unittest.TestLoader().discover('./' + test_name)
-    unittest.TextTestRunner(verbosity=3, resultclass=MyTestResult) \
-        .run(testsuite)
+    # test_suite = unittest.TestLoader().discover('./' + test_name)
+    # MyTestRunner(verbosity=3, resultclass=MyTestResult).run(test_suite, a)
+    for test in [os.path.join(test_name, fn) for fn in next(os.walk(test_name))[2]]:
+        if "test_" in test:
+            test = test.replace("/", ".").replace(".py", "")
+            print(test)
+            my_test = unittest.TestLoader().loadTestsFromName(test)
+            MyTestRunner(verbosity=3, resultclass=MyTestResult).run(my_test, time.time())
+
 
 
 def launch_sanity_test():
     print()
-    print((" Launching sanity tests ").center(80, '*'))
+    print(" Launching sanity tests ".center(80, '*'))
     print()
     for file in [os.path.join("binary/scripts", fn) for fn in next(os.walk("binary/scripts"))[2]]:
         if file.endswith(".sh"):
             res = execute_cmd("valgrind ../42sh " + file)
 
             if "All heap blocks were freed -- no leaks are possible" in res.stderr:
-                print("--> " + bcolors.OKGREEN + "SANITY OK ON FILE " + file + bcolors.ENDC, end=" ")
+                print("--> " + bcolors.OKGREEN + "SANITY OK ON FILE " + file + bcolors.ENDC)
             else:
                 print("--> " + bcolors.FAIL + "INSAIN FILE " + file + bcolors.ENDC)
                 global nb_fail
