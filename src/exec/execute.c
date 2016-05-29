@@ -36,6 +36,22 @@ void children(char *prog, char **arguments, struct options opt)
     execve(prog, arguments, NULL);
 }
 
+void not_found(char *name, char **arguments)
+{
+    int res = file_test(name);
+    if (res == 127)
+    {
+        char *message = str_append("/bin/sh: 1: ", name);
+        char *message1 = str_append(message, ": not found");
+        fprintf(stderr, "%s\n", message1);
+        free(message);
+        free(message1);
+        free(name);
+        free(arguments);
+        exit(res);
+    }
+}
+
 int execute(struct options opt)
 {
     char **arguments = NULL;
@@ -43,9 +59,7 @@ int execute(struct options opt)
     if (strcmp(opt.command, "") != 0)
     {
         prog = args_from_str(opt.command, &arguments);
-        int res = file_test(prog);
-        if (res != 0)
-            exit(res);
+        not_found(prog, arguments);
         int pid = fork();
         if (pid == 0)
             children(prog, arguments, opt);
