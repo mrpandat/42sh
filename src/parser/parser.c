@@ -198,6 +198,7 @@ bool read_redirection(struct s_redirection_node *redirection, struct s_lexer *l)
     if (lexer_peek(l)->type != TK_HEREDOC && lexer_peek(l)->type != TK_WORD)
         return false;
     redirection->word = lexer_peek(l)->value;
+    lexer_read(l);
     return true;
 }
 

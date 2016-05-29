@@ -71,15 +71,15 @@ class TestSimpleCommand(unittest.TestCase):
             b'word1')
         self.assertEqual(command.elements[1].type, self.lib.EL_REDIRECTION)
         self.assertEqual(command.elements[1].data.s_redirection_node.io_number,
-                         None)
+                         self.ffi.NULL)
         self.assertEqual(
             self.ffi.string(command.elements[1].data.s_redirection_node.type),
-            self.ffi.string(b'<'))
+            b'<')
         self.assertEqual(
             self.ffi.string(command.elements[1].data.s_redirection_node.word),
-            self.ffi.string(b'word2'))
+            b'word2')
         self.assertEqual(command.elements[2].type, self.lib.EL_WORD)
-        self.assertEqual(self.ffi.string(command.elements[2].word),
-                         self.ffi.string(b'word3'))
+        self.assertEqual(self.ffi.string(command.elements[2].data.word),
+                         b'word3')
 
 
