@@ -1,1 +1,1 @@
-#!/usr/bin/env bash
+nonexistant arg1 arg2
