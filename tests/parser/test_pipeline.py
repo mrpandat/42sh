@@ -51,3 +51,17 @@ class TestPipeline(unittest.TestCase):
                 node,
                 self.init_and_process_lexer(b'myword | | myword')))
 
+    def test_06_node_attributes(self):
+        node = self.lib.init_ast_node()
+        self.lib.read_pipeline(
+            node,
+            self.init_and_process_lexer(b'! word1 | word2'))
+        pipe = node.data.s_pipeline_node
+        self.assertTrue(pipe.banged)
+        self.assertEqual(pipe.nb_commands, 2)
+        command1 = pipe.commands[0].data.s_command_node.content.data.s_simple_command_node
+        self.assertEqual(self.ffi.string(command1.elements[0].data.word),
+                         b'word1')
+        command2 = pipe.commands[0].data.s_command_node.content.data.s_simple_command_node
+        self.assertEqual(self.ffi.string(command2.elements[0].data.word),
+                         b'word2')
