@@ -22,21 +22,9 @@ int file_test(char *name)
     return res;
 }
 
-void children(char *prog, char **arguments, struct options opt)
-{
-    int res = file_test(prog);
-    if (res != 0)
-    {
-        free(arguments);
-        free(prog);
-        if (strcmp(opt.file, "") != 0)
-            free(opt.command);
-        exit(res);
-    }
-    execve(prog, arguments, NULL);
-}
 
-void not_found(char *name, char **arguments, struct options opt)
+void not_found(char *name, char **arguments, struct options opt
+        , struct s_ast_node *root)
 {
     int res = file_test(name);
     if (res == 127)
@@ -47,7 +35,7 @@ void not_found(char *name, char **arguments, struct options opt)
 
         if (strcmp(opt.file, "") != 0)
             free(opt.command);
-
+        free_ast_node(root);
         free(message);
         free(message1);
         free(name);
@@ -56,21 +44,22 @@ void not_found(char *name, char **arguments, struct options opt)
     }
 }
 
-int execute(struct options opt)
+int execute(struct options opt, struct s_ast_node *root)
 {
     char **arguments = NULL;
     char *prog = NULL;
     if (strcmp(opt.command, "") != 0)
     {
         prog = args_from_str(opt.command, &arguments);
-        not_found(prog, arguments, opt);
+        not_found(prog, arguments, opt, root);
         int pid = fork();
         if (pid == 0)
-            children(prog, arguments, opt);
+            execve(prog, arguments, NULL);
         if (strcmp(opt.file, "") != 0)
             free(opt.command);
         free(arguments);
         free(prog);
+        free_ast_node(root);
     }
     return 0;
 }
