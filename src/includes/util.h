@@ -10,8 +10,8 @@
 
 
 /**
- ** @fn void handle_action(char *action, struct list *lst)
- ** @brief appends two strings together
+ ** @fn str_append(char *str_one, char *str_two)
+ ** @brief appends two strings togethen, struct list *lst)r
  ** @param string 1
  ** @param string 2
  ** @return the resulting string

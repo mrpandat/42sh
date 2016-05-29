@@ -9,15 +9,21 @@
 #define INC_42SH_ARGUMENT_PARSER_H
 
 #include <global.h>
-
+/**
+ ** @struct options
+ ** @brief The option structure
+ **
+ ** @details This contains all the options that might have been passed
+ **          to the binary
+ */
 struct options
 {
-    int norc;
-    int ast_print;
-    int shopt_operation;
-    char *command;
-    char *shopt_option;
-    char *file;
+    int norc; /*!< Set to 1 if norc is specified, 0 otherwise */
+    int ast_print; /*!< Set to 1 if we want to print the ast, 0 otherwise */
+    int shopt_operation; /*!< set to 1 if the operation is a + -1 if it's a -*/
+    char *command;/*!< command to be executed */
+    char *shopt_option;/*!< the shopt option to add or remove */
+    char *file;/*!< The script file path */
 };
 
 /**
