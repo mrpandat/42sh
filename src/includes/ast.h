@@ -130,8 +130,6 @@ enum e_node_type
 {
     ND_NONE,
     ND_IF,
-    ND_WORD,
-    ND_PREDICATE,
     ND_COMMAND,
     ND_WHILE,
     ND_UNTIL,
@@ -152,8 +150,6 @@ struct s_ast_node
     union
     {
         struct s_if_node *s_if_node;
-        struct s_word_node *s_word_node;
-        struct s_predicate_node *s_predicate_node;
         struct s_command_node *s_command_node;
         struct s_while_node *s_while_node;
         struct s_until_node *s_until_node;
@@ -193,6 +189,22 @@ void add_pipeline_command(struct s_pipeline_node *pipeline,
                           struct s_ast_node *command);
 struct s_and_or_node *init_and_or_node(void);
 struct s_list_node *init_list_node(void);
+
+void free_ast_node(struct s_ast_node* node);
+void free_if_node(struct s_if_node *node);
+void free_while_node(struct s_while_node *node);
+void free_until_node(struct s_until_node *node);
+void free_case_node(struct s_case_node *node);
+void free_case_item_node(struct s_case_item_node *node);
+void free_for_node(struct s_for_node *node);
+void free_redirection_node(struct s_redirection_node *node);
+void free_funcdec_node(struct s_funcdec_node *node);
+void free_simple_command_node(struct s_simple_command_node *node);
+void free_element_node(struct s_element_node *node);
+void free_command_node(struct s_command_node *node);
+void free_pipeline_node(struct s_pipeline_node *node);
+void free_and_or_node(struct s_and_or_node *node);
+void free_list_node(struct s_list_node *node);
 
 
 
