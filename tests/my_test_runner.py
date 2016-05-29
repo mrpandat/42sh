@@ -5,7 +5,6 @@ import unittest
 
 
 class MyTestRunner(unittest.TextTestRunner):
-
     def run(self, test, startTime):
         "Run the given test case or test suite."
         result = self._makeResult()

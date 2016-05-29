@@ -37,9 +37,15 @@ def launch_test(test_name):
     print()
     print((" Launching " + test_name + " tests ").center(80, '*'))
     print()
-    a = time.time()
-    test_suite = unittest.TestLoader().discover('./' + test_name)
-    MyTestRunner(verbosity=3, resultclass=MyTestResult).run(test_suite, a)
+    # test_suite = unittest.TestLoader().discover('./' + test_name)
+    # MyTestRunner(verbosity=3, resultclass=MyTestResult).run(test_suite, a)
+    for test in [os.path.join(test_name, fn) for fn in next(os.walk(test_name))[2]]:
+        if "test_" in test:
+            test = test.replace("/", ".").replace(".py", "")
+            print(test)
+            my_test = unittest.TestLoader().loadTestsFromName(test)
+            MyTestRunner(verbosity=3, resultclass=MyTestResult).run(my_test, time.time())
+
 
 
 def launch_sanity_test():
