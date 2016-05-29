@@ -1,3 +1,9 @@
+/**
+ ** @file parser.h
+ ** @brief Functions related to the parser part
+ ** @author Moisan L
+ */
+
 #ifndef PARSER_H
 # define PARSER_H
 
@@ -5,7 +11,21 @@
 # include "../includes/lexer.h"
 # include "../includes/global.h"
 
+/**
+ ** @fn struct s_ast_node *parser(struct s_lexer *lexer)
+ ** @brief Construct an AST tree using tokens from the lexer
+ ** @param the lexer that handle the input commands
+ ** @return the root of the AST tree, or NULL if the grammar was bad
+ */
 struct s_ast_node *parser(struct s_lexer *lexer);
+
+/**
+ ** @fn bool read_input(struct s_ast_node *node, struct s_lexer *l)
+ ** @brief Read commands and construct an AST tree
+ ** @param the root node
+ ** @param the lexer that handle the tokens
+ ** @return true if the grammar was good, false if it was bad
+ */
 bool read_input(struct s_ast_node *node, struct s_lexer *l);
 bool read_list(struct s_ast_node *node, struct s_lexer *l);
 bool read_and_or(struct s_ast_node *node, struct s_lexer *l);

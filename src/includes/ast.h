@@ -1,3 +1,9 @@
+/**
+ ** @file ast.h
+ ** @brief Functions related to the AST part
+ ** @author Moisan L
+ */
+
 #ifndef INC_42SH_AST_H
 #define INC_42SH_AST_H
 
@@ -144,9 +150,16 @@ enum e_node_type
     ND_LIST
 };
 
+/**
+ ** @struct s_ast_node
+ ** @brief The generic ast node
+ **
+ ** @details This contains the type of the node (if_node, command_node...)
+ **          and an union containing the data of the node
+ */
 struct s_ast_node
 {
-    enum e_node_type type;
+    enum e_node_type type; /*!< Type of the node */
     union
     {
         struct s_if_node *s_if_node;
@@ -162,7 +175,7 @@ struct s_ast_node
         struct s_pipeline_node *s_pipeline_node;
         struct s_and_or_node *s_and_or_node;
         struct s_list_node *s_list_node;
-    } data;
+    } data; /*!< Data of the node */
 };
 
 struct s_ast_node* init_ast_node(void);

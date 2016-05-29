@@ -1,3 +1,10 @@
+/*! \mainpage 42sh
+ **
+ ** 42sh is a shell
+ **
+ ** By Treibert Jean, Domingues Thomas, Lucas Moisan and Martin Lees.
+ */
+
 #ifndef INC_42SH_GLOBAL_H
 #define INC_42SH_GLOBAL_H
 
