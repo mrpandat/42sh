@@ -5,7 +5,7 @@ import unittest
 
 
 class MyTestRunner(unittest.TextTestRunner):
-    def run(self, test, startTime):
+    def run(self, test, startTime,begin, timeout):
         "Run the given test case or test suite."
         result = self._makeResult()
         result.failfast = self.failfast
@@ -20,8 +20,12 @@ class MyTestRunner(unittest.TextTestRunner):
                                             message='Please use assert\w+ instead.')
             startTestRun = getattr(result, 'startTestRun', None)
             if startTestRun is not None:
+                if time.time() - begin > timeout:
+                    return False
                 startTestRun()
             try:
+                if time.time() - begin > timeout:
+                    return False
                 test(result)
             finally:
                 stopTestRun = getattr(result, 'stopTestRun', None)
@@ -67,4 +71,4 @@ class MyTestRunner(unittest.TextTestRunner):
             self.stream.writeln(" (%s)" % (", ".join(infos),))
         else:
             self.stream.write("\n")
-        return result
+        return True
