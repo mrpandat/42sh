@@ -50,7 +50,7 @@ void parse_long_option(char **argv, struct options *options, int i)
         char *compare = "--version";
         ok = match(compare, argv[i]);
         if (ok == 1)
-            print_exit(0, "Version 0.5", stdout);
+            print_exit(0, "Version 0.8", stdout);
     }
     if (ok == 0)
         fprintf(stderr, "unknown long option : %s\n", argv[i]);
@@ -99,7 +99,7 @@ void parse_small_options(int argc, char **argv, struct options *options,
             options->ast_print = 1;
         else if (strcmp(argv[i], "-v") == 0
                  || strcmp(argv[i], "--version") == 0)
-            print_exit(0, "Version 0.5", stdout);
+            print_exit(0, "Version 0.8", stdout);
         else if (strcmp(argv[i], "-h") == 0)
             print_exit(0, "42sh [ GNU long options ] [ options ] [ file ]",
                        stdout);

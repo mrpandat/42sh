@@ -10,17 +10,17 @@ class TestBinary(unittest.TestCase):
 
     def test_02_index(self):
         result = execute_cmd('../42sh -v')
-        self.assertEqual(result.stdout, "Version 0.5\n")
+        self.assertEqual(result.stdout, "Version 0.8\n")
         self.assertEquals(result.returncode, 0)
 
     def test_03_expandable_options(self):
         result = execute_cmd('../42sh --ver')
-        self.assertEqual(result.stdout, "Version 0.5\n")
+        self.assertEqual(result.stdout, "Version 0.8\n")
         self.assertEquals(result.returncode, 0)
 
     def test_04_long_options(self):
         result = execute_cmd('../42sh --version')
-        self.assertEqual(result.stdout, "Version 0.5\n")
+        self.assertEqual(result.stdout, "Version 0.8\n")
         self.assertEquals(result.returncode, 0)
 
     def test_05_help(self):
