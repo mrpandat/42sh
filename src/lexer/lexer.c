@@ -110,7 +110,8 @@ void lexer_destroy(struct s_lexer *lexer)
         {
             struct s_lexer_token *curr = token;
             token = token->next;
-            free(curr->value);
+            if (curr->type == TK_WORD || curr->type == TK_EOF)
+                free(curr->value);
             free(curr);
         }
     }
