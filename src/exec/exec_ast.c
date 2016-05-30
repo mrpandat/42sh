@@ -30,7 +30,7 @@ int exec_ast_node(struct s_ast_node* node)
     else if (type == ND_AND_OR)
         return exec_and_or_node(node->data.s_and_or_node);
     else if (type == ND_LIST)
-        exec_list_node(node->data.s_list_node);
+        return exec_list_node(node->data.s_list_node);
     return -1;
 }
 int exec_if_node(struct s_if_node *node)
