@@ -11,6 +11,7 @@ from test_functions import *
 nb_fail = 0
 mtimeout = 300
 begin = time.time()
+resume_errors = ""
 
 
 class MyTestResult(unittest.TestResult):
@@ -20,6 +21,9 @@ class MyTestResult(unittest.TestResult):
         print(str(err[1]) + bcolors.ENDC)
         global nb_fail
         nb_fail += 1
+        global resume_errors
+        resume_errors += ("--> " + bcolors.FAIL + "FAILURE on " + str(test) +
+                          "\n" + bcolors.ENDC)
 
     def addSuccess(self, test):
         print("--> " + bcolors.OKGREEN + "PASSED" + bcolors.ENDC, end=" ")
@@ -40,8 +44,6 @@ def launch_test(test_name):
     print()
     print((" Launching " + test_name + " tests ").center(80, '*'))
     print()
-    # test_suite = unittest.TestLoader().discover('./' + test_name)
-    # MyTestRunner(verbosity=3, resultclass=MyTestResult).run(test_suite, a)
     for test in [os.path.join(test_name, fn) for fn in
                  next(os.walk(test_name))[2]]:
         if "test_" in test:
@@ -71,9 +73,13 @@ def launch_sanity_test():
                     "--> " + bcolors.OKGREEN + "SANITY OK ON FILE " + file + bcolors.ENDC)
             else:
                 print(
-                    "--> " + bcolors.FAIL + "INSAIN FILE " + file + bcolors.ENDC)
+                    "--> " + bcolors.FAIL + "UNSAIN FILE " + file +
+                    bcolors.ENDC)
                 global nb_fail
                 nb_fail += 1
+                global resume_errors
+                resume_errors += ("--> " + bcolors.FAIL + "UNSAIN FILE " +
+                                  file + "\n" + bcolors.ENDC)
 
 
 def launch_all():
@@ -91,6 +97,12 @@ def print_nyan():
         print_colored("./static/nyan")
     else:
         print_file("./static/spider", bcolors.OKBLUE)
+        global resume_errors
+
+        print()
+        print(" ERROR  RESUME ".center(80, '*'))
+        print()
+        print(resume_errors)
 
 
 if __name__ == "__main__":
