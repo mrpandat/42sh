@@ -106,9 +106,9 @@ struct s_pipeline_node
 
 enum e_and_or_type
 {
-    ND_IF_NONE,
-    ND_AND_IF,
-    ND_OR_IF
+    ANDOR_NONE,
+    ANDOR_AND,
+    ANDOR_OR
 };
 
 struct s_and_or_node
@@ -120,9 +120,9 @@ struct s_and_or_node
 
 enum e_list_type
 {
-    ND_AND,
-    ND_OR,
-    ND_LIST_NONE
+    LIST_NONE,
+    LIST_AND,
+    LIST_SEMI
 };
 
 struct s_list_node

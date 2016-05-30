@@ -1,4 +1,3 @@
-#include <ast.h>
 #include "../includes/ast.h"
 #include "../includes/parser.h"
 
@@ -375,16 +374,15 @@ bool read_and_or(struct s_ast_node *node, struct s_lexer *l)
     if (lexer_peek(l)->type == TK_AND_IF || lexer_peek(l)->type == TK_OR_IF)
     {
         if (lexer_peek(l)->type == TK_AND_IF)
-            and_or->type = ND_AND_IF;
+            and_or->type = ANDOR_AND;
         else
-            and_or->type = ND_OR_IF;
+            and_or->type = ANDOR_OR;
         lexer_read(l);
         read_newlines(l);
         and_or->right = init_ast_node();
         if (!read_and_or(and_or->right, l))
         {
-            and_or->type = ND_IF_NONE;
-            //free_ast_node(and_or->right);
+            and_or->type = ANDOR_NONE;
             return false;
         }
     }
@@ -401,13 +399,13 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
     if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_SEMI)
     {
         if (lexer_peek(l)->type == TK_AND)
-            list->type = ND_AND;
+            list->type = LIST_AND;
         else
-            list->type = ND_OR;
+            list->type = LIST_SEMI;
         lexer_read(l);
         list->right = init_ast_node();
         if (!read_list(list->right, l))
-            free_ast_node(list->right);
+            list->type = LIST_NONE;
     }
     return true;
 }
@@ -424,9 +422,9 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
         || lexer_peek(l)->type == TK_NEWLINE)
     {
         if (lexer_peek(l)->type == TK_AND)
-            list->type = ND_AND;
+            list->type = LIST_AND;
         else
-            list->type = ND_OR;
+            list->type = LIST_SEMI;
         lexer_read(l);
         read_newlines(l);
         list->right = init_ast_node();

@@ -166,7 +166,7 @@ void add_pipeline_command(struct s_pipeline_node *pipeline,
 struct s_and_or_node *init_and_or_node(void)
 {
     struct s_and_or_node *node = malloc(sizeof (struct s_and_or_node));
-    node->type = ND_IF_NONE;
+    node->type = ANDOR_NONE;
     node->left = init_ast_node();
     node->right = NULL;
     return node;
@@ -175,7 +175,7 @@ struct s_and_or_node *init_and_or_node(void)
 struct s_list_node *init_list_node(void)
 {
     struct s_list_node *node = malloc(sizeof (struct s_list_node));
-    node->type = ND_LIST_NONE;
+    node->type = LIST_NONE;
     node->left = init_ast_node();
     node->right = NULL;
     return node;
