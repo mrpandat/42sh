@@ -15,6 +15,7 @@ __pycache__
 
 # Generated doc
 doc/doxygen
+doc/
 
 # Vagrant configuration
 Vagrantfile

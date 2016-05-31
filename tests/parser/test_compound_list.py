@@ -58,13 +58,13 @@ class TestCompoundList(unittest.TestCase):
         and_or_1 = list_node_1.left.data.s_and_or_node
         command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
-        self.assertEqual(list_node_1.type, self.lib.ND_OR)
+        self.assertEqual(list_node_1.type, self.lib.LIST_SEMI)
         self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'word1')
         list_node_2 = list_node_1.right.data.s_list_node
         and_or_2 = list_node_2.left.data.s_and_or_node
         command_2 = and_or_2.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
-        self.assertEqual(list_node_2.type, self.lib.ND_LIST_NONE)
+        self.assertEqual(list_node_2.type, self.lib.LIST_NONE)
         self.assertEqual(self.ffi.string(command_2.elements[0].data.word), b'word2')
 
     def test_07_and_node_attributes(self):
@@ -74,11 +74,11 @@ class TestCompoundList(unittest.TestCase):
         and_or_1 = list_node_1.left.data.s_and_or_node
         command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
-        self.assertEqual(list_node_1.type, self.lib.ND_AND)
+        self.assertEqual(list_node_1.type, self.lib.LIST_AND)
         self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'word1')
         list_node_2 = list_node_1.right.data.s_list_node
         and_or_2 = list_node_2.left.data.s_and_or_node
         command_2 = and_or_2.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
-        self.assertEqual(list_node_2.type, self.lib.ND_LIST_NONE)
+        self.assertEqual(list_node_2.type, self.lib.LIST_NONE)
         self.assertEqual(self.ffi.string(command_2.elements[0].data.word), b'word2')
