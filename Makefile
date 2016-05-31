@@ -5,6 +5,7 @@ RM += -r
 clean:
 	$(RM) build
 	$(RM) doc/doxygen
+	$(RM) doc/report
 	$(RM) 42sh
 
 .PHONY : doc
@@ -20,6 +21,7 @@ compile:
 	$(MAKE) -C build all
 
 check:
+	$(RM) doc/report
 	$(MAKE) -C build all
 	$(MAKE) -C build check
 

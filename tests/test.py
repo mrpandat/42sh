@@ -2,6 +2,9 @@ import os
 import sys
 import time
 import unittest
+import plotly.plotly as py
+from plotly.graph_objs import *
+import plotly.graph_objs as go
 
 from fun import *
 from my_test_runner import MyTestRunner
@@ -9,9 +12,13 @@ from static.colors import bcolors
 from test_functions import *
 
 nb_fail = 0
+nb_success = 0
+nb_errors = 0
 mtimeout = 300
 begin = time.time()
 resume_errors = ""
+resume_time_x = []
+resume_time_y = []
 
 
 class MyTestResult(unittest.TestResult):
@@ -28,14 +35,16 @@ class MyTestResult(unittest.TestResult):
     def addSuccess(self, test):
         print("--> " + bcolors.OKGREEN + "PASSED" + bcolors.ENDC, end=" ")
         print(test)
+        global nb_success
+        nb_success += 1
         unittest.TestResult.addSuccess(self, test)
 
     def addError(self, test, err):
         print("--> " + bcolors.WARNING + "ERROR " + bcolors.ENDC, end=" ")
         print(test)
         print(str(err[1]) + bcolors.ENDC)
-        global nb_fail
-        nb_fail += 1
+        global nb_errors
+        nb_errors += 1
         unittest.TestResult.addError(self, test, err)
 
 
@@ -55,6 +64,11 @@ def launch_test(test_name):
                     my_test, a, begin, mtimeout):
                 print("Timeout...")
                 exit(1)
+            else:
+                global resume_time_y
+                resume_time_y.append(time.time() - a)
+                global resume_time_x
+                resume_time_x.append(len(resume_time_x))
 
 
 def launch_sanity_test():
@@ -105,6 +119,33 @@ def print_nyan():
         print(resume_errors)
 
 
+def tracegraph():
+    fig = {
+        'data': [{'labels': ['Errors', 'Failures', 'Success'],
+                  'values': [nb_errors, nb_fail, nb_success],
+                  'type': 'pie'}],
+        'layout': {'title': 'Testsuit errors report'}
+    }
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+    pwd = execute_cmd("pwd")
+    py.image.save_as(fig, pwd.stdout.rstrip() + '/../doc/report/report_errors.png')
+
+    trace = go.Scatter(
+        x=resume_time_x,
+        y=resume_time_y,
+        mode='lines',
+        name='lines'
+    )
+    fig = {
+        'data': [trace],
+        'layout': {'title': 'Testsuit speed report',
+                   'xaxis': dict(title = 'Tests run'),
+                   'yaxis': dict(title = 'Speed in seconds')
+                   }
+    }
+    py.image.save_as(fig, pwd.stdout.rstrip() + '/../doc/report/report_speed.png')
+    print("Reports created in doc/report")
+
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
@@ -148,9 +189,11 @@ if __name__ == "__main__":
             elif "binary" in sys.argv:
                 launch_test("binary")
             print_nyan()
+            tracegraph()
             exit(0)
         else:
             print("Unknow option : " + arg)
             exit(1)
     launch_all()
     print_nyan()
+    tracegraph()

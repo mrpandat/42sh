@@ -42,7 +42,7 @@ add_library(my42sh SHARED
 )
 
 add_custom_target(check
-        COMMAND python3 ../tests/test.py
+        COMMAND mkdir ../doc/report && python3 ../tests/test.py
         )
 
 add_custom_target(doc
