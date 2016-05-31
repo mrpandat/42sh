@@ -133,9 +133,18 @@ int exec_list_node(struct s_list_node *node)
     }
     else if (node->type == LIST_AND)
     {
-        // TODO: Execute both commands simultaneously
-        exec_ast_node(node->left);
-        return exec_ast_node(node->right);
+        int pid = fork();
+        if (pid == 0)
+        {
+            exec_ast_node(node->right);
+            return 0;
+        }
+        else
+        {
+            exec_ast_node(node->left);
+            wait(NULL);
+            return 0;
+        }
     }
     else if (node->type == LIST_NONE)
         return exec_ast_node(node->left);

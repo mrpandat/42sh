@@ -9,9 +9,9 @@
 # define INC_42SH_EXECUTE_H
 
 # include "argument_parser.h"
-#include "global.h"
-#include "lexer.h"
-#include "ast.h"
+# include "global.h"
+# include "lexer.h"
+# include "ast.h"
 
 /**
  ** @fn int execute(struct options opt)
