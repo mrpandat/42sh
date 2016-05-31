@@ -1,7 +1,9 @@
 #include <parser.h>
+#include <sys/wait.h>
 #include "includes/execute.h"
 #include "includes/global.h"
 #include "includes/argument_parser.h"
+
 
 int main(int argc, char *argv[])
 {
