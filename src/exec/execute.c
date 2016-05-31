@@ -2,10 +2,19 @@
 #include <util.h>
 #include <sys/stat.h>
 #include <lexer.h>
+#include <sys/wait.h>
+
+int is_builtin(char *name) // add others when necessary
+{
+    if (strcmp(name, "exit") == 0)
+        return 1;
+    return 0;
+}
+
 
 int file_test(char *name)
 {
-    struct stat *stats = malloc(sizeof (struct stat));
+    struct stat *stats = malloc(sizeof(struct stat));
     int res = 0;
     if (stat(name, stats) > -1)
     {
@@ -46,6 +55,7 @@ void not_found(char *name, char **arguments, struct options opt,
     }
 }
 
+
 int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer)
 {
     char **arguments = NULL;
@@ -65,6 +75,13 @@ int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer)
         lexer_destroy(lexer);
     }
     return 0;
+}
+
+int get_children_exit_status(int pid)
+{
+    int status = 0;
+    waitpid(pid, &status, 0);
+    return WEXITSTATUS(status);
 }
 
 /*

@@ -29,4 +29,7 @@ int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer);
  */
 int file_test(char *name);
 
+
+int get_children_exit_status(int pid);
+
 #endif //INC_42SH_EXECUTE_H
