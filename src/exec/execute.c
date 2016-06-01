@@ -58,26 +58,17 @@ void not_found(char *name, char **arguments, struct options opt,
 
 int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer)
 {
-    char **arguments = NULL;
-    char *prog = NULL;
+    int ret = 0;
+
     if (strcmp(opt.command, "") != 0)
-    {
-        prog = args_from_str(opt.command, &arguments);
-        not_found(prog, arguments, opt, root, lexer);
-        int pid = fork();
-        if (pid == 0)
-            execve(prog, arguments, NULL);
-    }
+        ret = exec_ast_node(root);
 
     if (strcmp(opt.file, "") != 0)
         free(opt.command);
-    free(arguments);
-    free(prog);
+
     free_ast_node(root);
     lexer_destroy(lexer);
-
-
-    return 0;
+    return ret;
 }
 
 int get_children_exit_status(int pid)
