@@ -14,7 +14,6 @@ int main(int argc, char *argv[])
     struct s_ast_node *root = parser(lexer);
     if (root == NULL)
         return 1;
-    execute(opt, root, lexer);
-    return 0;
+    return execute(opt, root, lexer);
 }
 
