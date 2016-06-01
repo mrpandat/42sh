@@ -51,3 +51,22 @@ class TestCommand(unittest.TestCase):
         command = b'myword ||| myword; myword || myword &'
         clexer = self.init_and_process_lexer(command)
         self.assertFalse(self.lib.read_list(node, clexer))
+
+    def test_07_node_attributes(self):
+        node = self.lib.init_ast_node()
+        command = b'word1; word2'
+        clexer = self.init_and_process_lexer(command)
+        self.lib.read_list(node, clexer)
+        self.assertTrue(node.type, self.lib.ND_LIST)
+        list_node_1 = node.data.s_list_node
+        and_or_1 = list_node_1.left.data.s_and_or_node
+        command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(list_node_1.type, self.lib.LIST_SEMI)
+        self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'word1')
+        list_node_2 = list_node_1.right.data.s_list_node
+        and_or_2 = list_node_2.left.data.s_and_or_node
+        command_2 = and_or_2.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(list_node_2.type, self.lib.LIST_NONE)
+        self.assertEqual(self.ffi.string(command_2.elements[0].data.word), b'word2')
