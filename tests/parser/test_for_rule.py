@@ -39,3 +39,21 @@ class TestForRule(unittest.TestCase):
         command = b'for variable in one two three\ndo shit done'
         clexer = self.init_and_process_lexer(command)
         self.assertTrue(self.lib.read_rule_for(node, clexer))
+
+    def test_05_node_attributes(self):
+        node = self.lib.init_ast_node()
+        command = b'for variable in one two three\ndo shit done'
+        clexer = self.init_and_process_lexer(command)
+        self.lib.read_rule_for(node, clexer)
+        self.assertEqual(node.type, self.lib.ND_FOR)
+        for_node = node.data.s_for_node
+        self.assertEqual(self.ffi.string(for_node.iterator), b'variable')
+        self.assertEqual(for_node.nb_words, 3)
+        self.assertEqual(self.ffi.string(for_node.words[0]), b'one')
+        self.assertEqual(self.ffi.string(for_node.words[1]), b'two')
+        self.assertEqual(self.ffi.string(for_node.words[2]), b'three')
+        list_node_1 = for_node.do_group.data.s_list_node
+        and_or_1 = list_node_1.left.data.s_and_or_node
+        command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
+            .s_command_node.content.data.s_simple_command_node
+        self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'shit')
