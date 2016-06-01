@@ -244,16 +244,6 @@ bool lexer_match_arith(struct s_lexer *lexer);
 */
 bool lexer_match_expansion(struct s_lexer *lexer);
 
-/**
-** @fn bool lexer_match_word(struct s_lexer *lexer);
-** @brief If the current value of the command string pointer match to nothing
-**        else, it's a word (command, parameter...), so it creates a token and
-**        put it into the token list.
-** @param The lexer instance.
-** @return true if it matched, false otherwise.
-*/
-bool lexer_match_word(struct s_lexer *lexer);
-
 /* File: lexer_match_operator.c */
 
 /**

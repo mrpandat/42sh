@@ -50,6 +50,9 @@ static bool lexer_read_identifier(struct s_lexer *lexer)
 
 bool lexer_read_word(struct s_lexer *lexer)
 {
+    if (NULL == lexer || NULL == lexer->current || !strlen(lexer->current))
+        return false;
+
     char *begin = lexer->current;
     if (!lexer_read_identifier(lexer))
         return false;
