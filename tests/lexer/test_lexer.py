@@ -205,3 +205,69 @@ class TestLexer(unittest.TestCase):
         self.assertEqual(ctoken.type, self.lib.TK_EOF,
                          '[ERROR]\n\t--expected: TK_EOF\n\t --my: ' +
                          str(ctoken.type))
+
+    def test_07_lexer_match_command_hard(self):
+        # Init lexer
+        clexer = self.lib.lexer_init(b'./brew.sh if /dev/stdio > a.out')
+        self.assertIsNotNone(clexer, '[ERROR] Lexer is NULL')
+
+        # Trigger lexing
+        self.lib.lexer_process(clexer)
+
+        # Check if token list is not null
+        self.assertIsNotNone(clexer.tk_list, '[ERROR] Token list is NULL')
+
+        # Check if current token is not null
+        self.assertIsNotNone(clexer.tk_current, '[ERROR] Current token is NULL')
+
+        # Check if first token type is TK_WORD
+        ctoken = self.lib.lexer_peek(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_WORD,
+                         '[ERROR]\n\t--expected: TK_WORD\n\t --my: ' +
+                         str(ctoken.type))
+
+        self.assertEqual(self.ffi.string(ctoken.value), b'./brew.sh',
+                         '[ERROR]\n\t--expected: ./brew.sh\n\t --my: ' +
+                         str(self.ffi.string(ctoken.value)))
+
+        # Check next tokens
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_IF,
+                         '[ERROR]\n\t--expected: TK_IF\n\t --my: ' +
+                         str(ctoken.type))
+
+        self.assertEqual(self.ffi.string(ctoken.value), b'if',
+                         '[ERROR]\n\t--expected: if\n\t --my: ' +
+                         str(self.ffi.string(ctoken.value)))
+
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_WORD,
+                         '[ERROR]\n\t--expected: TK_WORD\n\t --my: ' +
+                         str(ctoken.type))
+
+        self.assertEqual(self.ffi.string(ctoken.value), b'/dev/stdio',
+                         '[ERROR]\n\t--expected: /dev/stdio\n\t --my: ' +
+                         str(self.ffi.string(ctoken.value)))
+
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_GREAT,
+                         '[ERROR]\n\t--expected: TK_GREAT\n\t --my: ' +
+                         str(ctoken.type))
+
+        self.assertEqual(self.ffi.string(ctoken.value), b'>',
+                         '[ERROR]\n\t--expected: >\n\t --my: ' +
+                         str(self.ffi.string(ctoken.value)))
+
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_WORD,
+                         '[ERROR]\n\t--expected: TK_WORD\n\t --my: ' +
+                         str(ctoken.type))
+
+        self.assertEqual(self.ffi.string(ctoken.value), b'a.out',
+                         '[ERROR]\n\t--expected: a.out\n\t --my: ' +
+                         str(self.ffi.string(ctoken.value)))
+
+        ctoken = self.lib.lexer_read(clexer)
+        self.assertEqual(ctoken.type, self.lib.TK_EOF,
+                         '[ERROR]\n\t--expected: TK_EOF\n\t --my: ' +
+                         str(ctoken.type))
