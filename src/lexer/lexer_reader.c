@@ -32,6 +32,7 @@ static bool lexer_read_identifier(struct s_lexer *lexer)
     if (NULL == lexer || NULL == lexer->current
         || (!lexer_read_range(lexer, 'a', 'z')
             && !lexer_read_range(lexer, 'A', 'Z')
+            && !lexer_read_range(lexer, '0', '9')
             && !lexer_peek_char(lexer, '_')
             && !lexer_peek_char(lexer, '/')
             && !lexer_peek_char(lexer, '.')))
