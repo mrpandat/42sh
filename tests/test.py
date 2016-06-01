@@ -16,6 +16,7 @@ nb_success = 0
 nb_errors = 0
 mtimeout = 300
 begin = time.time()
+resume_failures = ""
 resume_errors = ""
 resume_time_x = []
 resume_time_y = []
@@ -28,8 +29,8 @@ class MyTestResult(unittest.TestResult):
         print(str(err[1]) + bcolors.ENDC)
         global nb_fail
         nb_fail += 1
-        global resume_errors
-        resume_errors += ("--> " + bcolors.FAIL + "FAILURE on " + str(test) +
+        global resume_failures
+        resume_failures += ("--> " + bcolors.FAIL + "FAILURE on " + str(test) +
                           "\n" + bcolors.ENDC)
 
     def addSuccess(self, test):
@@ -45,6 +46,9 @@ class MyTestResult(unittest.TestResult):
         print(str(err[1]) + bcolors.ENDC)
         global nb_errors
         nb_errors += 1
+        global resume_errors
+        resume_errors += ("--> " + bcolors.WARNING + "ERROR on " + str(test) +
+                            "\n" + bcolors.ENDC)
         unittest.TestResult.addError(self, test, err)
 
 
@@ -89,9 +93,9 @@ def launch_sanity_test():
                     bcolors.ENDC)
                 global nb_fail
                 nb_fail += 1
-                global resume_errors
-                resume_errors += ("--> " + bcolors.FAIL + "UNSAIN FILE " +
-                                  file + "\n" + bcolors.ENDC)
+                global resume_failures
+                resume_failures += ("--> " + bcolors.FAIL + "UNSAIN FILE " +
+                                    file + "\n" + bcolors.ENDC)
 
 
 def launch_all():
@@ -105,16 +109,22 @@ def launch_all():
 
 def print_nyan():
     global nb_fail
-    if nb_fail == 0:
+    if nb_fail == 0 and nb_errors == 0:
         print_colored("./static/nyan")
     else:
-        print_file("./static/spider", bcolors.OKBLUE)
-        global resume_errors
-
-        print()
-        print(" ERROR  RESUME ".center(80, '*'))
-        print()
-        print(resume_errors)
+        if nb_fail != 0:
+            print_file("./static/spider", bcolors.OKBLUE)
+            global resume_failures
+            print()
+            print(" FAILURES  RESUME ".center(80, '*'))
+            print()
+            print(resume_failures)
+        if nb_errors != 0:
+            global resume_errors
+            print()
+            print(" ERRORS  RESUME ".center(80, '*'))
+            print()
+            print(resume_errors)
 
 
 def tracegraph():
