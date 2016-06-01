@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import unittest
+import plotly
 import plotly.plotly as py
 from plotly.graph_objs import *
 import plotly.graph_objs as go
@@ -128,7 +129,8 @@ def tracegraph():
     }
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     pwd = execute_cmd("pwd")
-    py.image.save_as(fig, pwd.stdout.rstrip() + '/../doc/report/report_errors.png')
+    plotly.tools.set_credentials_file(username='DemoAccount', api_key='lr1c37zw81')
+    py.image.save_as(fig, "/home/pandat/Documents/workspace/43sh/doc/report/report_errors.png")
 
     trace = go.Scatter(
         x=resume_time_x,
