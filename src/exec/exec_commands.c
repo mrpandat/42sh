@@ -1,4 +1,5 @@
 #include <global.h>
+#include <echo.h>
 #include "../includes/execute.h"
 
 int exec_funcdec_node(struct s_funcdec_node *node)
@@ -29,10 +30,10 @@ char **get_argv(struct s_simple_command_node *node,
     return arguments;
 }
 
-int exec_simple_command_node(struct s_simple_command_node *node)
+int exec_file(struct s_simple_command_node *node)
 {
     char *prog =  malloc(sizeof (char) *
-                                 strlen(node->elements[0]->data.word) + 1);
+                         strlen(node->elements[0]->data.word) + 1);
     char **arguments = get_argv(node, &prog);
     int res = file_test(prog);
     if (res == 0)
@@ -47,6 +48,25 @@ int exec_simple_command_node(struct s_simple_command_node *node)
     free(arguments);
     free(prog);
     return res;
+}
+
+int exec_builtin(struct s_simple_command_node *node)
+{
+    if (!strcmp("echo", node->elements[0]->data.word))
+    {
+        printf("je suis dans exec_command.c, décommente le code sous moi  :)"
+                       "\n");
+        //return my_echo(node);
+    }
+    return 1;
+}
+
+int exec_simple_command_node(struct s_simple_command_node *node)
+{
+    if (is_builtin(node->elements[0]->data.word) == 1)
+        return exec_builtin(node);
+    else
+        return exec_file(node);
 }
 
 int exec_command_node(struct s_command_node *node)
