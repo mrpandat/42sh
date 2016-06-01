@@ -77,11 +77,6 @@ class TestBinary(unittest.TestCase):
         self.assertEqual(result.stdout, '')
         self.assertEquals(result.returncode, 0)
 
-    def test_17_Lexer_utf(self):
-        result = execute_cmd('../42sh -c "/bin/echo utéeffehuit"')
-        self.assertEqual(result.stdout, 'utéeffehuit')
-        self.assertEquals(result.returncode, 0)
-
     def test_18_Lexer_dot(self):
         result = execute_cmd('../42sh -c "/bin/echo ."')
         self.assertEqual(result.stdout, '.')
