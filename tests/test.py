@@ -137,7 +137,7 @@ def tracegraph():
                   'type': 'pie'}],
         'layout': {'title': 'Testsuit errors report'}
     }
-    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+    # os.chdir(os.path.dirname(os.path.realpath(__file__)))
     pwd = execute_cmd("pwd")
     plotly.tools.set_credentials_file(username='DemoAccount',
                                       api_key='lr1c37zw81')
