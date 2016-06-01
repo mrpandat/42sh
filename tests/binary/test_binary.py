@@ -91,3 +91,7 @@ class TestBinary(unittest.TestCase):
         result = execute_cmd('../42sh -c "/bin/echo ="')
         self.assertEqual(result.stdout, '=')
         self.assertEquals(result.returncode, 0)
+    def test_20_spchars(self):
+        result = execute_cmd('../42sh -c "/bin/echo $£êàèéç£$ù%*µ#_"')
+        self.assertEqual(result.stdout, '$£êàèéç£$ù%*µ#_')
+        self.assertEquals(result.returncode, 0)
