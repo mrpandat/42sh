@@ -1,5 +1,4 @@
 #include <global.h>
-#include <echo.h>
 #include "../includes/execute.h"
 
 int exec_funcdec_node(struct s_funcdec_node *node)
