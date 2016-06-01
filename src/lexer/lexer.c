@@ -77,7 +77,7 @@ bool lexer_match_expr(struct s_lexer *lexer)
            || lexer_match_arith(lexer)
            || lexer_match_expansion(lexer)
            || lexer_match_operator(lexer)
-           || lexer_match_word(lexer);
+           || lexer_read_word(lexer);
 }
 
 void lexer_process(struct s_lexer *lexer)
