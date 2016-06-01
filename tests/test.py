@@ -129,6 +129,7 @@ def print_nyan():
 
 
 def tracegraph():
+    print("Generating reports...")
     a = execute_cmd("pwd")
     fig = {
         'data': [{'labels': ['Errors', 'Failures', 'Success'],
