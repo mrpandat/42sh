@@ -77,17 +77,22 @@ class TestBinary(unittest.TestCase):
         self.assertEqual(result.stdout, '')
         self.assertEquals(result.returncode, 0)
 
-    def test_17_lexer_chars(self):
-        result = execute_cmd('../42sh -c "/bin/echo % *+,-./0123456789=?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_abcdefghijklmnopqrstuvwxyz\{\|\}\~\:\;\(\)"')
-        self.assertEqual(result.stdout, '% *+,-./0123456789=?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_abcdefghijklmnopqrstuvwxyz\{\|\}\~\:\;\(\)\n')
+    def test_17_lexer_chars_simple(self):
+        result = execute_cmd('../42sh -c "/bin/echo % *+,-./0123456789=?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_abcdefghijklmnopqrstuvwxyz"')
+        self.assertEqual(result.stdout, '% *+,-./0123456789=?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_abcdefghijklmnopqrstuvwxyz\n')
         self.assertEquals(result.returncode, 0)
 
-    def test_18_Lexer_dot(self):
+    def test_18_lexer_chars_hard(self):
+        result = execute_cmd('../42sh -c "/bin/echo \{\|\}\~\:\;\(\)\"\'"')
+        self.assertEqual(result.stdout, '{|}~:;()"\'\n')
+        self.assertEquals(result.returncode, 0)
+
+    def test_19_Lexer_dot(self):
         result = execute_cmd('../42sh -c "/bin/echo ."')
         self.assertEqual(result.stdout, '.\n')
         self.assertEquals(result.returncode, 0)
 
-    def test_19_Lexer_equals(self):
+    def test_20_Lexer_equals(self):
         result = execute_cmd('../42sh -c "/bin/echo ="')
         self.assertEqual(result.stdout, '=\n')
         self.assertEquals(result.returncode, 0)
