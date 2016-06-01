@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import unittest
+import signal
 
 import plotly
 import plotly.graph_objs as go
@@ -162,9 +163,13 @@ def tracegraph():
     print("Reports created in " + b)
 
 
-if __name__ == "__main__":
-    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+def ctrl_c_handler(signalnum, stack):
+    print("\nTESTSUITE STOPPED (CTRL+C)\n")
+    exit()
 
+if __name__ == "__main__":
+    signal.signal(signal.SIGINT, ctrl_c_handler)
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     categorie = ["utils", "lexer", "parser", "execute", "binary"]
     sys.argv[0] = ""
     loop = enumerate(sys.argv)
