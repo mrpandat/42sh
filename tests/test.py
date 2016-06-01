@@ -79,11 +79,8 @@ def launch_sanity_test():
     for file in [os.path.join("binary/scripts", fn) for fn in
                  next(os.walk("binary/scripts"))[2]]:
         if file.endswith(".sh"):
-            res = execute_cmd("valgrind ../42sh " + file)
-
-            if "All heap blocks were freed -- no leaks are possible" in \
-                    res.stderr and not "Invalid" in \
-                    res.stderr:
+            res = execute_cmd("valgrind --leak-check=full --error-exitcode=1 ../42sh " + file)
+            if res.returncode != 1:
                 print(
                     "--> " + bcolors.OKGREEN + "SANITY OK ON FILE " + file + bcolors.ENDC)
             else:
