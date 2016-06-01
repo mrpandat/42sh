@@ -34,7 +34,6 @@ char *args_from_str(char *str, char ***arguments);
  ** @return the red string
  */
 char *file_to_str(FILE *file);
-
 /**
  ** @fn char *path_to_str(char *file)
  ** @brief reads a whole file in an str
