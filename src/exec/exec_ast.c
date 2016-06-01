@@ -38,7 +38,7 @@ int exec_ast_node(struct s_ast_node *node)
 int exec_if_node(struct s_if_node *node)
 {
     int ret = 0;
-    if (exec_ast_node(node->predicate))
+    if (!exec_ast_node(node->predicate))
         ret = exec_ast_node(node->true_statement);
     else
     {
@@ -51,7 +51,7 @@ int exec_if_node(struct s_if_node *node)
 int exec_while_node(struct s_while_node *node)
 {
     int ret = 0;
-    while (exec_ast_node(node->predicate))
+    while (!exec_ast_node(node->predicate))
         ret = exec_ast_node(node->statement);
     return ret;
 }
@@ -59,7 +59,7 @@ int exec_while_node(struct s_while_node *node)
 int exec_until_node(struct s_until_node *node)
 {
     int ret = 0;
-    while (!exec_ast_node(node->predicate))
+    while (exec_ast_node(node->predicate))
         ret = exec_ast_node(node->statement);
     return ret;
 }
@@ -163,9 +163,9 @@ int exec_and_or_node(struct s_and_or_node *node)
     if (node->type == ANDOR_NONE)
         return exec_ast_node(node->left);
     else if (node->type == ANDOR_OR)
-        return exec_ast_node(node->left) || exec_ast_node(node->right);
+        return !exec_ast_node(node->left) || !exec_ast_node(node->right);
     else if (node->type == ANDOR_AND)
-        return exec_ast_node(node->left) && exec_ast_node(node->right);
+        return !exec_ast_node(node->left) && !exec_ast_node(node->right);
     return -1;
 }
 
