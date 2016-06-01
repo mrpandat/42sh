@@ -67,13 +67,16 @@ int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer)
         int pid = fork();
         if (pid == 0)
             execve(prog, arguments, NULL);
-        if (strcmp(opt.file, "") != 0)
-            free(opt.command);
-        free(arguments);
-        free(prog);
-        free_ast_node(root);
-        lexer_destroy(lexer);
     }
+
+    if (strcmp(opt.file, "") != 0)
+        free(opt.command);
+    free(arguments);
+    free(prog);
+    free_ast_node(root);
+    lexer_destroy(lexer);
+
+
     return 0;
 }
 
