@@ -1,4 +1,4 @@
-#include <exit.h>
+#include <builtins.h>
 
 void my_exit(int n)
 {
