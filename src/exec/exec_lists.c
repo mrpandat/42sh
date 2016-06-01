@@ -42,6 +42,14 @@ int exec_list_node(struct s_list_node *node)
             return 0;
         }
     }
+    else if (node->type == LIST_BG)
+    {
+        int pid = fork();
+        if (pid == 0)
+            return exec_ast_node(node->left);
+        else
+            return 0;
+    }
     else if (node->type == LIST_NONE)
         return exec_ast_node(node->left);
     else

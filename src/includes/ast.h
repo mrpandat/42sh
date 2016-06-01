@@ -122,7 +122,8 @@ enum e_list_type
 {
     LIST_NONE,
     LIST_AND,
-    LIST_SEMI
+    LIST_SEMI,
+    LIST_BG
 };
 
 struct s_list_node
