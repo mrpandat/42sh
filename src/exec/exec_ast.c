@@ -163,9 +163,9 @@ int exec_and_or_node(struct s_and_or_node *node)
     if (node->type == ANDOR_NONE)
         return exec_ast_node(node->left);
     else if (node->type == ANDOR_OR)
-        return exec_ast_node(node->left) || exec_ast_node(node->right);
+        return !exec_ast_node(node->left) || !exec_ast_node(node->right);
     else if (node->type == ANDOR_AND)
-        return exec_ast_node(node->left) && exec_ast_node(node->right);
+        return !exec_ast_node(node->left) && !exec_ast_node(node->right);
     return -1;
 }
 
