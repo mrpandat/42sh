@@ -79,10 +79,10 @@ class TestBinary(unittest.TestCase):
 
     def test_18_Lexer_dot(self):
         result = execute_cmd('../42sh -c "/bin/echo ."')
-        self.assertEqual(result.stdout, '.')
+        self.assertEqual(result.stdout, '.\n')
         self.assertEquals(result.returncode, 0)
 
     def test_19_Lexer_equals(self):
         result = execute_cmd('../42sh -c "/bin/echo ="')
-        self.assertEqual(result.stdout, '=')
+        self.assertEqual(result.stdout, '=\n')
         self.assertEquals(result.returncode, 0)
