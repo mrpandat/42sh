@@ -2,11 +2,10 @@ import os
 import sys
 import time
 import unittest
-import plotly
-import plotly.plotly as py
-from plotly.graph_objs import *
-import plotly.graph_objs as go
 
+import plotly
+import plotly.graph_objs as go
+import plotly.plotly as py
 from fun import *
 from my_test_runner import MyTestRunner
 from static.colors import bcolors
@@ -79,7 +78,8 @@ def launch_sanity_test():
     for file in [os.path.join("binary/scripts", fn) for fn in
                  next(os.walk("binary/scripts"))[2]]:
         if file.endswith(".sh"):
-            res = execute_cmd("valgrind --leak-check=full --error-exitcode=1 ../42sh " + file)
+            res = execute_cmd(
+                "valgrind --leak-check=full --error-exitcode=1 ../42sh " + file)
             if res.returncode != 1:
                 print(
                     "--> " + bcolors.OKGREEN + "SANITY OK ON FILE " + file + bcolors.ENDC)
@@ -118,6 +118,7 @@ def print_nyan():
 
 
 def tracegraph():
+    a = execute_cmd("pwd")
     fig = {
         'data': [{'labels': ['Errors', 'Failures', 'Success'],
                   'values': [nb_errors, nb_fail, nb_success],
@@ -126,8 +127,12 @@ def tracegraph():
     }
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     pwd = execute_cmd("pwd")
-    plotly.tools.set_credentials_file(username='DemoAccount', api_key='lr1c37zw81')
-    py.image.save_as(fig, "/home/pandat/Documents/workspace/43sh/doc/report/report_errors.png")
+    plotly.tools.set_credentials_file(username='DemoAccount',
+                                      api_key='lr1c37zw81')
+    b = a.stdout.strip() + "/../doc/report"
+    if not os.path.isdir(b):
+        execute_cmd("mkdir " + b)
+    py.image.save_as(fig, a.stdout.strip() + "/../doc/report/report_errors.png")
 
     trace = go.Scatter(
         x=resume_time_x,
@@ -138,12 +143,14 @@ def tracegraph():
     fig = {
         'data': [trace],
         'layout': {'title': 'Testsuit speed report',
-                   'xaxis': dict(title = 'Tests run'),
-                   'yaxis': dict(title = 'Speed in seconds')
+                   'xaxis': dict(title='Tests run'),
+                   'yaxis': dict(title='Speed in seconds')
                    }
     }
-    py.image.save_as(fig, pwd.stdout.rstrip() + '/../doc/report/report_speed.png')
-    print("Reports created in doc/report")
+    py.image.save_as(fig,
+                     pwd.stdout.rstrip() + '/../doc/report/report_speed.png')
+    print("Reports created in " + b)
+
 
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
