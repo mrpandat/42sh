@@ -22,5 +22,6 @@ xterm_colors = {
     '=': "\033[104m",      # Light blue rainbow
     ';': "\033[44m",       # Dark blue rainbow
     '*': "\033[100m",      # Gray cat face
-    '%': "\033[105m"       # Pink cheeks
+    '%': "\033[105m",      # Pink cheeks
+    ':': "",              # Transparent
 }

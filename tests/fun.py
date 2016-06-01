@@ -1,11 +1,13 @@
 from static.colors import *
 
+
 def print_file(path, format, end="\n", width=80):
     print(format)
     with open(path, 'r') as file:
         for line in file.readlines():
             print(line.strip("\n").center(width), end=end)
     print(bcolors.ENDC)
+
 
 def print_colored(path, width=80):
     output = ''
