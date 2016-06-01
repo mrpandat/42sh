@@ -10,12 +10,14 @@ endif (BUILD_TYPE MATCHES DEBUG)
 
 set(MAIN_SOURCES src/main.c)
 set(EXEC_DIR src/exec)
+set(BUILTINS_DIR src/builtins)
 set(PARSER_DIR src/parser)
 set(AST_DIR src/ast)
 set(LEXER_DIR src/lexer)
 set(UTILS_DIR src/utils)
 
 aux_source_directory(${EXEC_DIR} EXEC_SRC)
+aux_source_directory(${BUILTINS_DIR} BUILTINS_SRC)
 aux_source_directory(${PARSER_DIR} PARSER_SRC)
 aux_source_directory(${AST_DIR} AST_SRC)
 aux_source_directory(${LEXER_DIR} LEXER_SRC)
@@ -26,6 +28,7 @@ include_directories(src/includes)
 add_executable(42sh
         ${MAIN_SOURCES}
         ${EXEC_SRC}
+        ${BUILTINS_SRC}
         ${PARSER_SRC}
         ${AST_SRC}
         ${LEXER_SRC}
@@ -35,6 +38,7 @@ add_executable(42sh
 add_library(my42sh SHARED
         ${MAIN_SOURCES}
         ${EXEC_SRC}
+        ${BUILTINS_SRC}
         ${PARSER_SRC}
         ${AST_SRC}
         ${LEXER_SRC}
