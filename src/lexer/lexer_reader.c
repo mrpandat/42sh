@@ -2,6 +2,30 @@
 
 #include "../includes/lexer.h"
 
+/** \{, \|, \}, \~, \:, \;, \(, \), \", \' */
+static bool is_escaped_symbol(struct s_lexer *lexer)
+{
+    if (NULL == lexer || NULL == lexer->current || !strlen(lexer->current))
+        return false;
+
+    if (0 == strncmp(lexer->current, "\\\"", strlen("\\\""))
+        || 0 == strncmp(lexer->current, "\\\'", strlen("\\\'"))
+        || 0 == strncmp(lexer->current, "\\(", strlen("\\("))
+        || 0 == strncmp(lexer->current, "\\)", strlen("\\)"))
+        || 0 == strncmp(lexer->current, "\\;", strlen("\\;"))
+        || 0 == strncmp(lexer->current, "\\:", strlen("\\:"))
+        || 0 == strncmp(lexer->current, "\\~", strlen("\\~"))
+        || 0 == strncmp(lexer->current, "\\}", strlen("\\}"))
+        || 0 == strncmp(lexer->current, "\\{", strlen("\\{"))
+        || 0 == strncmp(lexer->current, "\\|", strlen("\\|")))
+    {
+        lexer->current += 2;
+        return true;
+    }
+
+    return false;
+}
+
 static bool is_word_letter(char c)
 {
     if ('#' != c && '>' != c && '<' != c && '|' != c && '&' != c && '(' != c
@@ -19,7 +43,7 @@ static bool lexer_read_identifier(struct s_lexer *lexer)
         || !is_word_letter(*lexer->current))
         return false;
 
-    while (is_word_letter(*lexer->current))
+    while (is_escaped_symbol(lexer) || is_word_letter(*lexer->current))
         lexer->current++;
 
     return true;
