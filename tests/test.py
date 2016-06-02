@@ -160,6 +160,8 @@ def tracegraph():
                    'yaxis': dict(title='Speed in seconds')
                    }
     }
+    py.iplot([trace], filename='speed')
+
     py.image.save_as(fig,
                      pwd.stdout.rstrip() + '/../doc/report/report_speed.png')
     print("Reports created in " + b)
