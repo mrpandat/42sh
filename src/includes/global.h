@@ -18,4 +18,13 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <fnmatch.h>
+
+struct ast_utils
+{
+    struct s_ast_node *root;
+    struct s_lexer *lexer;
+};
+
+struct ast_utils g_ast_utils;
+
 #endif

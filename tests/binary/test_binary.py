@@ -96,3 +96,13 @@ class TestBinary(unittest.TestCase):
         result = execute_cmd('../42sh -c "/bin/echo ="')
         self.assertEqual(result.stdout, '=\n')
         self.assertEquals(result.returncode, 0)
+
+    def test_21_Lexer_equals(self):
+        result = execute_cmd('../42sh -c "exit"')
+        self.assertEqual(result.stdout, '')
+        self.assertEquals(result.returncode, 1)
+
+    def test_21_Lexer_equals(self):
+        result = execute_cmd('../42sh -c "exit 43"')
+        self.assertEqual(result.stdout, '')
+        self.assertEquals(result.returncode, 43)
