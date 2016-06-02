@@ -14,6 +14,8 @@ int main(int argc, char *argv[])
     struct s_ast_node *root = parser(lexer);
     if (root == NULL)
         return 1;
+    g_ast_utils.lexer = lexer;
+    g_ast_utils.root = root;
     return execute(opt, root, lexer);
 }
 

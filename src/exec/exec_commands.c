@@ -59,7 +59,11 @@ int exec_builtin(struct s_simple_command_node *node)
         //return my_echo(node);
     }
     else if (!strcmp("exit", node->elements[0]->data.word))
+    {
+        if (node->nb_elements < 2)
+            return 1;
         my_exit(atoi(node->elements[1]->data.word));
+    }
     return 1;
 }
 
