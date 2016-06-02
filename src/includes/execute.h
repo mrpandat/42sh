@@ -45,4 +45,6 @@ int exec_list_node(struct s_list_node *node);
 
 int get_children_exit_status(int pid);
 
+int is_builtin(char *name);
+
 #endif //INC_42SH_EXECUTE_H

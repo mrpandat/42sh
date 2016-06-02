@@ -2,27 +2,37 @@
 
 #include "../includes/lexer.h"
 
-static bool lexer_peek_char(struct s_lexer *lexer, char c)
+/** \{, \|, \}, \~, \:, \;, \(, \), \", \' */
+static bool is_escaped_symbol(struct s_lexer *lexer)
 {
-    if (NULL == lexer || NULL == lexer->current)
+    if (NULL == lexer || NULL == lexer->current || !strlen(lexer->current))
         return false;
 
-    if (*lexer->current == c)
+    if (0 == strncmp(lexer->current, "\\\"", strlen("\\\""))
+        || 0 == strncmp(lexer->current, "\\\'", strlen("\\\'"))
+        || 0 == strncmp(lexer->current, "\\(", strlen("\\("))
+        || 0 == strncmp(lexer->current, "\\)", strlen("\\)"))
+        || 0 == strncmp(lexer->current, "\\;", strlen("\\;"))
+        || 0 == strncmp(lexer->current, "\\:", strlen("\\:"))
+        || 0 == strncmp(lexer->current, "\\~", strlen("\\~"))
+        || 0 == strncmp(lexer->current, "\\}", strlen("\\}"))
+        || 0 == strncmp(lexer->current, "\\{", strlen("\\{"))
+        || 0 == strncmp(lexer->current, "\\|", strlen("\\|")))
+    {
+        lexer->current += 2;
         return true;
+    }
 
     return false;
 }
 
-static bool lexer_read_range(struct s_lexer *lexer, char begin, char end)
+static bool is_word_letter(char c)
 {
-    if (NULL == lexer || NULL == lexer->current)
-        return false;
-
-    if (*lexer->current >= begin && *lexer->current <= end)
-    {
-        lexer->current++;
+    if ('#' != c && '>' != c && '<' != c && '|' != c && '&' != c && '(' != c
+        && ')' != c && '{' != c && '}' != c && '!' != c && ';' != c
+        && '$' != c && '"' != c && '\'' != c && ' ' != c && '\n' != c
+        && '\0' != c)
         return true;
-    }
 
     return false;
 }
@@ -30,20 +40,10 @@ static bool lexer_read_range(struct s_lexer *lexer, char begin, char end)
 static bool lexer_read_identifier(struct s_lexer *lexer)
 {
     if (NULL == lexer || NULL == lexer->current
-        || (!lexer_read_range(lexer, 'a', 'z')
-            && !lexer_read_range(lexer, 'A', 'Z')
-            && !lexer_read_range(lexer, '0', '9')
-            && !lexer_peek_char(lexer, '_')
-            && !lexer_peek_char(lexer, '/')
-            && !lexer_peek_char(lexer, '.')))
+        || !is_word_letter(*lexer->current))
         return false;
 
-    while ((*lexer->current >= 'a' && *lexer->current <= 'z')
-           || (*lexer->current >= 'A' && *lexer->current <= 'Z')
-           || (*lexer->current >= '0' && *lexer->current <= '9')
-           || lexer_peek_char(lexer, '_')
-           || lexer_peek_char(lexer, '/')
-           || lexer_peek_char(lexer, '.'))
+    while (is_escaped_symbol(lexer) || is_word_letter(*lexer->current))
         lexer->current++;
 
     return true;
