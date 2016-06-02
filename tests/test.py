@@ -140,8 +140,8 @@ def tracegraph():
     }
     # os.chdir(os.path.dirname(os.path.realpath(__file__)))
     pwd = execute_cmd("pwd")
-    plotly.tools.set_credentials_file(username='DemoAccount',
-                                      api_key='lr1c37zw81')
+    plotly.tools.set_credentials_file(username='afepgjn',
+                                      api_key='zl4pmee9nl')
     b = a.stdout.strip() + "/../doc/report"
     if not os.path.isdir(b):
         execute_cmd("mkdir " + b)
@@ -160,6 +160,8 @@ def tracegraph():
                    'yaxis': dict(title='Speed in seconds')
                    }
     }
+    py.iplot([trace], filename='speed')
+
     py.image.save_as(fig,
                      pwd.stdout.rstrip() + '/../doc/report/report_speed.png')
     print("Reports created in " + b)
