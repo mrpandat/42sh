@@ -1,5 +1,25 @@
 #include <builtins.h>
 
+int execute_long_option(struct s_simple_command_node *node, int i, int options) {
+    if (node->nb_elements == 2)
+    {
+        if (!strcmp("--version", node->elements[i]->data.word)
+            && options == 0)
+        {
+            printf("Version: 0.1\n");
+            return 0;
+        }
+        if (!strcmp("--help", node->elements[i]->data.word)
+            && options == 0)
+        {
+            printf("Version: 0.1.\n Ecrit par Treibert "
+                           "Jean.\n");
+            return 0;
+        }
+    }
+    return 1;
+}
+
 int my_echo(struct s_simple_command_node *node)
 {
     int words = 0;
@@ -13,38 +33,30 @@ int my_echo(struct s_simple_command_node *node)
         {
             if (words == 0)
             {
-                if (node->nb_elements == 2)
-                {
-                    if (!strcmp("--version", node->elements[i]->data.word)
-                        && options == 0)
-                    {
-                        printf("Version: 0.1\n");
-                        return 1;
-                    }
-                    if (!strcmp("--help", node->elements[i]->data.word)
-                        && options == 0)
-                    {
-                        printf("Version: 0.1.\n Ecrit par Treibert "
-                                       "Jean.\n");
-                        return 1;
-                    }
-                }
+                if(execute_long_option(node, i, options))
+                    return 0;
 
                 if (!strcmp("-n", node->elements[i]->data.word) && noption == 0)
                 {
                     noption = 1;
                     options++;
+                    continue;
                 }
-                if (!strcmp("-e", node->elements[i]->data.word) && Eoption == 0)
+                else if (!strcmp("-e", node->elements[i]->data.word) && Eoption
+                                                                        == 0)
                 {
                     Eoption = 1;
                     options++;
+                    continue;
                 }
-                if (!strcmp("-E", node->elements[i]->data.word) && eoption == 0)
+                else if (!strcmp("-E", node->elements[i]->data.word) && eoption
+                                                                        == 0)
                 {
                     eoption = 1;
                     options++;
+                    continue;
                 }
+
             }
 
             if (words != 0)
@@ -55,5 +67,5 @@ int my_echo(struct s_simple_command_node *node)
     }
     if (noption == 0)
         putchar('\n');
-    return 1;
+    return 0;
 }
