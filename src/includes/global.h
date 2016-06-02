@@ -19,12 +19,15 @@
 # include <sys/wait.h>
 # include <fnmatch.h>
 
-struct ast_utils
+struct env
 {
     struct s_ast_node *root;
     struct s_lexer *lexer;
+    char *HOME;
+    char *PWD;
+    char *OLDPWD;
 };
 
-struct ast_utils g_ast_utils;
+struct env g_env;
 
 #endif
