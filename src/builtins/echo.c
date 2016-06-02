@@ -1,6 +1,6 @@
 #include <builtins.h>
 
-int execute_long_option(struct s_simple_command_node *node, int i,
+static int execute_long_option(struct s_simple_command_node *node, int i,
                         struct echo_struct *echo)
 {
     if (node->nb_elements == 2)
@@ -73,7 +73,32 @@ int print_word_ecaped(char *word)
     return 0;
 }
 
-int exit_free(struct echo_struct *echo)
+int print_word_not_ecaped(char *word)
+{
+    if (!strcmp(word, "\\c"))
+        return 1;
+    else if (!strcmp(word, "\\a"))
+        putchar('a');
+    else if (!strcmp(word, "\\b"))
+        putchar('b');
+    else if (!strcmp(word, "\\e"))
+        putchar('e');
+    else if (!strcmp(word, "\\f"))
+        putchar('f');
+    else if (!strcmp(word, "\\n"))
+        putchar('n');
+    else if (!strcmp(word, "\\r"))
+        putchar('r');
+    else if (!strcmp(word, "\\t"))
+        putchar('t');
+    else if (!strcmp(word, "\\v"))
+        putchar('v');
+    else
+        printf("%s", word);
+    return 0;
+}
+
+static int exit_free(struct echo_struct *echo)
 {
     free(echo);
     return 0;
@@ -101,8 +126,7 @@ int my_echo(struct s_simple_command_node *node)
                 if (print_word_ecaped(node->elements[i]->data.word) == 1)
                     return exit_free(echo);
             }
-            else
-                printf("%s", node->elements[i]->data.word);
+            else print_word_not_ecaped(node->elements[i]->data.word);
             words++;
         }
     if (echo->noption == 0)
