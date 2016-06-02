@@ -8,6 +8,7 @@
 #ifndef INC_42SH_UTIL_H
 #define INC_42SH_UTIL_H
 
+#include "../includes/global.h"
 
 /**
  ** @fn str_append(char *str_one, char *str_two)
@@ -52,5 +53,7 @@ bool pattern_matching(char *str1, char *str2);
 
 int test();
 
+char *my_itoa(int i);
+int my_pow(int a, int b);
 
 #endif
