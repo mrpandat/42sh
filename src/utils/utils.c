@@ -78,9 +78,9 @@ char *file_to_str(FILE *f)
     return NULL;
 }
 
-bool pattern_matching(char *str1, char *str2)
+bool pattern_matching(char *pattern, char *string)
 {
-    if (strcmp(str1, str2) == 0)
+    if (strcmp(pattern, string) == 0)
         return true;
     else
         return false;
