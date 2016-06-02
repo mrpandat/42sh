@@ -13,8 +13,8 @@ static int execute_binop_node(struct s_binop_node *node)
     else if (node->type == BINOP_DIV)
         return execute_art_node(node->left) / execute_art_node(node->right);
     else if (node->type == BINOP_POW)
-        return my_pow(execute_art_node(node->left), execute_art_node
-                (node->right));
+        return my_pow(execute_art_node(node->left),
+                      execute_art_node(node->right));
     else if (node->type == BINOP_BIT_AND)
         return execute_art_node(node->left) & execute_art_node(node->right);
     else if (node->type == BINOP_BIT_OR)
