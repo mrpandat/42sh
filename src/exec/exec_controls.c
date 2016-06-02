@@ -1,4 +1,5 @@
 #include <global.h>
+#include <util.h>
 #include "../includes/execute.h"
 
 int exec_if_node(struct s_if_node *node)
@@ -16,16 +17,14 @@ int exec_if_node(struct s_if_node *node)
 
 int exec_case_node(struct s_case_node *node)
 {
-    // TODO: Implement case loop
-    if (node == NULL)
-        return -1;
-    return -1;
-}
-
-int exec_case_item_node(struct s_case_item_node *node)
-{
-    // TODO: Implement case item
-    if (node == NULL)
-        return -1;
-    return -1;
+    for (int i = 0; i < node->nb_items; i++)
+    {
+        struct s_case_item_node *item = node->items[i];
+        for (int j = 0; j < item->nb_words; j++)
+        {
+            if (pattern_matching(item->words[j], node->word))
+                return exec_ast_node(item->statement);
+        }
+    }
+    return 0;
 }

@@ -34,7 +34,6 @@ int exec_if_node(struct s_if_node *node);
 int exec_while_node(struct s_while_node *node);
 int exec_until_node(struct s_until_node *node);
 int exec_case_node(struct s_case_node *node);
-int exec_case_item_node(struct s_case_item_node *node);
 int exec_for_node(struct s_for_node *node);
 int exec_redirection_node(struct s_redirection_node *node);
 int exec_funcdec_node(struct s_funcdec_node *node);

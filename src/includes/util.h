@@ -42,6 +42,7 @@ char *file_to_str(FILE *file);
  */
 char *path_to_str(char *file);
 
+bool pattern_matching(char *str1, char *str2);
 
 /**
  ** @fn test()
