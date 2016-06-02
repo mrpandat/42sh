@@ -126,14 +126,15 @@ char *my_itoa(int i)
 
 int my_pow(int a, int b)
 {
+    int ret = 1;
     if (b == 0)
         return 1;
-    else
+    else if (b > 0)
     {
-        for (int i = 1; i < b; i++)
-            a = a * a;
+        for (int i = 0; i < b; i++)
+            ret = ret * a;
     }
-    return a;
+    return ret;
 }
 
 

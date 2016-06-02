@@ -231,7 +231,7 @@ struct s_art_node *read_f(struct s_stream *s)
 {
     struct s_art_node *node = read_e(s);
     read_spaces(s);
-    if (strncmp("&", stream_peek(s), 1) == 0)
+    if ('&' == stream_peek(s)[0] && stream_peek(s)[1] != '&')
     {
         stream_read(s, 1);
         struct s_art_node *binop = init_art_node();
@@ -267,7 +267,7 @@ struct s_art_node *read_h(struct s_stream *s)
 {
     struct s_art_node *node = read_g(s);
     read_spaces(s);
-    if (strncmp("|", stream_peek(s), 1) == 0)
+    if ('|' == stream_peek(s)[0] && stream_peek(s)[1] != '|')
     {
         stream_read(s, 1);
         struct s_art_node *binop = init_art_node();
@@ -305,7 +305,7 @@ struct s_art_node *read_j(struct s_stream *s)
     read_spaces(s);
     if (strncmp("||", stream_peek(s), 1) == 0)
     {
-        stream_read(s, 1);
+        stream_read(s, 2);
         struct s_art_node *binop = init_art_node();
         binop->type = ART_BINOP;
         binop->data.binop = init_binop_node(node,

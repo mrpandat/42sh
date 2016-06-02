@@ -22,9 +22,11 @@ static int execute_binop_node(struct s_binop_node *node)
     else if (node->type == BINOP_BIT_XOR)
         return execute_art_node(node->left) ^ execute_art_node(node->right);
     else if (node->type == BINOP_BOOL_AND)
-        return execute_art_node(node->left) && execute_art_node(node->right);
+        return execute_art_node(node->left) != 0
+               && execute_art_node(node->right) != 0;
     else if (node->type == BINOP_BOOL_OR)
-        return execute_art_node(node->left) || execute_art_node(node->right);
+        return execute_art_node(node->left) != 0
+               || execute_art_node(node->right) != 0;
     else
         return 42;
 }
