@@ -1,4 +1,5 @@
 #include <global.h>
+#include <builtins.h>
 #include "../includes/execute.h"
 
 int exec_funcdec_node(struct s_funcdec_node *node)
@@ -57,6 +58,8 @@ int exec_builtin(struct s_simple_command_node *node)
                        "\n");
         //return my_echo(node);
     }
+    else if (!strcmp("exit", node->elements[0]->data.word))
+        my_exit(atoi(node->elements[1]->data.word));
     return 1;
 }
 
