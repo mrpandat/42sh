@@ -9,7 +9,6 @@ static int execute_long_option(struct s_simple_command_node *node, int i,
             && echo->options == 0)
         {
             printf("Version: 0.1\n");
-            free(echo);
             return 0;
         }
         if (!strcmp("--help", node->elements[i]->data.word)
@@ -17,7 +16,6 @@ static int execute_long_option(struct s_simple_command_node *node, int i,
         {
             printf("Version: 0.1.\n Ecrit par Treibert "
                            "Jean.\n");
-            free(echo);
             return 0;
         }
     }
@@ -48,7 +46,7 @@ int execute_short_options(struct s_simple_command_node *node, int i, struct
     return 1;
 }
 
-int print_word_ecaped(char *word)
+int print_word_escaped(char *word)
 {
     if (!strcmp(word, "\\c"))
         return 1;
@@ -73,7 +71,7 @@ int print_word_ecaped(char *word)
     return 0;
 }
 
-int print_word_not_ecaped(char *word)
+int print_word_not_escaped(char *word)
 {
     if (!strcmp(word, "\\c"))
         return 1;
@@ -117,16 +115,16 @@ int my_echo(struct s_simple_command_node *node)
         {
             if (words == 0)
             {
-                if (execute_long_option(node, i, echo) == 0) return 0;
+                if (execute_long_option(node, i, echo) == 0) return exit_free(echo);
                 if (execute_short_options(node, i, echo) == 0) continue;
             }
             if (words != 0) printf(" ");
             if (echo->eoption == 1)
             {
-                if (print_word_ecaped(node->elements[i]->data.word) == 1)
+                if (print_word_escaped(node->elements[i]->data.word) == 1)
                     return exit_free(echo);
             }
-            else print_word_not_ecaped(node->elements[i]->data.word);
+            else print_word_not_escaped(node->elements[i]->data.word);
             words++;
         }
     if (echo->noption == 0)

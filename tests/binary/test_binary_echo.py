@@ -25,3 +25,35 @@ class TestBinaryEcho(unittest.TestCase):
         a = execute_cmd("../42sh -c 'echo --help'")
         b = execute_cmd("/bin/echo --help")
         self.assertEqual(a.returncode, b.returncode)
+
+    def test_07_echo_with_e_simple(self):
+        a = execute_cmd("../42sh -c 'echo -e a'")
+        b = execute_cmd("/bin/echo -e a")
+        self.assertEqual(a.stdout, b.stdout)
+
+    def test_08_echo_with_e_simple_c(self):
+        a = execute_cmd("../42sh -c 'echo -e lol \c a'")
+        b = execute_cmd("/bin/echo -e 'lol \c a'")
+        self.assertEqual(a.stdout, b.stdout)
+
+    def test_09_echo_with_e_escaped_simple(self):
+        a = execute_cmd("../42sh -c 'echo -e \t'")
+        b = execute_cmd("/bin/echo -e '\t'")
+        self.assertEqual(a.stdout, b.stdout)
+
+    def test_10_echo_with_e_escaped_medium(self):
+        a = execute_cmd("../42sh -c 'echo -e \t \n'")
+        b = execute_cmd("/bin/echo -e '\t \n'")
+        self.assertEqual(a.stdout, b.stdout)
+
+    def test_11_echo_with_e_escaped_hard(self):
+        a = execute_cmd("../42sh -c 'echo -e \\t'")
+        b = execute_cmd("/bin/echo -e '\\t'")
+        self.assertEqual(a.stdout, b.stdout)
+
+    def test_12_echo_with_e_escaped_hardcore(self):
+        a = execute_cmd("../42sh -c 'echo -e \\t \\n \\e \\c'")
+        b = execute_cmd("/bin/echo -e '\\t \\n \\e \\c'")
+        print(a.stdout)
+        print(b.stdout)
+        self.assertEqual(a.stdout, b.stdout)
