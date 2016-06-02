@@ -94,6 +94,7 @@ def launch_sanity_test():
                     bcolors.ENDC)
                 global nb_fail
                 nb_fail += 1
+                print(res.stderr)
                 global resume_failures
                 resume_failures += ("--> " + bcolors.FAIL + "UNSAIN FILE " +
                                     file + "\n" + bcolors.ENDC)

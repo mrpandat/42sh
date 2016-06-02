@@ -10,6 +10,8 @@ int is_builtin(char *name) // add others when necessary
         return 1;
     else if (strcmp(name, "echo") == 0)
         return 1;
+    else if (strcmp(name, "cd") == 0)
+        return 1;
     return 0;
 }
 
@@ -61,7 +63,6 @@ void not_found(char *name, char **arguments, struct options opt,
 int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer)
 {
     int ret = 0;
-
     if (strcmp(opt.command, "") != 0)
         ret = exec_ast_node(root);
 

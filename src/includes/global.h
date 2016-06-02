@@ -17,4 +17,17 @@
 # include <string.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <fnmatch.h>
+
+struct env
+{
+    struct s_ast_node *root;
+    struct s_lexer *lexer;
+    char *HOME;
+    char *PWD;
+    char *OLDPWD;
+};
+
+struct env g_env;
+
 #endif

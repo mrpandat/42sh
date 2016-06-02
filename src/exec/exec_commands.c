@@ -1,4 +1,5 @@
 #include <global.h>
+#include <builtins.h>
 #include "../includes/execute.h"
 
 int exec_funcdec_node(struct s_funcdec_node *node)
@@ -52,11 +53,11 @@ int exec_file(struct s_simple_command_node *node)
 int exec_builtin(struct s_simple_command_node *node)
 {
     if (!strcmp("echo", node->elements[0]->data.word))
-    {
-        printf("je suis dans exec_command.c, décommente le code sous moi  :)"
-                       "\n");
-        //return my_echo(node);
-    }
+        return my_echo(node);
+    else if (!strcmp("exit", node->elements[0]->data.word))
+        return my_exit(node);
+    else if (!strcmp("cd", node->elements[0]->data.word))
+        return my_cd(node);
     return 1;
 }
 
