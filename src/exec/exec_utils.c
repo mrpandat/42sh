@@ -16,8 +16,6 @@ int exec_ast_node(struct s_ast_node *node)
         return exec_until_node(node->data.s_until_node);
     else if (type == ND_CASE)
         return exec_case_node(node->data.s_case_node);
-    else if (type == ND_CASE_ITEM)
-        return exec_case_item_node(node->data.s_case_item_node);
     else if (type == ND_FOR)
         return exec_for_node(node->data.s_for_node);
     else if (type == ND_REDIRECTION)

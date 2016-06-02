@@ -78,6 +78,14 @@ char *file_to_str(FILE *f)
     return NULL;
 }
 
+bool pattern_matching(char *str1, char *str2)
+{
+    if (strcmp(str1, str2) == 0)
+        return true;
+    else
+        return false;
+}
+
 
 int test()
 {
