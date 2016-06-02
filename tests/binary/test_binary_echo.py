@@ -17,13 +17,11 @@ class TestBinaryEcho(unittest.TestCase):
         self.assertEqual(execute_cmd_cmp("echo -n ok ok ok"), 0)
 
     def test_05_echo_version(self):
-        a = execute_cmd("echo --version")
+        a = execute_cmd("../42sh -c 'echo --version'")
         b = execute_cmd("/bin/echo --version")
         self.assertEqual(a.returncode, b.returncode)
-        self.assertNotEquals(a.stdout, "")
 
     def test_06_echo_help(self):
-        a = execute_cmd("echo --help")
+        a = execute_cmd("../42sh -c 'echo --help'")
         b = execute_cmd("/bin/echo --help")
         self.assertEqual(a.returncode, b.returncode)
-        self.assertNotEquals(a.stdout, "")
