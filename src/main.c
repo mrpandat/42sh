@@ -13,7 +13,12 @@ int main(int argc, char *argv[])
     lexer_process(lexer);
     struct s_ast_node *root = parser(lexer);
     if (root == NULL)
+    {
+        if (strcmp(opt.file, "") != 0)
+            free(opt.command);
         return 1;
+
+    }
     //TODO : function to fill all that
     g_env.lexer = lexer;
     g_env.root = root;
