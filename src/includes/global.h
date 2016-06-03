@@ -23,6 +23,7 @@ struct env
 {
     struct s_ast_node *root;
     struct s_lexer *lexer;
+    struct options *opt;
     char *HOME;
     char *PWD;
     char *OLDPWD;
