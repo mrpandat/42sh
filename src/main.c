@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     g_env.HOME = getenv("HOME");
     g_env.PWD = getenv("PWD");
     g_env.OLDPWD = getenv("OLDPWD");
+    g_env.opt = &opt;
     return execute(opt, root, lexer);
 }
 
