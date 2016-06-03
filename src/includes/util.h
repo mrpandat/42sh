@@ -8,6 +8,7 @@
 #ifndef INC_42SH_UTIL_H
 #define INC_42SH_UTIL_H
 
+#include "../includes/global.h"
 
 /**
  ** @fn str_append(char *str_one, char *str_two)
@@ -34,7 +35,6 @@ char *args_from_str(char *str, char ***arguments);
  ** @return the red string
  */
 char *file_to_str(FILE *file);
-
 /**
  ** @fn char *path_to_str(char *file)
  ** @brief reads a whole file in an str
@@ -43,6 +43,7 @@ char *file_to_str(FILE *file);
  */
 char *path_to_str(char *file);
 
+bool pattern_matching(char *str1, char *str2);
 
 /**
  ** @fn test()
@@ -52,5 +53,7 @@ char *path_to_str(char *file);
 
 int test();
 
+char *my_itoa(int i);
+int my_pow(int a, int b);
 
 #endif

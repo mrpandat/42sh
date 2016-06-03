@@ -12,6 +12,6 @@ To build :
 - launch cmake CMakeLists.txt
 - make
 
-if cffi is missing to launch the tests please run : 
+if modules are missing to launch the tests please run :
 
- pip3 install --user cffi
+ pip3 install --user -r tests/requirements.txt

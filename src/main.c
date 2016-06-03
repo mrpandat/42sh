@@ -1,7 +1,9 @@
 #include <parser.h>
+#include <sys/wait.h>
 #include "includes/execute.h"
 #include "includes/global.h"
 #include "includes/argument_parser.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -11,8 +13,19 @@ int main(int argc, char *argv[])
     lexer_process(lexer);
     struct s_ast_node *root = parser(lexer);
     if (root == NULL)
+    {
+        if (strcmp(opt.file, "") != 0)
+            free(opt.command);
         return 1;
-    execute(opt, root, lexer);
-    return 0;
+
+    }
+    //TODO : function to fill all that
+    g_env.lexer = lexer;
+    g_env.root = root;
+    g_env.HOME = getenv("HOME");
+    g_env.PWD = getenv("PWD");
+    g_env.OLDPWD = getenv("OLDPWD");
+    g_env.opt = &opt;
+    return execute(opt, root, lexer);
 }
 

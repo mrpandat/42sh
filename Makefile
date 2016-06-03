@@ -20,6 +20,7 @@ compile:
 	$(MAKE) -C build all
 
 check:
+	$(RM) doc/report
 	$(MAKE) -C build all
 	$(MAKE) -C build check
 

@@ -10,17 +10,17 @@ class TestBinary(unittest.TestCase):
 
     def test_02_index(self):
         result = execute_cmd('../42sh -v')
-        self.assertEqual(result.stdout, "Version 0.5\n")
+        self.assertEqual(result.stdout, "Version 0.8\n")
         self.assertEquals(result.returncode, 0)
 
     def test_03_expandable_options(self):
         result = execute_cmd('../42sh --ver')
-        self.assertEqual(result.stdout, "Version 0.5\n")
+        self.assertEqual(result.stdout, "Version 0.8\n")
         self.assertEquals(result.returncode, 0)
 
     def test_04_long_options(self):
         result = execute_cmd('../42sh --version')
-        self.assertEqual(result.stdout, "Version 0.5\n")
+        self.assertEqual(result.stdout, "Version 0.8\n")
         self.assertEquals(result.returncode, 0)
 
     def test_05_help(self):
@@ -54,12 +54,12 @@ class TestBinary(unittest.TestCase):
         self.assertEquals(result.returncode, 127)
 
     def test_11_inexistant_command(self):
-        self.assertEqual(execute_cmd_cmp("foiehofihe"), 0)
+        self.assertEqual(execute_cmd("../42sh foiehofihe").returncode, 127)
 
 
     def test_12_inexistant_command_wth_arg(self):
-        self.assertEqual(execute_cmd_cmp("diejoide ded ded"), 0)
-
+        self.assertEqual(execute_cmd('../42sh -c "foiehofihe '
+                                     'efopjf" ').returncode, 127)
 
     def test_13_existant_command(self):
         self.assertEqual(execute_cmd_cmp("/bin/echo"), 0)
@@ -76,3 +76,4 @@ class TestBinary(unittest.TestCase):
         result = execute_cmd('../42sh +O dotglob')
         self.assertEqual(result.stdout, '')
         self.assertEquals(result.returncode, 0)
+

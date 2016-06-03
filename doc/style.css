@@ -1,0 +1,13 @@
+h2 {
+    color: #000;
+    font-family: 'Merriweather';
+    font-size: 60px;
+    font-weight: 900;
+    line-height: 72px;
+    margin-bottom: 48px;
+    text-decoration: underline;
+}
+
+iframe {
+    width: 100%;
+}
