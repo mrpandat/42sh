@@ -5,7 +5,6 @@ RM += -r
 clean:
 	$(RM) build
 	$(RM) doc/doxygen
-	$(RM) doc/report
 	$(RM) 42sh
 
 .PHONY : doc
