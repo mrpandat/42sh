@@ -1,6 +1,9 @@
 # Git folder
 .git/
 
+# Doc
+doc/git.html
+
 # IDE configuration
 .idea/
 
