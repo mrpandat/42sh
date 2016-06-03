@@ -85,7 +85,7 @@ def launch_sanity_test():
         if file.endswith(".sh"):
             res = execute_cmd(
                 "valgrind --leak-check=full --error-exitcode=42 ../42sh " + file)
-            if res.returncode != 42:
+            if "no leaks are possible" in res.stderr and res.returncode != 42:
                 print(
                     "--> " + bcolors.OKGREEN + "SANITY OK ON FILE " + file + bcolors.ENDC)
             else:
@@ -131,8 +131,13 @@ def print_nyan():
 
 def tracegraph():
     print("Generating reports...")
-    print(execute_cmd("pwd"))
-
+    a = execute_cmd("git shortlog -s -n")
+    b = ""
+    for line in a.stdout.splitlines():
+        b += ("<h1>" + line + "</h1>")
+    text_file = open("../doc/git.html", "w")
+    text_file.write(b)
+    text_file.close()
     fig = {
         'data': [{'labels': ['Errors', 'Failures', 'Success'],
                   'values': [nb_errors, nb_fail, nb_success],
