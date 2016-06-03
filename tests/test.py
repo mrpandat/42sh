@@ -1,8 +1,8 @@
 import os
+import signal
 import sys
 import time
 import unittest
-import signal
 
 import plotly
 import plotly.graph_objs as go
@@ -32,7 +32,7 @@ class MyTestResult(unittest.TestResult):
         nb_fail += 1
         global resume_failures
         resume_failures += ("--> " + bcolors.FAIL + "FAILURE on " + str(test) +
-                          "\n" + bcolors.ENDC)
+                            "\n" + bcolors.ENDC)
 
     def addSuccess(self, test):
         print("--> " + bcolors.OKGREEN + "PASSED" + bcolors.ENDC, end=" ")
@@ -49,7 +49,7 @@ class MyTestResult(unittest.TestResult):
         nb_errors += 1
         global resume_errors
         resume_errors += ("--> " + bcolors.WARNING + "ERROR on " + str(test) +
-                            "\n" + bcolors.ENDC)
+                          "\n" + bcolors.ENDC)
         unittest.TestResult.addError(self, test, err)
 
 
@@ -131,22 +131,18 @@ def print_nyan():
 
 def tracegraph():
     print("Generating reports...")
-    a = execute_cmd("pwd")
+    print(execute_cmd("pwd"))
+
     fig = {
         'data': [{'labels': ['Errors', 'Failures', 'Success'],
                   'values': [nb_errors, nb_fail, nb_success],
                   'type': 'pie'}],
         'layout': {'title': 'Testsuit errors report'}
     }
-    # os.chdir(os.path.dirname(os.path.realpath(__file__)))
-    pwd = execute_cmd("pwd")
+
     plotly.tools.set_credentials_file(username='afepgjn',
                                       api_key='zl4pmee9nl')
-    b = a.stdout.strip() + "/../doc/report"
-    if not os.path.isdir(b):
-        execute_cmd("mkdir " + b)
-    py.image.save_as(fig, a.stdout.strip() + "/../doc/report/report_errors.png")
-
+    py.iplot(fig, filename='errors')
     trace = go.Scatter(
         x=resume_time_x,
         y=resume_time_y,
@@ -160,16 +156,14 @@ def tracegraph():
                    'yaxis': dict(title='Speed in seconds')
                    }
     }
-    py.iplot([trace], filename='speed')
-
-    py.image.save_as(fig,
-                     pwd.stdout.rstrip() + '/../doc/report/report_speed.png')
+    py.iplot(fig, filename='speed')
     print("Reports created in " + b)
 
 
 def ctrl_c_handler(signalnum, stack):
     print("\nTESTSUITE STOPPED (CTRL+C)\n")
     exit()
+
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, ctrl_c_handler)
