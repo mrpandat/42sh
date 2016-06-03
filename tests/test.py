@@ -85,7 +85,7 @@ def launch_sanity_test():
         if file.endswith(".sh"):
             res = execute_cmd(
                 "valgrind --leak-check=full --error-exitcode=42 ../42sh " + file)
-            if res.returncode != 42:
+            if "no leaks are possible" in res.stderr and res.returncode != 42:
                 print(
                     "--> " + bcolors.OKGREEN + "SANITY OK ON FILE " + file + bcolors.ENDC)
             else:
