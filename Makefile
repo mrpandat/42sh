@@ -34,5 +34,9 @@ endif
 test:
 	python3 tests/test.py -c $(TEST_ARGS)
 
+report:
+	$(MAKE) -C build report
+
+
 debug:clean
 	mkdir build && cd build && cmake .. -DBUILD_TYPE:STRING=DEBUG && make && mv 42sh ..

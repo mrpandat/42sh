@@ -58,3 +58,7 @@ add_custom_target(doc
         )
 
 
+add_custom_target(report
+        COMMAND python3 ../tests/test.py -g
+        )
+

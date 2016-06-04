@@ -168,6 +168,7 @@ def tracegraph(trace):
         py.iplot(fig, filename='speed')
     except:
         print("Reports created")
+    execute_cmd("firefox ../doc/report-page.html &")
 
 
 def ctrl_c_handler(signalnum, stack):
