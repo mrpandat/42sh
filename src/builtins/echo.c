@@ -1,4 +1,5 @@
 #include <builtins.h>
+#include <asm/errno.h>
 
 static int execute_long_option(struct s_simple_command_node *node, int i,
                         struct echo_struct *echo)
@@ -22,7 +23,8 @@ static int execute_long_option(struct s_simple_command_node *node, int i,
     return 1;
 }
 
-int execute_short_options(struct s_simple_command_node *node, int i, struct
+static int execute_short_options(struct s_simple_command_node *node, int i,
+                                struct
         echo_struct *echo)
 {
     if (!strcmp("-n", node->elements[i]->data.word) && echo->noption == 0)
@@ -46,7 +48,7 @@ int execute_short_options(struct s_simple_command_node *node, int i, struct
     return 1;
 }
 
-int print_word_escaped(char *word)
+static int print_word_escaped(char *word)
 {
     if (!strcmp(word, "\\c"))
         return 1;

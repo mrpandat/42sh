@@ -129,40 +129,45 @@ def print_nyan():
             print(resume_errors)
 
 
-def tracegraph():
+def tracegraph(trace):
+    if not trace:
+        return
     print("Generating reports...")
-    a = execute_cmd("git shortlog -s -n")
-    b = ""
-    for line in a.stdout.splitlines():
-        b += ("<h1>" + line + "</h1>")
-    text_file = open("../doc/git.html", "w")
-    text_file.write(b)
-    text_file.close()
-    fig = {
-        'data': [{'labels': ['Errors', 'Failures', 'Success'],
-                  'values': [nb_errors, nb_fail, nb_success],
-                  'type': 'pie'}],
-        'layout': {'title': 'Testsuit errors report'}
-    }
+    try:
+        a = execute_cmd("git shortlog -s -n")
+        b = "<div style='text-align:center'>'"
+        for line in a.stdout.splitlines():
+            b += ("<h3>" + line + "</h3>")
+        text_file = open("../doc/git.html", "w")
+        b += "</div>'"
+        text_file.write(b)
+        text_file.close()
+        fig = {
+            'data': [{'labels': ['Errors', 'Failures', 'Success'],
+                      'values': [nb_errors, nb_fail, nb_success],
+                      'type': 'pie'}],
+            'layout': {'title': 'Testsuit errors report'}
+        }
 
-    plotly.tools.set_credentials_file(username='afepgjn',
-                                      api_key='zl4pmee9nl')
-    py.iplot(fig, filename='errors')
-    trace = go.Scatter(
-        x=resume_time_x,
-        y=resume_time_y,
-        mode='lines',
-        name='lines'
-    )
-    fig = {
-        'data': [trace],
-        'layout': {'title': 'Testsuit speed report',
-                   'xaxis': dict(title='Tests run'),
-                   'yaxis': dict(title='Speed in seconds')
-                   }
-    }
-    py.iplot(fig, filename='speed')
-    print("Reports created in " + b)
+        plotly.tools.set_credentials_file(username='afepgjn',
+                                          api_key='zl4pmee9nl')
+        py.iplot(fig, filename='errors')
+        trace = go.Scatter(
+            x=resume_time_x,
+            y=resume_time_y,
+            mode='lines',
+            name='lines'
+        )
+        fig = {
+            'data': [trace],
+            'layout': {'title': 'Testsuit speed report',
+                       'xaxis': dict(title='Tests run'),
+                       'yaxis': dict(title='Speed in seconds')
+                       }
+        }
+        py.iplot(fig, filename='speed')
+    except:
+        print("Reports created")
 
 
 def ctrl_c_handler(signalnum, stack):
@@ -177,6 +182,7 @@ if __name__ == "__main__":
     sys.argv[0] = ""
     loop = enumerate(sys.argv)
     skip = False
+    trace = False
     for id, arg in loop:
         if skip:
             skip = False
@@ -213,11 +219,14 @@ if __name__ == "__main__":
             elif "binary" in sys.argv:
                 launch_test("binary")
             print_nyan()
-            tracegraph()
+            tracegraph(trace)
             exit(0)
+        elif arg == "-g":
+            trace = True
+            continue
         else:
             print("Unknow option : " + arg)
             exit(1)
     launch_all()
     print_nyan()
-    tracegraph()
+    tracegraph(trace)
