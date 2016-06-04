@@ -129,7 +129,9 @@ def print_nyan():
             print(resume_errors)
 
 
-def tracegraph():
+def tracegraph(trace):
+    if not trace:
+        return
     print("Generating reports...")
     a = execute_cmd("git shortlog -s -n")
     b = ""
@@ -177,6 +179,7 @@ if __name__ == "__main__":
     sys.argv[0] = ""
     loop = enumerate(sys.argv)
     skip = False
+    trace = False
     for id, arg in loop:
         if skip:
             skip = False
@@ -213,11 +216,14 @@ if __name__ == "__main__":
             elif "binary" in sys.argv:
                 launch_test("binary")
             print_nyan()
-            tracegraph()
+            tracegraph(trace)
             exit(0)
+        elif arg == "-g":
+            trace = True
+            continue
         else:
             print("Unknow option : " + arg)
             exit(1)
     launch_all()
     print_nyan()
-    tracegraph()
+    tracegraph(trace)

@@ -5,6 +5,7 @@ RM += -r
 clean:
 	$(RM) build
 	$(RM) doc/doxygen
+	$(RM) doc/git.html
 	$(RM) 42sh
 
 .PHONY : doc
@@ -23,6 +24,15 @@ check:
 	$(RM) doc/report
 	$(MAKE) -C build all
 	$(MAKE) -C build check
+
+
+ifeq (test,$(firstword $(MAKECMDGOALS)))
+  TEST_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(TEST_ARGS):;@:)
+endif
+
+test:
+	python3 tests/test.py -c $(TEST_ARGS)
 
 debug:clean
 	mkdir build && cd build && cmake .. -DBUILD_TYPE:STRING=DEBUG && make && mv 42sh ..
