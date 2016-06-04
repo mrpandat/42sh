@@ -60,3 +60,8 @@ class TestBinaryEcho(unittest.TestCase):
         a = execute_cmd("../42sh -c 'echo -e \\t ~ \\ \n | bn \\z'")
         b = execute_cmd("/bin/echo -e '\\t ~ \\ \n | bn \\z'")
         self.assertEqual(a.stdout, b.stdout)
+
+    def test_14_echo_no_quote(self):
+        a = execute_cmd("../42sh -c echo -e \\t")
+        b = execute_cmd("/bin/echo -e \\t")
+        self.assertEqual(a.stdout, b.stdout)
