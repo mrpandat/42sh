@@ -135,7 +135,7 @@ def tracegraph(trace):
     print("Generating reports...")
     try:
         a = execute_cmd("git shortlog -s -n")
-        b = "<div style='text-align:center'>'"
+        b = "<div style='text-align:center'>"
         for line in a.stdout.splitlines():
             b += ("<h3>" + line + "</h3>")
         text_file = open("../doc/git.html", "w")
