@@ -73,6 +73,7 @@ enum e_element_type
 {
     EL_NONE,
     EL_WORD,
+    EL_ESC_WORD,
     EL_ASSIGNEMENT_WORD,
     EL_REDIRECTION
 };

@@ -26,9 +26,12 @@ bool read_prefix(struct s_element_node *element, struct s_lexer *l)
 
 bool read_element(struct s_element_node *element, struct s_lexer *l)
 {
-    if (lexer_peek(l)->type == TK_WORD)
+    if (lexer_peek(l)->type == TK_WORD || lexer_peek(l)->type == TK_ESC_WORD)
     {
-        element->type = EL_WORD;
+        if (lexer_peek(l)->type == TK_WORD)
+            element->type = EL_WORD;
+        else
+            element->type = EL_ESC_WORD;
         element->data.word = lexer_peek(l)->value;
         lexer_read(l);
         return true;

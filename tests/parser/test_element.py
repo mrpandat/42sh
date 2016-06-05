@@ -54,4 +54,10 @@ class TestElement(unittest.TestCase):
                          self.ffi.string(
                              element_node.data.s_redirection_node.word))
 
-
+    def test_06_escaped_word(self):
+        element_node = self.lib.init_element_node()
+        self.lib.read_element(element_node,
+                              self.init_and_process_lexer(b'\'\\tmyword\\t\''))
+        self.assertEqual(self.lib.EL_ESC_WORD, element_node.type)
+        self.assertEqual(b'\\tmyword\\t',
+                         self.ffi.string(element_node.data.word))
