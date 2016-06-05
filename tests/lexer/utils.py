@@ -20,8 +20,7 @@ def list_equals(test_class, *args):
               type(test_class).__name__, file=sys.stderr)
         exit()
 
-    for lst in args:
-        for count, pair in enumerate(lst):
-            print(str(pair[0]) + ' -> ' + str(pair[1]))
+    for count, pair in enumerate(args):
+        print(str(pair[0]) + ' -> ' + str(pair[1]))
 
     return True
