@@ -208,7 +208,7 @@ if __name__ == "__main__":
             launch_sanity_test()
             print_nyan()
             exit(0)
-        elif arg == "-c":
+        elif arg == "-c" or arg == "--category":
             if "utils" in sys.argv:
                 launch_test("utils")
             elif "lexer" in sys.argv:
