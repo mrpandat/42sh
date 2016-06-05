@@ -22,7 +22,8 @@ class TestCommandsEasy(unittest.TestCase):
         self.assertTrue(
             list_equals(self,
                         (self.lib.TK_WORD, b'echo'),
-                        (self.lib.TK_WORD, b'test'))
+                        (self.lib.TK_WORD, b'test'),
+                        (self.lib.TK_EOF, b'EOF'))
         )
 
         destroy_lexer(self)
