@@ -12,7 +12,7 @@ def destroy_lexer(test_class):
     test_class.lib.lexer_destroy(test_class.clexer)
 
 
-def list_equals(test_class, *args):
+def list_equals(test_class, verbose_mode, *args):
     if len(args) != test_class.lib.lexer_token_list_size(test_class.clexer):
         return False
 
@@ -23,9 +23,15 @@ def list_equals(test_class, *args):
 
     # DEBUG
     # print('Type: ' + str(ctoken_curr.type) + ' - ' + str(token[0]))
-    # print('Value: ' + str(test_class.ffi.string(ctoken_curr.value))
-    #       + ' - ' + str(token[1]))
+    # print('Value: ' + str(test_class.ffi.string(ctoken_curr.value)) +
+    #       ' - ' + str(token[1]))
     for token in args:
+
+        if verbose_mode:
+            print('Type: ' + str(ctoken_curr.type) + ' - ' + str(token[0]))
+            print('Value: ' + str(test_class.ffi.string(ctoken_curr.value)) +
+                  ' - ' + str(token[1]))
+
         if ctoken_curr.type != token[0] \
                 or test_class.ffi.string(ctoken_curr.value) != token[1]:
             return False
