@@ -1,3 +1,10 @@
+/**
+ ** @file builtin.h
+ ** @brief Builtins of 42sh
+ ** @author Treibert Jean
+ */
+
+
 #ifndef INC_42SH_EXIT_H
 #define INC_42SH_EXIT_H
 
@@ -8,6 +15,12 @@ int my_exit(struct s_simple_command_node *node);
 int my_echo(struct s_simple_command_node *node);
 int my_cd(struct s_simple_command_node *node);
 
+/**
+ ** @struct echo_struct
+ ** @brief The echo structure
+ ** @details This structure contains the options of echo builtin.
+ */
+
 struct echo_struct
 {
     int noption;
@@ -15,5 +28,7 @@ struct echo_struct
     int Eoption;
     int options;
 };
+
+int set_option(char *option, int opt);
 
 #endif //INC_42SH_EXIT_H
