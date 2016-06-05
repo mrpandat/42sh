@@ -27,6 +27,16 @@ struct env
     char *HOME;
     char *PWD;
     char *OLDPWD;
+
+    //Shopt variables
+    int ast_print;
+    int dotglob;
+    int expand_aliases;
+    int extglob;
+    int nocaseglob;
+    int nullglob;
+    int sourcepath;
+    int xpg_echo;
 };
 
 struct env g_env;
