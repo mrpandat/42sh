@@ -219,6 +219,9 @@ if __name__ == "__main__":
                 launch_test("execute")
             elif "binary" in sys.argv:
                 launch_test("binary")
+            else:
+                print("Unknow category")
+                exit(1)
             print_nyan()
             tracegraph(trace)
             exit(0)
