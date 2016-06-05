@@ -208,7 +208,7 @@ if __name__ == "__main__":
             launch_sanity_test()
             print_nyan()
             exit(0)
-        elif arg == "-c":
+        elif arg == "-c" or arg == "--category":
             if "utils" in sys.argv:
                 launch_test("utils")
             elif "lexer" in sys.argv:
@@ -219,6 +219,9 @@ if __name__ == "__main__":
                 launch_test("execute")
             elif "binary" in sys.argv:
                 launch_test("binary")
+            else:
+                print("Unknow category")
+                exit(1)
             print_nyan()
             tracegraph(trace)
             exit(0)
