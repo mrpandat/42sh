@@ -16,7 +16,7 @@ class TestCommandsEasy(unittest.TestCase):
 
         self.clexer = self.ffi.NULL
 
-    def test_01_lex_simple_echo(self):
+    def test_01_lex_simple_command(self):
         init_and_process_lexer(self, b'echo test')
 
         self.assertTrue(
@@ -70,6 +70,47 @@ class TestCommandsEasy(unittest.TestCase):
                         (self.lib.TK_WORD, b'cat'),
                         (self.lib.TK_WORD, b'TODO'),
                         (self.lib.TK_NEWLINE, b'\n'),
+                        (self.lib.TK_EOF, b'EOF'))
+        )
+
+        destroy_lexer(self)
+
+    def test_05_lex_simple_piped_command(self):
+        init_and_process_lexer(self, b'echo test | cat')
+
+        self.assertTrue(
+            list_equals(self, False,
+                        (self.lib.TK_WORD, b'echo'),
+                        (self.lib.TK_WORD, b'test'),
+                        (self.lib.TK_OR, b'|'),
+                        (self.lib.TK_WORD, b'cat'),
+                        (self.lib.TK_EOF, b'EOF'))
+        )
+
+        destroy_lexer(self)
+
+    def test_06_lex_simple_out_redir(self):
+        init_and_process_lexer(self, b'echo OK > test.out')
+
+        self.assertTrue(
+            list_equals(self, False,
+                        (self.lib.TK_WORD, b'echo'),
+                        (self.lib.TK_WORD, b'OK'),
+                        (self.lib.TK_GREAT, b'>'),
+                        (self.lib.TK_WORD, b'test.out'),
+                        (self.lib.TK_EOF, b'EOF'))
+        )
+
+        destroy_lexer(self)
+
+    def test_07_lex_simple_in_redir(self):
+        init_and_process_lexer(self, b'cat < test.in')
+
+        self.assertTrue(
+            list_equals(self, False,
+                        (self.lib.TK_WORD, b'cat'),
+                        (self.lib.TK_LESS, b'<'),
+                        (self.lib.TK_WORD, b'test.in'),
                         (self.lib.TK_EOF, b'EOF'))
         )
 
