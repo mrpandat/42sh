@@ -148,21 +148,20 @@ struct s_lexer *lexer_init(const char *command);
 int lexer_current_position(struct s_lexer *lexer);
 
 /**
-** @fn void lexer_process(struct s_lexer *lexer)
-** @brief Lex the command in the lexer instance, and create the tokens for the
-**        parsing function.
+** @fn int lexer_token_list_size(struct s_lexer *lexer)
+** @brief Get th size of the token list in the lexer instance.
 ** @param The lexer instance.
+** @return The token list size, or -1 if invalid lexer.
 */
-void lexer_process(struct s_lexer *lexer);
+int lexer_token_list_size(struct s_lexer *lexer);
 
 /**
 ** @fn void lexer_process(struct s_lexer *lexer)
 ** @brief Lex the command in the lexer instance, and create the tokens for the
 **        parsing function.
 ** @param The lexer instance.
- * @return true if command is lexically valid, false otherwise.
 */
-bool lexer_match_expr(struct s_lexer *lexer);
+void lexer_process(struct s_lexer *lexer);
 
 /**
 ** @fn void lexer_destroy(struct s_lexer *lexer)

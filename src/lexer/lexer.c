@@ -66,7 +66,7 @@ int lexer_current_position(struct s_lexer *lexer)
     return pos;
 }
 
-bool lexer_match_expr(struct s_lexer *lexer)
+static bool lexer_match_expr(struct s_lexer *lexer)
 {
     return match_separator(lexer)
            || lexer_match_eof(lexer)
@@ -78,6 +78,26 @@ bool lexer_match_expr(struct s_lexer *lexer)
            || lexer_match_expansion(lexer)
            || lexer_match_operator(lexer)
            || lexer_read_word(lexer);
+}
+
+int lexer_token_list_size(struct s_lexer *lexer)
+{
+    if (NULL == lexer)
+        return -1;
+
+    if (NULL == lexer->tk_list)
+        return 0;
+
+    struct s_lexer_token *list = lexer->tk_list;
+    int size = 0;
+
+    while (NULL != list)
+    {
+        size++;
+        list = list->next;
+    }
+
+    return size;
 }
 
 void lexer_process(struct s_lexer *lexer)
