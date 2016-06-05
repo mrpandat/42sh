@@ -1,8 +1,7 @@
 #include <builtins.h>
-#include <asm/errno.h>
 
 static int execute_long_option(struct s_simple_command_node *node, int i,
-                        struct echo_struct *echo)
+                               struct echo_struct *echo)
 {
     if (node->nb_elements == 2)
     {
@@ -23,9 +22,16 @@ static int execute_long_option(struct s_simple_command_node *node, int i,
     return 1;
 }
 
+
+static int exit_free(struct echo_struct *echo)
+{
+    free(echo);
+    return 0;
+}
+
 static int execute_short_options(struct s_simple_command_node *node, int i,
-                                struct
-        echo_struct *echo)
+                                 struct
+                                         echo_struct *echo)
 {
     if (!strcmp("-n", node->elements[i]->data.word) && echo->noption == 0)
     {
@@ -73,7 +79,7 @@ static int print_word_escaped(char *word)
     return 0;
 }
 
-int print_word_not_escaped(char *word)
+static int print_word_not_escaped(char *word)
 {
     if (!strcmp(word, "\\c"))
         return 1;
@@ -98,26 +104,28 @@ int print_word_not_escaped(char *word)
     return 0;
 }
 
-static int exit_free(struct echo_struct *echo)
+struct echo_struct *fill_echo()
 {
-    free(echo);
-    return 0;
-}
-
-int my_echo(struct s_simple_command_node *node)
-{
-    int words = 0;
     struct echo_struct *echo = malloc(sizeof(struct echo_struct));
     echo->Eoption = 0;
     echo->eoption = 0;
     echo->noption = 0;
     echo->options = 0;
+    return echo;
+}
+
+
+int my_echo(struct s_simple_command_node *node)
+{
+    int words = 0;
+    struct echo_struct *echo = fill_echo();
     for (int i = 1; i < node->nb_elements; i++)
         if (node->elements[i]->type == EL_WORD)
         {
             if (words == 0)
             {
-                if (execute_long_option(node, i, echo) == 0) return exit_free(echo);
+                if (execute_long_option(node, i, echo) == 0)
+                    return exit_free(echo);
                 if (execute_short_options(node, i, echo) == 0) continue;
             }
             if (words != 0) printf(" ");
@@ -129,7 +137,6 @@ int my_echo(struct s_simple_command_node *node)
             else print_word_not_escaped(node->elements[i]->data.word);
             words++;
         }
-    if (echo->noption == 0)
-        putchar('\n');
+    if (echo->noption == 0) putchar('\n');
     return exit_free(echo);
 }
