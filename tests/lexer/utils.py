@@ -13,14 +13,22 @@ def destroy_lexer(test_class):
 
 
 def list_equals(test_class, *args):
-    try:
-        print(test_class.ffi.string(test_class.clexer.command))
-    except AttributeError:
-        print('No lexer instance found in %s instance.' %
-              type(test_class).__name__, file=sys.stderr)
-        exit()
+    if len(args) != test_class.lib.lexer_token_list_size(test_class.clexer):
+        return False
 
-    for count, pair in enumerate(args):
-        print(str(pair[0]) + ' -> ' + str(pair[1]))
+    ctoken_curr = test_class.clexer.tk_current
+
+    # token[0]: Token type
+    # token[1]: Token value
+
+    # DEBUG
+    # print('Type: ' + str(ctoken_curr.type) + ' - ' + str(token[0]))
+    # print('Value: ' + str(test_class.ffi.string(ctoken_curr.value))
+    #       + ' - ' + str(token[1]))
+    for token in args:
+        if ctoken_curr.type != token[0] \
+                or test_class.ffi.string(ctoken_curr.value) != token[1]:
+            return False
+        ctoken_curr = ctoken_curr.next
 
     return True
