@@ -21,13 +21,6 @@
  */
 int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer);
 
-/**
- ** @fn int file_test(char *name);
- ** @brief tests if a file exists and if it's executable
- ** @param path to the file
- ** @return 0 if it's ok, 127 if it does not exists, 126 if it's not executable
- */
-int file_test(char *name);
 
 int exec_ast_node(struct s_ast_node* node);
 int exec_if_node(struct s_if_node *node);

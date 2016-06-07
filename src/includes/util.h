@@ -56,4 +56,13 @@ int test();
 char *my_itoa(int i);
 int my_pow(int a, int b);
 
+
+/**
+ ** @fn int file_test(char *name);
+ ** @brief tests if a file exists and if it's executable
+ ** @param path to the file
+ ** @return 0 if it's ok, 127 if it does not exists, 126 if it's not executable
+ */
+int file_test(char *name);
+
 #endif
