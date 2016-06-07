@@ -28,14 +28,13 @@ int main(int argc, char *argv[])
     struct s_lexer *lexer = lexer_init(opt.command);
     lexer_process(lexer);
     struct s_ast_node *root = parser(lexer);
+
     if (root == NULL)
     {
         if (strcmp(opt.file, "") != 0)
             free(opt.command);
         return 1;
-
     }
-
     fill_env(lexer, root, opt);
     return execute(opt, root, lexer);
 }
