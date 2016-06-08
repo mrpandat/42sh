@@ -20,9 +20,7 @@ struct options
 {
     int norc; /*!< Set to 1 if norc is specified, 0 otherwise */
     int ast_print; /*!< Set to 1 if we want to print the ast, 0 otherwise */
-    int shopt_operation; /*!< set to 1 if the operation is a + -1 if it's a -*/
     char *command;/*!< command to be executed */
-    char *shopt_option;/*!< the shopt option to add or remove */
     char *file;/*!< The script file path */
 };
 

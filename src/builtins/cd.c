@@ -37,7 +37,6 @@ int my_cd(struct s_simple_command_node *node)
             g_env.OLDPWD = g_env.PWD;
             g_env.PWD = g_env.HOME;
             chdir(g_env.HOME);
-            printf("%s\n", g_env.PWD);
             return 0;
         }
         else
