@@ -59,6 +59,10 @@ int exec_builtin(struct s_simple_command_node *node)
         return my_exit(node);
     else if (!strcmp("cd", node->elements[0]->data.word))
         return my_cd(node);
+    else if (!strcmp("alias", node->elements[0]->data.word))
+        return my_alias(node);
+    else if (!strcmp("unalias", node->elements[0]->data.word))
+        return my_unalias(node);
     return 1;
 }
 
