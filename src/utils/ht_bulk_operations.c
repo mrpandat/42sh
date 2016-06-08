@@ -32,12 +32,12 @@ struct s_element **ht_get_all(struct s_hashtable *ht)
         return NULL;
 
     struct s_element **elements;
-    int ht_size = ht_size(ht);
+    int htsize = ht_size(ht);
 
-    if (0 == ht_size)
+    if (0 == htsize)
         return NULL;
 
-    if (NULL == (elements = malloc(ht_size * sizeof (struct s_element *))))
+    if (NULL == (elements = malloc(htsize * sizeof (struct s_element *))))
         return NULL;
 
     int size = 0;
@@ -64,9 +64,9 @@ void ht_remove_all(struct s_hashtable *ht)
     if (NULL == ht)
         return;
 
-    int ht_size = ht_size(ht);
+    int htsize = ht_size(ht);
 
-    if (0 == ht_size)
+    if (0 == htsize)
         return;
 
     for (size_t i = 0; i < ht->size; ++i)
