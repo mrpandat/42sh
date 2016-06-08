@@ -43,6 +43,14 @@ void ht_remove(struct s_hashtable *ht, char *key);
 
 struct s_element *ht_get(struct s_hashtable *ht, char *key);
 
+/* File: ht_bulk_operations.c */
+
+int ht_size(struct s_hashtable *ht);
+
+struct s_element **ht_get_all(struct s_hashtable *ht);
+
+void ht_remove_all(struct s_hashtable *ht);
+
 // For testing purposes
 void free_element_value(void *value);
 
