@@ -1,19 +1,22 @@
 import unittest
+
 from test_functions import *
 
-class TestBinary_cd(unittest.TestCase):
 
+class TestBinary_cd(unittest.TestCase):
     def test_01_noarg(self):
-        self.assertEqual(execute_cmd_cmp('../42sh -c "cd"'), 0)
+        self.assertEqual(execute_cmd_cmp('cd'), 0)
+
     def test_02_arg(self):
-        self.assertEqual(execute_cmd_cmp('../42sh -c "cd src"'), 0)
-    def test_03_cdminus(self):
-        self.assertEqual(execute_cmd_cmp('../42sh -c "cd && cd -"'), 0)
-    def test_04_cdpwd(self):
-        self.assertEqual(execute_cmd_cmp('../42sh -c "cd /bin && pwd"'), 0)
-    def test_05_cdnoargpwd(self):
-        self.assertEqual(execute_cmd_cmp('../42sh -c "cd && /bin/pwd"'), 0)
-    def test_06_cdminuspwd(self):
-        self.assertEqual(execute_cmd_cmp('../42sh -c "cd - && /bin/pwd"'), 0)
-    def test_06_cdminuspwd(self):
-        self.assertEqual(execute_cmd_cmp('../42sh -c "cd doc"'), 0)
+        a = execute_cmd("../42sh -c 'cd /home && /bin/pwd'")
+        b = execute_cmd("cd /home > /dev/null && /bin/pwd")
+        self.assertEqual(a.stdout == b.stdout, True)
+
+    def test_03_cd_unexistant(self):
+        self.assertEqual(execute_cmd_cmp('cd /bin/caca', True), 0)
+
+    def test_04_cd_min(self):
+        a = execute_cmd("../42sh -c 'cd /home && cd /home && cd -'")
+        b = execute_cmd(
+            "cd /home > /dev/null && cd /home > /dev/null && cd - > /dev/null && /bin/pwd")
+        self.assertEqual((a.stdout).replace("\n", "") == (b.stdout).replace("\n", ""), True)
