@@ -32,5 +32,6 @@ struct echo_struct
 };
 
 int set_option(char *option, int opt);
+int my_source(struct s_simple_command_node *node);
 
 #endif //INC_42SH_EXIT_H

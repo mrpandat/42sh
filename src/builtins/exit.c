@@ -16,7 +16,6 @@ int my_exit(struct s_simple_command_node *node)
         fprintf(stderr, "exit: %s numeric argument required\n",
                 node->elements[1]->data.word);
     }
-    printf("%d\n", nb);
     free_ast_node(g_env.root);
     lexer_destroy(g_env.lexer);
     if (strcmp(g_env.opt->file, "") != 0)

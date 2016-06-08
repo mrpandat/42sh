@@ -1,5 +1,6 @@
 import subprocess
 import os
+import re
 from static.colors import bcolors
 
 
@@ -51,3 +52,43 @@ def execute_cmd_cmp(cmd):
         "stdout: \"" + result.stdout + "\" returncode: " + str(result.returncode) + " stderr: \"" + result.stderr.strip(
             "\n") + "\"" + bcolors.ENDC)
     return 1
+
+
+def get_committers():
+    proc = execute_cmd("git shortlog -s -n --email")
+    committers = list()
+    lines = proc.stdout.splitlines()
+    p = re.compile(r'(\s*)([0-9]*)(\t)([A-Za-z]*)(\s*)([A-Za-z]*)(\s*)(<)([A-Za-z0-9_]*)(@)([A-Za-z.]*)(>)')
+    for line in lines:
+        match = re.search(p, line)
+        if match:
+            groups = match.groups()
+            committer = {'commits': groups[1],
+                         'firstname': groups[3],
+                         'lastname': groups[5],
+                         'login': groups[8]
+                         }
+            committers.append(committer)
+    return committers
+
+
+def get_git_tree_html():
+    colors = dict()
+    colors['[31m'] = 'red'
+    colors['[33m'] = 'yellow'
+    colors['[32m'] = 'green'
+    colors['[1;34m'] = 'blue'
+    proc = execute_cmd("git log"
+                       " --graph"
+                       " --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset"
+                       " %C(bold blue)[%an]%Creset' --abbrev-commit")
+    html = "<div>\n\t<p>\n"
+    for line in proc.stdout.splitlines():
+        line = line.replace("[31m", "<font color = \"red\">")
+        line = line.replace("[33m", "<font color = \"yellow\">")
+        line = line.replace("[32m", "<font color = \"green\">")
+        line = line.replace("[1;34m", "<font color = \"blue\">")
+        line = line.replace("[m", "</font>")
+        html += "\t\t{}<br>\n".format(line)
+    html += "\t</p>\n</div>\n"
+    return html

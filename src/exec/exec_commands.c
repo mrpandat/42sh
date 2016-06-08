@@ -63,6 +63,10 @@ int exec_builtin(struct s_simple_command_node *node)
         return my_alias(node);
     else if (!strcmp("unalias", node->elements[0]->data.word))
         return my_unalias(node);
+    else if (!strcmp("source", node->elements[0]->data.word))
+    {
+        return my_source(node);
+    }
     return 1;
 }
 

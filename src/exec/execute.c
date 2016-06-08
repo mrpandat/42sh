@@ -18,6 +18,8 @@ int is_builtin(char *name) // add others when necessary
         return 1;
     else if (strcmp(name, "unalias") == 0)
         return 1;
+    else if (strcmp(name, "source") == 0)
+        return 1;
     return 0;
 }
 
