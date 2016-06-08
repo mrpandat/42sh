@@ -28,6 +28,9 @@ struct env
     char *PWD;
     char *OLDPWD;
 
+    // Aliases hashtable
+    struct s_hashtable *aliases;
+
     //Shopt variables
     int ast_print;
     int dotglob;
