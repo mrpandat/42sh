@@ -27,6 +27,8 @@ struct s_hashtable *ht_init(size_t size, void (*destroy_val_fn)(void *));
 
 size_t ht_hash(struct s_hashtable *ht, char *key);
 
+void ht_free_list(struct s_hashtable *ht, struct s_element *list);
+
 void ht_destroy(struct s_hashtable *ht);
 
 /* File: ht_element.c */

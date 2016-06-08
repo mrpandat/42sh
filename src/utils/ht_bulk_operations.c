@@ -71,17 +71,8 @@ void ht_remove_all(struct s_hashtable *ht)
 
     for (size_t i = 0; i < ht->size; ++i)
     {
-        if (NULL == ht->table[i])
-            continue;
-
-        struct s_element *list = ht->table[i];
-
-        while (NULL != list)
-        {
-            struct s_element *tmp = list;
-            list = list->next;
-            ht_free_element(ht, tmp);
-        }
+        ht_free_list(ht, ht->table[i]);
+        ht->table[i] = NULL;
     }
 }
 
