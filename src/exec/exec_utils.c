@@ -1,5 +1,6 @@
 #include <global.h>
 #include "../includes/execute.h"
+#include "../includes/expansion.h"
 
 int exec_ast_node(struct s_ast_node *node)
 {
@@ -39,4 +40,15 @@ int exec_redirection_node(struct s_redirection_node *node)
     if (node == NULL)
         return -1;
     return -1;
+}
+
+char *exec_word(struct s_word *word)
+{
+    if (word->type == WD_WORD || word->type == WD_ESC
+        || word->type == WD_ASSIGNEMENT_WORD)
+        return word->value;
+    else if (word->type == WD_ARITH)
+        return arithmetic_expansion(word->value);
+    else
+        return NULL;
 }

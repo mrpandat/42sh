@@ -31,6 +31,7 @@ bool read_input(struct s_ast_node *node, struct s_lexer *l);
 void read_newlines(struct s_lexer *l);
 bool read_redirection(struct s_redirection_node *redirection,
                       struct s_lexer *l);
+enum e_word_type is_word(struct s_lexer_token *token);
 
 /* File: parser_lists.c */
 bool read_list(struct s_ast_node *node, struct s_lexer *l);

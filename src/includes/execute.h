@@ -35,6 +35,7 @@ int exec_command_node(struct s_command_node *node);
 int exec_pipeline_node(struct s_pipeline_node *node);
 int exec_and_or_node(struct s_and_or_node *node);
 int exec_list_node(struct s_list_node *node);
+char *exec_word(struct s_word *word);
 
 int get_children_exit_status(int pid);
 

@@ -1,17 +1,18 @@
 #include <builtins.h>
+#include <execute.h>
 
 static int execute_long_option(struct s_simple_command_node *node, int i,
                                struct echo_struct *echo)
 {
     if (node->nb_elements == 2)
     {
-        if (!strcmp("--version", node->elements[i]->data.word)
+        if (!strcmp("--version", exec_word(node->elements[i]->data.s_word))
             && echo->options == 0)
         {
             printf("Version: 0.1\n");
             return 0;
         }
-        if (!strcmp("--help", node->elements[i]->data.word)
+        if (!strcmp("--help", exec_word(node->elements[i]->data.s_word))
             && echo->options == 0)
         {
             printf("Version: 0.1.\n Ecrit par Treibert "
@@ -33,19 +34,22 @@ static int execute_short_options(struct s_simple_command_node *node, int i,
                                  struct
                                          echo_struct *echo)
 {
-    if (!strcmp("-n", node->elements[i]->data.word) && echo->noption == 0)
+    if (!strcmp("-n", exec_word(node->elements[i]->data.s_word))
+        && echo->noption == 0)
     {
         echo->noption = 1;
         echo->options++;
         return 0;
     }
-    if (!strcmp("-e", node->elements[i]->data.word) && echo->Eoption == 0)
+    if (!strcmp("-e", exec_word(node->elements[i]->data.s_word))
+        && echo->Eoption == 0)
     {
         echo->eoption = 1;
         echo->options++;
         return 0;
     }
-    if (!strcmp("-E", node->elements[i]->data.word) && echo->eoption == 0)
+    if (!strcmp("-E", exec_word(node->elements[i]->data.s_word))
+        && echo->eoption == 0)
     {
         echo->Eoption = 1;
         echo->options++;
@@ -126,23 +130,28 @@ int my_echo(struct s_simple_command_node *node)
     struct echo_struct *echo = fill_echo();
     for (int i = 1; i < node->nb_elements; i++)
     {
-        char *word = node->elements[i]->data.word;
+        char *word = exec_word(node->elements[i]->data.s_word);
         if (node->elements[i]->type == EL_WORD)
         {
-            if (words == 0)
+            if (node->elements[i]->data.s_word->type == WD_WORD)
             {
-                if (execute_long_option(node, i, echo) == 0) return exitf(echo);
-                if (execute_short_options(node, i, echo) == 0) continue;
+                if (words == 0)
+                {
+                    if (execute_long_option(node, i, echo) == 0)
+                        return exitf(echo);
+                    if (execute_short_options(node, i, echo) == 0) continue;
+                }
+                if (words >= 1) printf(" ");
+                print_word_not_escaped(word);
+                words++;
             }
-            if (words >= 1) printf(" ");
-            print_word_not_escaped(word);
-            words++;
-        }
-        else if (node->elements[i]->type == EL_ESC_WORD)
-        {
-            if (echo->eoption == 1 && pr_escaped(word) == 1) return exitf(echo);
-            else fprintf(stdout, "%s", word);
-            if (words != 0) printf(" ");
+            else if (node->elements[i]->data.s_word->type == WD_ESC)
+            {
+                if (echo->eoption == 1 && pr_escaped(word) == 1)
+                    return exitf(echo);
+                else fprintf(stdout, "%s", word);
+                if (words != 0) printf(" ");
+            }
         }
     }
     if (echo->noption == 0) putchar('\n');

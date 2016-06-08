@@ -103,7 +103,11 @@ enum e_token_type
     /** << with */
     TK_HEREDOC,
     /** set */
-    TK_ASSIGNEMENT
+    TK_ASSIGNEMENT,
+    /** Arithmetic expression, without $(( and )) */
+    TK_ARITH,
+    /** Subshell command, without $( and ) */
+    TK_SUBSHELL
 };
 
 /**

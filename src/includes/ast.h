@@ -73,15 +73,28 @@ enum e_element_type
 {
     EL_NONE,
     EL_WORD,
-    EL_ESC_WORD,
-    EL_ASSIGNEMENT_WORD,
     EL_REDIRECTION
+};
+
+enum e_word_type
+{
+    WD_NONE,
+    WD_WORD,
+    WD_ESC,
+    WD_ARITH,
+    WD_SUBSHELL,
+    WD_ASSIGNEMENT_WORD,
+};
+
+struct s_word
+{
+    char *value;
+    enum e_word_type type;
 };
 
 union u_element_data
 {
-    char* word;
-    char* assignement_word;
+    struct s_word *s_word;
     struct s_redirection_node *s_redirection_node;
 };
 

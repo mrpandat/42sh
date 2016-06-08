@@ -5,8 +5,9 @@ bool read_prefix(struct s_element_node *element, struct s_lexer *l)
 {
     if (lexer_peek(l)->type == TK_ASSIGNEMENT)
     {
-        element->type = EL_ASSIGNEMENT_WORD;
-        element->data.assignement_word = lexer_peek(l)->value;
+        element->type = EL_WORD;
+        element->data.s_word = malloc(sizeof (struct s_word));
+        element->data.s_word->value = lexer_peek(l)->value;
         return true;
     }
     else
@@ -26,13 +27,12 @@ bool read_prefix(struct s_element_node *element, struct s_lexer *l)
 
 bool read_element(struct s_element_node *element, struct s_lexer *l)
 {
-    if (lexer_peek(l)->type == TK_WORD || lexer_peek(l)->type == TK_ESC_WORD)
+    enum e_word_type tk_type = is_word(lexer_peek(l));
+    if (tk_type != WD_NONE)
     {
-        if (lexer_peek(l)->type == TK_WORD)
-            element->type = EL_WORD;
-        else
-            element->type = EL_ESC_WORD;
-        element->data.word = lexer_peek(l)->value;
+        element->type = EL_WORD;
+        element->data.s_word = malloc(sizeof (struct s_word));
+        element->data.s_word->value = lexer_peek(l)->value;
         lexer_read(l);
         return true;
     }

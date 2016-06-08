@@ -55,3 +55,31 @@ bool read_input(struct s_ast_node *node, struct s_lexer *l)
     else
         return false;
 }
+
+enum e_word_type is_word(struct s_lexer_token *token)
+{
+    if (token == NULL)
+        return WD_NONE;
+    enum e_token_type word_types[] =
+    {
+        TK_WORD, TK_ESC_WORD, TK_IF, TK_THEN, TK_ELSE, TK_ELIF, TK_FI, TK_DO,
+        TK_DONE, TK_CASE, TK_ESAC, TK_WHILE, TK_UNTIL, TK_FOR, TK_IN,
+        TK_FUNCTION, TK_IONUMBER
+    };
+    int size = 17;
+    for (int i = 0; i < size; i++)
+    {
+        if (token->type == word_types[i])
+        {
+            if (token->type == TK_ESC_WORD)
+                return WD_ESC;
+            else if (token->type == TK_ARITH)
+                return WD_ARITH;
+            else if  (token->type == TK_SUBSHELL)
+                return WD_SUBSHELL;
+            else
+                return WD_WORD;
+        }
+    }
+    return WD_NONE;
+}
