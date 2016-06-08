@@ -57,19 +57,19 @@ static int execute_short_options(struct s_simple_command_node *node, int i,
 
 static int pr_escaped(char *word)
 {
-    for (size_t i = 0; i < sizeof(word); i++)
+    for (size_t i = 0; i < strlen(word); i++)
     {
         if (word[i] == '\0') return 0;
-        if (word[i] == '\\' && sizeof(word) >= i + 1)
+        if (word[i] == '\\' && strlen(word) >= i + 1)
         {
             if (word[i + 1] == 'c') return 1;
-            else if (word[i + 1] == 'a') putchar('\a');
-            else if (word[i + 1] == 'b') putchar('\b');
-            else if (word[i + 1] == 'f') putchar('\f');
-            else if (word[i + 1] == 'n') putchar('\n');
-            else if (word[i + 1] == 'r') putchar('\r');
-            else if (word[i + 1] == 't') putchar('\t');
-            else if (word[i + 1] == 'v') putchar('\v');
+            else if (word[i + 1] == 'a') printf("\a");
+            else if (word[i + 1] == 'b') printf("\b");
+            else if (word[i + 1] == 'f') printf("\f");
+            else if (word[i + 1] == 'n') printf("\n");
+            else if (word[i + 1] == 'r') printf("\r");
+            else if (word[i + 1] == 't') printf("\t");
+            else if (word[i + 1] == 'v') printf("\v");
             else
             {
                 putchar('\\');
@@ -140,8 +140,12 @@ int my_echo(struct s_simple_command_node *node)
         }
         else if (node->elements[i]->type == EL_ESC_WORD)
         {
-            if (echo->eoption == 1 && pr_escaped(word) == 1) return exitf(echo);
-            else fprintf(stdout, "%s", word);
+            if (echo->eoption == 1) {
+                if(pr_escaped(word) == 1)
+                    return exitf(echo);
+
+            }
+            else printf("%s",word);
             if (words != 0) printf(" ");
         }
     }
