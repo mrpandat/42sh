@@ -41,12 +41,12 @@ size_t ht_hash(struct s_hashtable *ht, char *key)
     return hashval % ht->size;
 }
 
-static void ht_free_list(struct s_hashtable *ht, struct s_element *list)
+void ht_free_list(struct s_hashtable *ht, struct s_element *list)
 {
     if (NULL == list)
         return;
 
-    struct s_element *tmp = list;
+    struct s_element *tmp;
     while (NULL != list)
     {
         tmp = list;
@@ -60,13 +60,10 @@ void ht_destroy(struct s_hashtable *ht)
     if (NULL == ht || NULL == ht->table)
         return;
 
-    /** Free element lists */
-    for (size_t i = 0; i < ht->size; ++i)
-    {
-        ht_free_list(ht, ht->table[i]);
-    }
+    if (ht_size(ht) > 0)
+        for (size_t i = 0; i < ht->size; ++i)
+            ht_free_list(ht, ht->table[i]);
 
-    /** Free structure */
     free(ht->table);
     free(ht);
 }

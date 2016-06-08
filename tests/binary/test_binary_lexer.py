@@ -9,8 +9,8 @@ class TestBinaryLexer(unittest.TestCase):
         self.assertEquals(result.returncode, 0)
 
     def test_2_lexer_chars_hard(self):
-        result = execute_cmd('../42sh -c "/bin/echo \{\|\}\~\:\;\(\)\"\'"')
-        self.assertEqual(result.stdout, '{|}~:;()"\'\n')
+        result = execute_cmd('../42sh -c "/bin/echo \{\|\}\~\:\;\(\)\'"')
+        self.assertEqual(result.stdout, '{|}~:;()\'\n')
         self.assertEquals(result.returncode, 0)
 
     def test_3_Lexer_dot(self):

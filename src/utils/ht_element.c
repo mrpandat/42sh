@@ -33,7 +33,9 @@ void ht_free_element(struct s_hashtable *ht, struct s_element *element)
     if (NULL == element)
         return;
 
-    (*ht->destroy_val_fn)(element->value);
+    if (NULL != ht->destroy_val_fn)
+        (*ht->destroy_val_fn)(element->value);
+
     free(element->key);
     free(element);
 }
