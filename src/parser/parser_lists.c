@@ -70,7 +70,11 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
         read_newlines(l);
         list->type = LIST_SEMI;
         list->right = init_ast_node();
-        read_list(list->right, l);
+        if (!read_list(list->right, l))
+        {
+            free_ast_node(list->right);
+            list->type = LIST_NONE;
+        }
     }
     return true;
 }
