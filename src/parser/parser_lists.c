@@ -62,8 +62,19 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
             list->type = LIST_SEMI;
         lexer_read(l);
         list->right = init_ast_node();
-        if (!read_list(list->right, l))
+        if (!read_list(list->right, l) && list->type == LIST_AND)
             list->type = LIST_BG;
+    }
+    else if (lexer_peek(l)->type == TK_NEWLINE)
+    {
+        read_newlines(l);
+        list->type = LIST_SEMI;
+        list->right = init_ast_node();
+        if (!read_list(list->right, l))
+        {
+            free_ast_node(list->right);
+            list->type = LIST_NONE;
+        }
     }
     return true;
 }
