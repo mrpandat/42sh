@@ -16,32 +16,12 @@ int is_builtin(char *name) // add others when necessary
 }
 
 
-int file_test(char *name)
-{
-    struct stat *stats = malloc(sizeof(struct stat));
-    int res = 0;
-    if (stat(name, stats) > -1)
-    {
-        if (S_ISREG(stats->st_mode))
-            res = 0;
-        else
-            res = 127;
-    }
-    else
-        res = 127;
-    if (res == 0 && !(stats->st_mode & S_IXUSR))
-        res = 126;
-    free(stats);
-
-    return res;
-}
-
 
 void not_found(char *name, char **arguments, struct options opt,
                struct s_ast_node *root, struct s_lexer *lexer)
 {
     int res = file_test(name);
-    if (res == 127)
+    if (res == 127|| res == 33)
     {
         char *message = str_append("/bin/sh: ", name);
         char *message1 = str_append(message, ": command not found");
@@ -55,7 +35,7 @@ void not_found(char *name, char **arguments, struct options opt,
         free(message1);
         free(name);
         free(arguments);
-        exit(res);
+        exit(127);
     }
 }
 

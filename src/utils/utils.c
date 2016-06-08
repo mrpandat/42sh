@@ -1,3 +1,4 @@
+#include <sys/stat.h>
 #include "../includes/global.h"
 
 char *args_from_str(char *str, char ***arguments)
@@ -138,8 +139,31 @@ int my_pow(int a, int b)
 }
 
 
-
 int test()
 {
     return 1;
+}
+
+
+
+int file_test(char *name)
+{
+    struct stat *stats = malloc(sizeof(struct stat));
+    int res = 0;
+    if (stat(name, stats) > -1)
+    {
+        if (S_ISREG(stats->st_mode))
+            res = 0;
+        else if (S_ISDIR(stats->st_mode))
+            res = 33;
+        else
+            res = 127;
+    }
+    else
+        res = 127;
+    if (res == 0 && !(stats->st_mode & S_IXUSR))
+        res = 126;
+    free(stats);
+
+    return res;
 }
