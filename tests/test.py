@@ -134,14 +134,22 @@ def tracegraph(trace):
         return
     print("Generating reports...")
     try:
-        a = execute_cmd("git shortlog -s -n")
-        b = "<div style='text-align:center'>"
-        for line in a.stdout.splitlines():
-            b += ("<h3>" + line + "</h3>")
-        text_file = open("../doc/git.html", "w")
-        b += "</div>'"
-        text_file.write(b)
-        text_file.close()
+        with open("../doc/git.html", "w") as file:
+            file.write("<div style='text-align:center'>\n")
+            committers = get_committers()
+            for committer in committers:
+                image = "https://static.acu.epita.fr/photos/2018/{}-thumb".format(committer['login'])
+                file.write("\t<img src=\"{}\" height=\"90\" width=\"60\">".format(image))
+                file.write("<h3>{} - {} {}</h3>\n".format(committer['commits'],
+                                                          committer['firstname'],
+                                                          committer['lastname']))
+            file.write("</div>\n")
+        with open("../doc/git-tree.html", "w") as file:
+            git_tree = get_git_tree_html()
+            file.write(git_tree)
+    except Exception:
+        print("Failed to generate git report")
+    try:
         fig = {
             'data': [{'labels': ['Errors', 'Failures', 'Success'],
                       'values': [nb_errors, nb_fail, nb_success],
@@ -166,8 +174,8 @@ def tracegraph(trace):
                        }
         }
         py.iplot(fig, filename='speed')
-    except:
-        print("Reports created")
+    except Exception:
+        print("Failed to generate statistics graphics")
     execute_cmd("firefox ../doc/report-page.html &")
 
 
