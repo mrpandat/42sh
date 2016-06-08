@@ -86,7 +86,10 @@ int shopt_parse(struct options *options, int i, char** argv)
         return i;
     }
     else
+    {
+        fprintf(stderr, "42sh: %s :  invalid shell option name\n",name);
         exit(2);
+    }
 }
 
 void parse_small_options(int argc, char **argv, struct options *options,
@@ -120,5 +123,4 @@ void parse_options(int argc, char **argv, struct options *options, int start)
 {
         parse_small_options(argc, argv, options, start);
         parse_file(options);
-
 }
