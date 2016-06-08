@@ -4,6 +4,7 @@
 #include <argument_parser.h>
 #include <util.h>
 #include <execute.h>
+#include <builtins.h>
 
 
 int parse_command(char **argv, int i, struct options *options1)
@@ -70,26 +71,10 @@ void parse_file(struct options *options)
 
 }
 
-int shopt_parse(struct options *options, int i, char** argv)
+int shopt_parse(int i, char** argv)
 {
-    char *name = argv[i + 1];
-
-    if (strcmp(name, "ast_print") == 0 || strcmp(name, "dotglob") == 0
-        || strcmp(name, "expand_aliases") == 0
-        || strcmp(name, "extglob") == 0 || strcmp(name, "nocaseglob") == 0
-        || strcmp(name, "nullglob") == 0 || strcmp(name, "sourcepath") == 0
-        || strcmp(name, "xpg_echo") == 0)
-    {
-        options->shopt_operation = (argv[i][0] == '+' ? 1 : -1);
-        i++;
-        options->shopt_option = argv[i];
-        return i;
-    }
-    else
-    {
-        fprintf(stderr, "42sh: %s :  invalid shell option name\n",name);
-        exit(2);
-    }
+        set_option(argv[i + 1],(argv[i][0] == '+' ? 1 : -1));
+        return i + 1;
 }
 
 void parse_small_options(int argc, char **argv, struct options *options,
@@ -110,7 +95,7 @@ void parse_small_options(int argc, char **argv, struct options *options,
             i = parse_command(argv, i, options);
         else if ((argv[i][0] == '-' || argv[i][0] == '+')
                  && argv[i][1] == 'O')
-            i = shopt_parse(options, i, argv);
+            i = shopt_parse(i, argv);
         else if (argv[i][0] == '-' && argv[i][1] == '-') // long option
             parse_long_option(argv, options, i);
         else if (i == argc - 1)

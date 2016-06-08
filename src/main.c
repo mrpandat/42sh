@@ -23,7 +23,7 @@ void fill_env(struct s_lexer *lexer, struct s_ast_node *root,
 
 int main(int argc, char *argv[])
 {
-    struct options opt = {0, 0, 0, "", "", ""};
+    struct options opt = {0, 0, "", ""};
     parse_options(argc, argv, &opt, 1);
     struct s_lexer *lexer = lexer_init(opt.command);
     lexer_process(lexer);
