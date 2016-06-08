@@ -27,6 +27,8 @@ struct s_hashtable *ht_init(size_t size, void (*destroy_val_fn)(void *));
 
 size_t ht_hash(struct s_hashtable *ht, char *key);
 
+void ht_free_list(struct s_hashtable *ht, struct s_element *list);
+
 void ht_destroy(struct s_hashtable *ht);
 
 /* File: ht_element.c */
@@ -42,6 +44,14 @@ void ht_insert(struct s_hashtable *ht, char *key, void *value);
 void ht_remove(struct s_hashtable *ht, char *key);
 
 struct s_element *ht_get(struct s_hashtable *ht, char *key);
+
+/* File: ht_bulk_operations.c */
+
+int ht_size(struct s_hashtable *ht);
+
+struct s_element **ht_get_all(struct s_hashtable *ht);
+
+void ht_remove_all(struct s_hashtable *ht);
 
 // For testing purposes
 void free_element_value(void *value);
