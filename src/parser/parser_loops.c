@@ -44,8 +44,11 @@ bool read_do_group(struct s_ast_node *node, struct s_lexer *l)
 
 bool read_rule_for(struct s_ast_node *node, struct s_lexer *l)
 {
-    if (lexer_peek(l)->type == TK_FOR && lexer_read(l)->type == TK_WORD)
+    if (lexer_peek(l)->type == TK_FOR)
     {
+        lexer_read(l);
+        if (!is_word(lexer_peek(l)))
+            return false;
         node->type = ND_FOR;
         struct s_for_node *for_node = init_for_node(lexer_peek(l)->value);
         node->data.s_for_node = for_node;
@@ -54,7 +57,7 @@ bool read_rule_for(struct s_ast_node *node, struct s_lexer *l)
         if (lexer_peek(l)->type == TK_IN)
         {
             lexer_read(l);
-            while (lexer_peek(l)->type == TK_WORD)
+            while (is_word(lexer_peek(l)))
             {
                 add_for_word(for_node, lexer_peek(l)->value);
                 lexer_read(l);

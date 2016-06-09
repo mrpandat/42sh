@@ -15,8 +15,6 @@ int is_builtin(char *name) // add others when necessary
     return 0;
 }
 
-
-
 void not_found(char *name, char **arguments, struct options opt,
                struct s_ast_node *root, struct s_lexer *lexer)
 {

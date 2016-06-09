@@ -65,12 +65,12 @@ class TestAndOr(unittest.TestCase):
         command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
         self.assertEqual(and_or_1.type, self.lib.ANDOR_OR)
-        self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'word1')
+        self.assertEqual(self.ffi.string(command_1.elements[0].data.s_word.value), b'word1')
         and_or_2 = node.data.s_and_or_node.right.data.s_and_or_node
         command_2 = and_or_2.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
         self.assertEqual(and_or_2.type, self.lib.ANDOR_NONE)
-        self.assertEqual(self.ffi.string(command_2.elements[0].data.word), b'word2')
+        self.assertEqual(self.ffi.string(command_2.elements[0].data.s_word.value), b'word2')
 
     def test_08_and_node_attributes(self):
         node = self.lib.init_ast_node()
@@ -79,9 +79,9 @@ class TestAndOr(unittest.TestCase):
         command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
         self.assertEqual(and_or_1.type, self.lib.ANDOR_AND)
-        self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'word1')
+        self.assertEqual(self.ffi.string(command_1.elements[0].data.s_word.value), b'word1')
         and_or_2 = node.data.s_and_or_node.right.data.s_and_or_node
         command_2 = and_or_2.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
         self.assertEqual(and_or_2.type, self.lib.ANDOR_NONE)
-        self.assertEqual(self.ffi.string(command_2.elements[0].data.word), b'word2')
+        self.assertEqual(self.ffi.string(command_2.elements[0].data.s_word.value), b'word2')

@@ -43,7 +43,7 @@ bool read_rule_case(struct s_ast_node *node, struct s_lexer *l)
     if (lexer_peek(l)->type != TK_CASE)
         return false;
     lexer_read(l);
-    if (lexer_peek(l)->type != TK_WORD)
+    if (is_word(lexer_peek(l)) == WD_NONE)
         return false;
     node->type = ND_CASE;
     struct s_case_node *case_node = init_case_node(lexer_peek(l)->value);
@@ -74,7 +74,7 @@ bool read_case_item(struct s_case_node *node, struct s_lexer *l)
 {
     if (lexer_peek(l)->type == TK_LPAR)
         lexer_read(l);
-    if (lexer_peek(l)->type != TK_WORD)
+    if (is_word(lexer_peek(l)) == WD_NONE || lexer_peek(l)->type == TK_ESAC)
         return false;
     struct s_case_item_node *item = init_case_item_node();
     add_case_item(node, item);
@@ -82,7 +82,8 @@ bool read_case_item(struct s_case_node *node, struct s_lexer *l)
     lexer_read(l);
     while (lexer_peek(l)->type == TK_OR)
     {
-        if (lexer_read(l)->type != TK_WORD)
+        lexer_read(l);
+        if (is_word(lexer_peek(l)) == WD_NONE)
             return false;
         add_case_item_word(item, lexer_peek(l)->value);
         lexer_read(l);

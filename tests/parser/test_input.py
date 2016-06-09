@@ -57,10 +57,10 @@ class TestCommand(unittest.TestCase):
         command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
         self.assertEqual(list_node_1.type, self.lib.LIST_SEMI)
-        self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'word1')
+        self.assertEqual(self.ffi.string(command_1.elements[0].data.s_word.value), b'word1')
         list_node_2 = list_node_1.right.data.s_list_node
         and_or_2 = list_node_2.left.data.s_and_or_node
         command_2 = and_or_2.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
         self.assertEqual(list_node_2.type, self.lib.LIST_NONE)
-        self.assertEqual(self.ffi.string(command_2.elements[0].data.word), b'word2')
+        self.assertEqual(self.ffi.string(command_2.elements[0].data.s_word.value), b'word2')

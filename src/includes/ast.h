@@ -221,6 +221,7 @@ void add_command_redirection(struct s_command_node *command,
 
 /* File: ast_init_elements.c */
 struct s_element_node *init_element_node(void);
+struct s_word *init_word(enum e_word_type type, char *value);
 
 /* File: ast_init_lists.c */
 struct s_pipeline_node *init_pipeline_node(void);
@@ -250,6 +251,7 @@ void free_command_node(struct s_command_node *node);
 
 /* File: ast_free_elements.c */
 void free_element_node(struct s_element_node *node);
+void free_word(struct s_word *word);
 
 /* File: ast_free_lists.c */
 void free_pipeline_node(struct s_pipeline_node *node);
