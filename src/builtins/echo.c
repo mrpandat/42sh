@@ -149,8 +149,11 @@ int my_echo(struct s_simple_command_node *node)
             }
             else if (node->elements[i]->data.s_word->type == WD_ESC)
             {
-                if (echo->eoption == 1 && pr_escaped(word) == 1)
-                    return exitf(echo);
+                if (echo->eoption == 1)
+                {
+                    if (pr_escaped(word) == 1)
+                        return exitf(echo);
+                }
                 else fprintf(stdout, "%s", word);
                 if (words != 0)
                     printf(" ");
