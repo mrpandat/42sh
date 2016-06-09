@@ -66,14 +66,18 @@ static int pr_escaped(char *word)
         if (word[i] == '\0') return 0;
         if (word[i] == '\\' && strlen(word) >= i + 1)
         {
-            if (word[i + 1] == 'c') return 1;
-            else if (word[i + 1] == 'a') printf("\a");
-            else if (word[i + 1] == 'b') printf("\b");
-            else if (word[i + 1] == 'f') printf("\f");
-            else if (word[i + 1] == 'n') printf("\n");
-            else if (word[i + 1] == 'r') printf("\r");
-            else if (word[i + 1] == 't') printf("\t");
-            else if (word[i + 1] == 'v') printf("\v");
+            if (strlen(word) == i + 2
+                || (strlen(word) > i + 2 && word[i + 2] == ' '))
+            {
+                if (word[i + 1] == 'c') return 1;
+                else if (word[i + 1] == 'a') printf("\a");
+                else if (word[i + 1] == 'b') printf("\b");
+                else if (word[i + 1] == 'f') printf("\f");
+                else if (word[i + 1] == 'n') printf("\n");
+                else if (word[i + 1] == 'r') printf("\r");
+                else if (word[i + 1] == 't') printf("\t");
+                else if (word[i + 1] == 'v') printf("\v");
+            }
             else
             {
                 putchar('\\');
