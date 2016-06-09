@@ -41,17 +41,22 @@ def execute_cmd_cmp(cmd):
     result = execute_cmd('../42sh -c \"' + cmd + '\"')
     ref = execute_cmd(cmd)
     ref.stdout = ref.stdout.replace("/bin/sh", "42sh")
-    if ref.stdout == result.stdout and ref.stderr == result.stderr and ref.returncode == result.returncode:
+    if not (ref.stdout == result.stdout and ref.stderr == result.stderr and \
+                    ref.returncode == result.returncode) :
+        print("--> " + bcolors.FAIL + "FAILURE")
+        print("ref:", end=" ")
+        print("stdout: \"" + ref.stdout + "\" returncode: " + str(ref.returncode) + " stderr: \"" + ref.stderr.strip(
+            "\n") + "\"")
+        print("got:", end=" ")
+        print(
+            "stdout: \"" + result.stdout + "\" returncode: " + str(result.returncode) + " stderr: \"" + result.stderr.strip(
+                "\n") + "\"" + bcolors.ENDC)
+        return 1
+
+    if not (sanity_test_cmd('../42sh -c \"' + cmd + '\"')):
+        return 1
+    else:
         return 0
-    print("--> " + bcolors.FAIL + "FAILURE")
-    print("ref:", end=" ")
-    print("stdout: \"" + ref.stdout + "\" returncode: " + str(ref.returncode) + " stderr: \"" + ref.stderr.strip(
-        "\n") + "\"")
-    print("got:", end=" ")
-    print(
-        "stdout: \"" + result.stdout + "\" returncode: " + str(result.returncode) + " stderr: \"" + result.stderr.strip(
-            "\n") + "\"" + bcolors.ENDC)
-    return 1
 
 
 def get_committers():
@@ -92,3 +97,15 @@ def get_git_tree_html():
         html += "\t\t{}<br>\n".format(line)
     html += "\t</p>\n</div>\n"
     return html
+
+def sanity_test_cmd(test):
+    res = execute_cmd(
+        "valgrind --leak-check=full --error-exitcode=42 " + test)
+    if "no leaks are possible" in res.stderr and res.returncode != 42:
+        print(
+            "--> " + bcolors.OKGREEN + "SANITY OK " + bcolors.ENDC, end = '')
+        return True
+    else:
+        print(
+            "--> " + bcolors.FAIL + "UNSAIN TEST " + bcolors.ENDC, end='')
+        return False
