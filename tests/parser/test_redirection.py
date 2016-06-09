@@ -107,7 +107,7 @@ class TestRedirection(unittest.TestCase):
                 self.init_and_process_lexer(b'1> myword')))
 
     def test_17_ionumber_into_ionumber(self):
-        self.assertFalse(
+        self.assertTrue(
             self.lib.read_redirection(
                 self.lib.init_redirection_node(),
                 self.init_and_process_lexer(b'1 > 2')))

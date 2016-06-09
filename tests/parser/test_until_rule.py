@@ -45,9 +45,9 @@ class TestUntilRule(unittest.TestCase):
         predicate_and_or = predicate_list_node.left.data.s_and_or_node
         predicate_command = predicate_and_or.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
-        self.assertEqual(self.ffi.string(predicate_command.elements[0].data.word), b'variable')
+        self.assertEqual(self.ffi.string(predicate_command.elements[0].data.s_word.value), b'variable')
         statement_list_node = until_node.statement.data.s_list_node
         statement_and_or = statement_list_node.left.data.s_and_or_node
         statement_command = statement_and_or.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
-        self.assertEqual(self.ffi.string(statement_command.elements[0].data.word), b'shit')
+        self.assertEqual(self.ffi.string(statement_command.elements[0].data.s_word.value), b'shit')

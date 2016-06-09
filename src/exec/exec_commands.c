@@ -20,7 +20,7 @@ char **get_argv(struct s_simple_command_node *node,
     {
         if (node->elements[i]->type == EL_WORD)
         {
-            word = node->elements[i]->data.word;
+            word = exec_word(node->elements[i]->data.s_word);
             if (i == 0)
                 strcpy(*prog, word);
             arguments[i] = malloc(sizeof (char) * (strlen(word) + 1));
@@ -34,7 +34,7 @@ char **get_argv(struct s_simple_command_node *node,
 int exec_file(struct s_simple_command_node *node)
 {
     char *prog =  malloc(sizeof (char) *
-                         strlen(node->elements[0]->data.word) + 1);
+                         strlen(exec_word(node->elements[0]->data.s_word)) + 1);
     char **arguments = get_argv(node, &prog);
     int res = file_test(prog);
     if (res == 0)
@@ -53,18 +53,19 @@ int exec_file(struct s_simple_command_node *node)
 
 int exec_builtin(struct s_simple_command_node *node)
 {
-    if (!strcmp("echo", node->elements[0]->data.word))
+    if (!strcmp("echo", exec_word(node->elements[0]->data.s_word)))
         return my_echo(node);
-    else if (!strcmp("exit", node->elements[0]->data.word))
+    else if (!strcmp("exit", exec_word(node->elements[0]->data.s_word)))
         return my_exit(node);
-    else if (!strcmp("cd", node->elements[0]->data.word))
+    else if (!strcmp("cd", exec_word(node->elements[0]->data.s_word)))
         return my_cd(node);
     return 1;
 }
 
 int exec_simple_command_node(struct s_simple_command_node *node)
 {
-    if (is_builtin(node->elements[0]->data.word) == 1)
+    if (node->elements[0]->type == EL_WORD
+        && is_builtin(exec_word(node->elements[0]->data.s_word)) == 1)
         return exec_builtin(node);
     else
         return exec_file(node);

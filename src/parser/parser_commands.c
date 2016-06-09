@@ -27,7 +27,7 @@ bool read_funcdec(struct s_ast_node *node, struct s_lexer *l)
     node->type = ND_FUNCDEC;
     if (lexer_peek(l)->type == TK_FUNCTION)
         lexer_read(l);
-    if (lexer_peek(l)->type != TK_WORD || lexer_peek(l)->next == NULL
+    if (is_word(lexer_peek(l)) == WD_NONE || lexer_peek(l)->next == NULL
         || lexer_peek(l)->next->type != TK_LPAR
         || lexer_peek(l)->next->next == NULL
         || lexer_peek(l)->next->next->type != TK_RPAR)

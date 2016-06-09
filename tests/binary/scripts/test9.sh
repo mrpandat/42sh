@@ -1,1 +1,1 @@
-if echo lol ; then echo d; else echo lul; fi
+if echo lol; then echo d; else echo lul; fi

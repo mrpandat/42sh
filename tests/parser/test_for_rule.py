@@ -56,4 +56,4 @@ class TestForRule(unittest.TestCase):
         and_or_1 = list_node_1.left.data.s_and_or_node
         command_1 = and_or_1.left.data.s_pipeline_node.commands[0].data \
             .s_command_node.content.data.s_simple_command_node
-        self.assertEqual(self.ffi.string(command_1.elements[0].data.word), b'shit')
+        self.assertEqual(self.ffi.string(command_1.elements[0].data.s_word.value), b'shit')
