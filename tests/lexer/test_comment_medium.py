@@ -20,7 +20,7 @@ class TestCommentMedium(unittest.TestCase):
                                      b'fi\necho titi')
 
         self.assertTrue(
-            list_equals(self, True,
+            list_equals(self, False,
                         (self.lib.TK_WORD, b'echo'),
                         (self.lib.TK_WORD, b'toto'),
                         (self.lib.TK_NEWLINE, b'\n'),
