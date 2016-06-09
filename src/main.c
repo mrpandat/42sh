@@ -1,4 +1,5 @@
 #include <parser.h>
+#include "includes/hashtable.h"
 #include "includes/execute.h"
 
 
@@ -10,6 +11,7 @@ void fill_env(struct s_lexer *lexer, struct s_ast_node *root,
     g_env.HOME = getenv("HOME");
     g_env.PWD = getenv("PWD");
     g_env.OLDPWD = getenv("OLDPWD");
+    g_env.aliases = ht_init(100, free);
     g_env.opt = &opt;
     g_env.ast_print = 0;
     g_env.dotglob = 0;

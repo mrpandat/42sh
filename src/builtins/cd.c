@@ -13,7 +13,8 @@ int cd_dir(struct s_simple_command_node *node)
             char *tmp = g_env.OLDPWD;
             g_env.OLDPWD = g_env.PWD;
             g_env.PWD = tmp;
-            chdir(g_env.OLDPWD);
+            chdir(g_env.PWD);
+            printf("%s", g_env.PWD);
         }
         else
         {
@@ -24,10 +25,11 @@ int cd_dir(struct s_simple_command_node *node)
                 chdir(exec_word(node->elements[1]->data.s_word));
             }
             else
-                return 1; // TODO : check if there is an error here
+            {
+                return 2;
+            }
         }
     }
-    printf("%s\n", g_env.PWD);
     return 0;
 }
 

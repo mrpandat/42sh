@@ -4,6 +4,8 @@
 #include <lexer.h>
 #include <sys/wait.h>
 
+#include "../includes/hashtable.h"
+
 int is_builtin(char *name) // add others when necessary
 {
     if (strcmp(name, "exit") == 0)
@@ -11,6 +13,12 @@ int is_builtin(char *name) // add others when necessary
     else if (strcmp(name, "echo") == 0)
         return 1;
     else if (strcmp(name, "cd") == 0)
+        return 1;
+    else if (strcmp(name, "alias") == 0)
+        return 1;
+    else if (strcmp(name, "unalias") == 0)
+        return 1;
+    else if (strcmp(name, "source") == 0)
         return 1;
     return 0;
 }
@@ -33,6 +41,7 @@ void not_found(char *name, char **arguments, struct options opt,
         free(message1);
         free(name);
         free(arguments);
+        ht_destroy(g_env.aliases);
         exit(127);
     }
 }
@@ -49,6 +58,7 @@ int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer)
 
     free_ast_node(root);
     lexer_destroy(lexer);
+    ht_destroy(g_env.aliases);
     return ret;
 }
 

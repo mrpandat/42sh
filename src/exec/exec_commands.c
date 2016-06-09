@@ -53,12 +53,22 @@ int exec_file(struct s_simple_command_node *node)
 
 int exec_builtin(struct s_simple_command_node *node)
 {
+    if (node->elements[0]->type != EL_WORD)
+        return 1;
     if (!strcmp("echo", exec_word(node->elements[0]->data.s_word)))
         return my_echo(node);
     else if (!strcmp("exit", exec_word(node->elements[0]->data.s_word)))
         return my_exit(node);
     else if (!strcmp("cd", exec_word(node->elements[0]->data.s_word)))
         return my_cd(node);
+    else if (!strcmp("alias", exec_word(node->elements[0]->data.s_word)))
+        return my_alias(node);
+    else if (!strcmp("unalias", exec_word(node->elements[0]->data.s_word)))
+        return my_unalias(node);
+    else if (!strcmp("source", exec_word(node->elements[0]->data.s_word)))
+    {
+        return my_source(node);
+    }
     return 1;
 }
 

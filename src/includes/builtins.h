@@ -14,6 +14,8 @@
 int my_exit(struct s_simple_command_node *node);
 int my_echo(struct s_simple_command_node *node);
 int my_cd(struct s_simple_command_node *node);
+int my_alias(struct s_simple_command_node *node);
+int my_unalias(struct s_simple_command_node *node);
 
 /**
  ** @struct echo_struct
@@ -30,5 +32,6 @@ struct echo_struct
 };
 
 int set_option(char *option, int opt);
+int my_source(struct s_simple_command_node *node);
 
 #endif //INC_42SH_EXIT_H
