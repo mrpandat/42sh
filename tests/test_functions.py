@@ -1,6 +1,6 @@
-import subprocess
 import os
 import re
+import subprocess
 from static.colors import bcolors
 
 
@@ -9,7 +9,8 @@ def print_ok():
 
 
 def execute_cmd(cmd):
-    proc = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+    proc = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE, universal_newlines=True)
     return proc
 
 
@@ -37,26 +38,26 @@ def get_source_all_files(path):
     return source
 
 
-def execute_cmd_cmp(cmd):
+def execute_cmd_cmp(cmd, code=False):
     result = execute_cmd('../42sh -c \"' + cmd + '\"')
     ref = execute_cmd(cmd)
     ref.stdout = ref.stdout.replace("/bin/sh", "42sh")
-    if not (ref.stdout == result.stdout and ref.stderr == result.stderr and \
-                    ref.returncode == result.returncode) :
-        print("--> " + bcolors.FAIL + "FAILURE")
-        print("ref:", end=" ")
-        print("stdout: \"" + ref.stdout + "\" returncode: " + str(ref.returncode) + " stderr: \"" + ref.stderr.strip(
-            "\n") + "\"")
-        print("got:", end=" ")
-        print(
-            "stdout: \"" + result.stdout + "\" returncode: " + str(result.returncode) + " stderr: \"" + result.stderr.strip(
-                "\n") + "\"" + bcolors.ENDC)
-        return 1
-
-    if not (sanity_test_cmd('../42sh -c \"' + cmd + '\"')):
-        return 1
-    else:
+    if code and ref.returncode == result.returncode:
         return 0
+    if ref.stdout == result.stdout and ref.stderr == result.stderr and ref.returncode == result.returncode:
+        return 0
+    print("*********************" + bcolors.FAIL)
+    print(cmd)
+    print("ref:", end=" ")
+    print("stdout: \"" + ref.stdout + "\" returncode: " + str(
+        ref.returncode) + " stderr: \"" + ref.stderr.strip(
+        "\n") + "\"")
+    print("got:", end=" ")
+    print(
+        "stdout: \"" + result.stdout + "\" returncode: " + str(
+            result.returncode) + " stderr: \"" + result.stderr.strip(
+            "\n") + "\"" + bcolors.ENDC)
+    return 1
 
 
 def get_committers():

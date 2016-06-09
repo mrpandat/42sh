@@ -2,6 +2,7 @@
 #include <lexer.h>
 #include <argument_parser.h>
 #include <ctype.h>
+#include <hashtable.h>
 
 int my_exit(struct s_simple_command_node *node)
 {
@@ -20,6 +21,6 @@ int my_exit(struct s_simple_command_node *node)
     lexer_destroy(g_env.lexer);
     if (strcmp(g_env.opt->file, "") != 0)
         free(g_env.opt->command);
-
+    ht_destroy(g_env.aliases);
     exit(nb);
 }
