@@ -59,6 +59,7 @@ bool lexer_match_quote(struct s_lexer *lexer)
     {
         lexer_add_token(lexer, TK_ESC_WORD, val);
         lexer->current += (strlen(val) + 1);
+        free(val);
         return true;
     }
     free(val);
@@ -94,6 +95,7 @@ bool lexer_match_dquote(struct s_lexer *lexer)
     {
         lexer_add_token(lexer, TK_WORD, val);
         lexer->current += (strlen(val) + 1);
+        free(val);
         return true;
     }
     free(val);

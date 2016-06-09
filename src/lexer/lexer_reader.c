@@ -63,6 +63,8 @@ bool lexer_read_word(struct s_lexer *lexer)
 
     lexer_add_token(lexer, TK_WORD, value);
 
+    free(value);
+
     return true;
 }
 
