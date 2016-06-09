@@ -10,7 +10,7 @@ def executeEcho(str):
         print("ref: " + b.stdout)
         print("got: " + a.stdout)
     return (a.stdout == b.stdout
-    and sanity_test_cmd("../42sh -c \"echo " + str + "\""))
+            and sanity_test_cmd("../42sh -c \"echo " + str + "\""))
 
 
 class TestBinaryEcho(unittest.TestCase):
@@ -37,7 +37,6 @@ class TestBinaryEcho(unittest.TestCase):
         b = execute_cmd("/bin/echo --help")
         self.assertEqual(a.returncode, b.returncode)
         self.assertTrue(sanity_test_cmd("../42sh -c 'echo --help'"))
-
 
     def test_07_echo_special(self):
         self.assertTrue(executeEcho("\\t"))
