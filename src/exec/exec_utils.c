@@ -42,6 +42,17 @@ int exec_redirection_node(struct s_redirection_node *node)
     return -1;
 }
 
+char *tilde_expantion(char *word)
+{
+    if (!strcmp("~", word))
+        return g_env.HOME;
+    else if (!strcmp("~-", word))
+        return g_env.OLDPWD;
+    else if (!strcmp("~+", word))
+        return g_env.PWD;
+    return NULL;
+}
+
 char *exec_word(struct s_word *word)
 {
     if (word->type == WD_WORD || word->type == WD_ESC
