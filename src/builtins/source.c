@@ -1,6 +1,6 @@
-#include <malloc.h>
 #include <execute.h>
 #include <util.h>
+#include <global.h>
 
 
 int my_source(struct s_simple_command_node *node)

@@ -65,4 +65,6 @@ int my_pow(int a, int b);
  */
 int file_test(char *name);
 
+char *my_strcat(char *dest, char *src);
+
 #endif

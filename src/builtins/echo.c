@@ -130,10 +130,18 @@ int my_echo(struct s_simple_command_node *node)
     struct echo_struct *echo = fill_echo();
     for (int i = 1; i < node->nb_elements; i++)
     {
-        char *word = exec_word(node->elements[i]->data.s_word);
         if (node->elements[i]->type == EL_WORD)
         {
-            if (node->elements[i]->data.s_word->type == WD_WORD)
+            char *word = exec_word(node->elements[i]->data.s_word);
+            if (node->elements[i]->data.s_word->type == WD_ESC)
+            {
+                if (echo->eoption == 1 && pr_escaped(word) == 1)
+                    return exitf(echo);
+                else fprintf(stdout, "%s", word);
+                if (words != 0)
+                    printf(" ");
+            }
+            else
             {
                 if (words == 0)
                 {
@@ -146,14 +154,6 @@ int my_echo(struct s_simple_command_node *node)
                     printf(" ");
                 print_word_not_escaped(word);
                 words++;
-            }
-            else if (node->elements[i]->data.s_word->type == WD_ESC)
-            {
-                if (echo->eoption == 1 && pr_escaped(word) == 1)
-                    return exitf(echo);
-                else fprintf(stdout, "%s", word);
-                if (words != 0)
-                    printf(" ");
             }
         }
     }

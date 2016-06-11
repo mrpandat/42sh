@@ -8,7 +8,15 @@ void free_element_node(struct s_element_node *node)
     else if (node->type == EL_REDIRECTION)
         free_redirection_node(node->data.s_redirection_node);
     else if (node->type == EL_WORD)
+    {
+        if (node->data.s_word->type == WD_ARITH)
+        {
+            if (node->data.s_word->result != NULL)
+                free(node->data.s_word->result);
+            free(node->data.s_word->value);
+        }
         free_word(node->data.s_word);
+    }
     free(node);
 }
 

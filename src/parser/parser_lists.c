@@ -68,6 +68,8 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
                 list->type = LIST_BG;
             else
                 list->type = LIST_NONE;
+            free(list->right);
+            list->right = NULL;
         }
     }
     else if (lexer_peek(l)->type == TK_NEWLINE)
@@ -78,6 +80,7 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
         if (!read_list(list->right, l))
         {
             free_ast_node(list->right);
+            list->right = NULL;
             list->type = LIST_NONE;
         }
     }
@@ -108,6 +111,8 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
                 list->type = LIST_BG;
             else
                 list->type = LIST_NONE;
+            free(list->right);
+            list->right = NULL;
         }
     }
     return true;
