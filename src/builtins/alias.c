@@ -96,13 +96,15 @@ int my_alias(struct s_simple_command_node *node)
     for (int i = 1; i < node->nb_elements; ++i)
     {
         char *tmp = strdup(exec_word(node->elements[i]->data.s_word));
-        if (NULL != strtok(tmp, "="))
-            if (NULL != node->elements[i + 1]
-                && WD_ESC == node->elements[i + 1]->data.s_word->type)
+        char *key = strtok(tmp, "=");
+        char *val = strtok(NULL, "=");
+        if (NULL != key)
+            if (NULL == val)
             {
                 alias_set_value(node->elements[i], node->elements[i + 1]);
                 i++;
             }
+            /** value has no quoting */
             else
                 alias_set_value(node->elements[i], NULL);
         else
