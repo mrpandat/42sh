@@ -69,19 +69,19 @@ static int pr_escaped(char *word)
             return 0;
         if (word[i] == '\\' && sw >= i + 1)
         {
-                if (word[i + 1] == 'c') return 1;
-                else if (word[i + 1] == 'a') printf("\a");
-                else if (word[i + 1] == 'b') printf("\b");
-                else if (word[i + 1] == 'f') printf("\f");
-                else if (word[i + 1] == 'n') printf("\n");
-                else if (word[i + 1] == 'r') printf("\r");
-                else if (word[i + 1] == 't') printf("\t");
-                else if (word[i + 1] == 'v') printf("\v");
-                else
-                {
-                    putchar('\\');
-                    putchar(word[i + 1]);
-                }
+            if (word[i + 1] == 'c') return 1;
+            else if (word[i + 1] == 'a') printf("\a");
+            else if (word[i + 1] == 'b') printf("\b");
+            else if (word[i + 1] == 'f') printf("\f");
+            else if (word[i + 1] == 'n') printf("\n");
+            else if (word[i + 1] == 'r') printf("\r");
+            else if (word[i + 1] == 't') printf("\t");
+            else if (word[i + 1] == 'v') printf("\v");
+            else
+            {
+                putchar('\\');
+                putchar(word[i + 1]);
+            }
 
             i++;
         }
@@ -119,7 +119,7 @@ static int print_word_not_escaped(char *word)
 
 struct echo_struct *fill_echo()
 {
-    struct echo_struct *echo = malloc(sizeof(struct echo_struct));
+    struct echo_struct *echo = malloc(sizeof (struct echo_struct));
     echo->Eoption = 0;
     echo->eoption = 0;
     echo->noption = 0;
