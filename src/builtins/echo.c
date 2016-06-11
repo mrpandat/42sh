@@ -65,7 +65,7 @@ static int pr_escaped(char *word)
             return 0;
         if (word[i] == '\\' && sw >= i + 1)
         {
-            if (sw == i + 2 || (sw > i + 2 && word[i + 2] == ' '))
+            if (sw >= i + 2)
             {
                 if (word[i + 1] == 'c') return 1;
                 else if (word[i + 1] == 'a') printf("\a");
