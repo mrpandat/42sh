@@ -15,14 +15,13 @@ static int execute_long_option(struct s_simple_command_node *node, int i,
         if (!strcmp("--version", exec_word(node->elements[i]->data.s_word))
             && echo->options == 0)
         {
-            printf("Version: 0.1\n");
+            printf("Version: 1.0\n");
             return 0;
         }
         if (!strcmp("--help", exec_word(node->elements[i]->data.s_word))
             && echo->options == 0)
         {
-            printf("Version: 0.1.\n Ecrit par Treibert "
-                           "Jean.\n");
+            printf("Version: 0.1.\n Ecrit par Treibert Jean.\n");
             return 0;
         }
     }
@@ -31,29 +30,34 @@ static int execute_long_option(struct s_simple_command_node *node, int i,
 
 
 static int execute_short_options(struct s_simple_command_node *node, int i,
-                                 struct
-                                         echo_struct *echo)
+                                 struct echo_struct *echo)
 {
     char *ew = exec_word(node->elements[i]->data.s_word);
-    if (!strcmp("-n", ew) && echo->noption == 0)
+    if (ew[0] != '-') return 1;
+    for (size_t j = 1; j < strlen(ew); j++)
     {
-        echo->noption = 1;
-        echo->options++;
-        return 0;
+        if (ew[j] == '\0') return 0;
+        switch (ew[j])
+        {
+            case 'n':
+                echo->noption = 1;
+                echo->options++;
+                break;
+            case 'e':
+                echo->eoption = 1;
+                echo->Eoption = 1;
+                echo->options++;
+                break;
+            case 'E':
+                echo->eoption = 1;
+                echo->Eoption = 1;
+                echo->options++;
+                break;
+            default:
+                return 1;
+        }
     }
-    if (!strcmp("-e", ew) && echo->Eoption == 0)
-    {
-        echo->eoption = 1;
-        echo->options++;
-        return 0;
-    }
-    if (!strcmp("-E", ew) && echo->eoption == 0)
-    {
-        echo->Eoption = 1;
-        echo->options++;
-        return 0;
-    }
-    return 1;
+    return 0;
 }
 
 static int pr_escaped(char *word)
@@ -65,8 +69,6 @@ static int pr_escaped(char *word)
             return 0;
         if (word[i] == '\\' && sw >= i + 1)
         {
-            if (sw >= i + 2)
-            {
                 if (word[i + 1] == 'c') return 1;
                 else if (word[i + 1] == 'a') printf("\a");
                 else if (word[i + 1] == 'b') printf("\b");
@@ -75,12 +77,12 @@ static int pr_escaped(char *word)
                 else if (word[i + 1] == 'r') printf("\r");
                 else if (word[i + 1] == 't') printf("\t");
                 else if (word[i + 1] == 'v') printf("\v");
-            }
-            else
-            {
-                putchar('\\');
-                putchar(word[i + 1]);
-            }
+                else
+                {
+                    putchar('\\');
+                    putchar(word[i + 1]);
+                }
+
             i++;
         }
         else
