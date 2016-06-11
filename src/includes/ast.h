@@ -89,6 +89,7 @@ enum e_word_type
 struct s_word
 {
     char *value;
+    char *result;
     enum e_word_type type;
 };
 

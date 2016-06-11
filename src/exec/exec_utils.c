@@ -59,7 +59,12 @@ char *exec_word(struct s_word *word)
         || word->type == WD_ASSIGNEMENT_WORD)
         return word->value;
     else if (word->type == WD_ARITH)
-        return arithmetic_expansion(word->value);
+    {
+        if (word->result != NULL)
+            return word->result;
+        word->result = arithmetic_expansion(word->value);
+        return word->result;
+    }
     else
         return NULL;
 }

@@ -119,7 +119,7 @@ static int print_word_not_escaped(char *word)
 
 struct echo_struct *fill_echo()
 {
-    struct echo_struct *echo = malloc(sizeof (struct echo_struct));
+    struct echo_struct *echo = malloc(sizeof(struct echo_struct));
     echo->Eoption = 0;
     echo->eoption = 0;
     echo->noption = 0;
@@ -134,24 +134,26 @@ int my_echo(struct s_simple_command_node *node)
     struct echo_struct *echo = fill_echo();
     for (int i = 1; i < node->nb_elements; i++)
     {
-        char *word = exec_word(node->elements[i]->data.s_word);
         if (node->elements[i]->type != EL_WORD) continue;
-        if (node->elements[i]->data.s_word->type == WD_WORD)
+        char *word = exec_word(node->elements[i]->data.s_word);
+
+        if (node->elements[i]->data.s_word->type == WD_ESC)
+        {
+            if (echo->eoption == 0) fprintf(stdout, "%s", word);
+            else if (pr_escaped(word) == 1) return exitf(echo);
+            if (words != 0) printf(" ");
+        }
+        else
         {
             if (words == 0)
             {
-                if (execute_long_option(node, i, echo) == 0) return exitf(echo);
+                if (execute_long_option(node, i, echo) == 0)
+                    return exitf(echo);
                 if (execute_short_options(node, i, echo) == 0) continue;
             }
             if (words >= 1) printf(" ");
             print_word_not_escaped(word);
             words++;
-        }
-        else if (node->elements[i]->data.s_word->type == WD_ESC)
-        {
-            if (echo->eoption == 0) fprintf(stdout, "%s", word);
-            else if (pr_escaped(word) == 1) return exitf(echo);
-            if (words != 0) printf(" ");
         }
     }
     if (echo->noption == 0) putchar('\n');

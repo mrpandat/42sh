@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <sys/stat.h>
 #include "../includes/global.h"
 
@@ -144,8 +146,6 @@ int test()
     return 1;
 }
 
-
-
 int file_test(char *name)
 {
     struct stat *stats = malloc(sizeof(struct stat));
@@ -166,4 +166,14 @@ int file_test(char *name)
     free(stats);
 
     return res;
+}
+
+char *my_strcat(char *dest, char *src)
+{
+    if (src == NULL)
+        return dest;
+    int lendest = strlen(dest);
+    int lensrc = strlen(src);
+    dest = realloc(dest, lendest + lensrc + 1);
+    return strcat(dest, src);
 }

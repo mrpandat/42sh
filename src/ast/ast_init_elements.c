@@ -13,6 +13,7 @@ struct s_word *init_word(enum e_word_type type, char *value)
     struct s_word *word = malloc(sizeof (struct s_word));
     word->type = type;
     word->value = value;
+    word->result = NULL;
     return word;
 }
 
