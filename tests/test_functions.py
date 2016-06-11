@@ -31,7 +31,7 @@ def get_all_files(path):
 
 def get_source_all_files(path):
     source = ''
-    for source_file in get_all_files(path):
+    for source_file in sorted(get_all_files(path)):
         for line in open(source_file, 'r').readlines():
             if "#" not in line:
                 source += line

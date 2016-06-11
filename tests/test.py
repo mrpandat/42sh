@@ -109,6 +109,30 @@ def launch_all():
     launch_sanity_test()
 
 
+def launch_test_builtin(builtin):
+    print()
+    print()
+    print((" Launching " + builtin + " tests ").center(80, '*'))
+    print()
+    for test in [os.path.join("binary", fn) for fn in
+                 next(os.walk("binary"))[2]]:
+        if ("test_binary_" + builtin) in test:
+            a = time.time()
+            test = test.replace("/", ".").replace(".py", "")
+            print(test)
+            my_test = unittest.TestLoader().loadTestsFromName(test)
+
+            if not MyTestRunner(verbosity=3, resultclass=MyTestResult).run(
+                    my_test, a, begin, mtimeout):
+                print("Timeout...")
+                exit(1)
+            else:
+                global resume_time_y
+                resume_time_y.append(time.time() - a)
+                global resume_time_x
+                resume_time_x.append(len(resume_time_x))
+
+
 def print_nyan():
     global nb_fail
     if nb_fail == 0 and nb_errors == 0:
@@ -138,11 +162,16 @@ def tracegraph(trace):
             file.write("<div style='text-align:center'>\n")
             committers = get_committers()
             for committer in committers:
-                image = "https://static.acu.epita.fr/photos/2018/{}-thumb".format(committer['login'])
-                file.write("\t<img src=\"{}\" height=\"90\" width=\"60\">".format(image))
+                image = "https://static.acu.epita.fr/photos/2018/{}-thumb".format(
+                    committer['login'])
+                file.write(
+                    "\t<img src=\"{}\" height=\"90\" width=\"60\">".format(
+                        image))
                 file.write("<h3>{} - {} {}</h3>\n".format(committer['commits'],
-                                                          committer['firstname'],
-                                                          committer['lastname']))
+                                                          committer[
+                                                              'firstname'],
+                                                          committer[
+                                                              'lastname']))
             file.write("</div>\n")
         with open("../doc/git-tree.html", "w") as file:
             git_tree = get_git_tree_html()
@@ -233,6 +262,9 @@ if __name__ == "__main__":
             print_nyan()
             tracegraph(trace)
             exit(0)
+        elif arg == "-x":
+            launch_test_builtin(sys.argv[id + 1])
+            exit(1)
         elif arg == "-g":
             trace = True
             continue

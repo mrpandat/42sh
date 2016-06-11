@@ -61,3 +61,6 @@ class TestBinaryEcho(unittest.TestCase):
 
     def test_14_echo_special_e_quoted_multiple(self):
         self.assertTrue(executeEcho("-e \'\\t \\t\'"))
+
+    def test_15_echo_special_e_quoted_multipl_escape(self):
+        self.assertTrue(executeEcho("-e \'\\ta\\ta\\t\\t\'"))
