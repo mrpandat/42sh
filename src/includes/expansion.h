@@ -147,6 +147,16 @@ struct s_art_node *read_i(struct s_stream *stream);
 struct s_art_node *read_j(struct s_stream *stream);
 struct s_art_node *read_num(struct s_stream *stream);
 void read_spaces(struct s_stream *stream);
+struct s_binop_node *init_binop_node(struct s_art_node *left,
+                                     enum e_binop_type type,
+                                     struct s_art_node *right);
+struct s_unop_node *init_unop_node(enum e_unop_type type,
+                                   struct s_art_node *son);
+struct s_number_node *init_num_node_int(int num);
+void free_binop_node(struct s_binop_node *node);
+void free_unop_node(struct s_unop_node *node);
+void free_num_node(struct s_number_node *node);
+void free_art_node(struct s_art_node *node);
 
 int execute_art_node(struct s_art_node *node);
 
