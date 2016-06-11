@@ -1,8 +1,9 @@
 import unittest
+
 from test_functions import *
 
-class TestBinary(unittest.TestCase):
 
+class TestBinary(unittest.TestCase):
     def test_01_noarg(self):
         result = execute_cmd('../42sh')
         self.assertEqual(result.stdout, '')
@@ -21,27 +22,24 @@ class TestBinary(unittest.TestCase):
         self.assertEquals(result.returncode, 0)
         self.assertTrue(sanity_test_cmd('../42sh --ver'));
 
-
     def test_04_long_options(self):
         result = execute_cmd('../42sh --version')
         self.assertEqual(result.stdout, "Version 0.8\n")
         self.assertEquals(result.returncode, 0)
         self.assertTrue(sanity_test_cmd('../42sh --version'));
 
-
     def test_05_help(self):
         result = execute_cmd('../42sh -h')
-        self.assertEqual(result.stdout, "42sh [ GNU long options ] [ options ] [ file ]\n")
+        self.assertEqual(result.stdout,
+                         "42sh [ GNU long options ] [ options ] [ file ]\n")
         self.assertEquals(result.returncode, 0)
         self.assertTrue(sanity_test_cmd('../42sh -h'));
-
 
     def test_06_norc(self):
         result = execute_cmd('../42sh --norc')
         self.assertEqual(result.stdout, '')
         self.assertEquals(result.returncode, 0)
         self.assertTrue(sanity_test_cmd('../42sh --norc'));
-
 
     def test_07_ast_print(self):
         result = execute_cmd('../42sh --ast-print')

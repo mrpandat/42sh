@@ -37,7 +37,8 @@ static int alias_list_all()
     return 0;
 }
 
-static void alias_set_value(struct s_element_node *element)
+static void alias_set_value(struct s_element_node *element,
+                            struct s_element_node *esc_val)
 {
     if (NULL == g_env.aliases)
         return;
@@ -47,6 +48,9 @@ static void alias_set_value(struct s_element_node *element)
     char *key = strtok(buf, "=");
     char *raw_value = strtok(NULL, "=");
     char *value;
+
+    if (NULL == raw_value && NULL != esc_val)
+        raw_value = strdup(exec_word(esc_val->data.s_word));
 
     if (NULL != raw_value)
     {
@@ -62,6 +66,8 @@ static void alias_set_value(struct s_element_node *element)
         ht_insert(g_env.aliases, key, value);
         free(value);
     }
+    if (NULL != esc_val)
+        free(raw_value);
     free(buf);
 }
 
@@ -91,7 +97,14 @@ int my_alias(struct s_simple_command_node *node)
     {
         char *tmp = strdup(exec_word(node->elements[i]->data.s_word));
         if (NULL != strtok(tmp, "="))
-            alias_set_value(node->elements[i]);
+            if (NULL != node->elements[i + 1]
+                && WD_ESC == node->elements[i + 1]->data.s_word->type)
+            {
+                alias_set_value(node->elements[i], node->elements[i + 1]);
+                i++;
+            }
+            else
+                alias_set_value(node->elements[i], NULL);
         else
         {
             if (!alias_get_value(exec_word(node->elements[i]->data.s_word)))

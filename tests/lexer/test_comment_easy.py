@@ -19,7 +19,7 @@ class TestCommentEasy(unittest.TestCase):
         init_and_process_lexer(self, b'echo toto # if toto; then titi; fi')
 
         self.assertTrue(
-            list_equals(self, True,
+            list_equals(self, False,
                         (self.lib.TK_WORD, b'echo'),
                         (self.lib.TK_WORD, b'toto'),
                         (self.lib.TK_EOF, b'EOF'))

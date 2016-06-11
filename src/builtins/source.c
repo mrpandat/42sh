@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <execute.h>
 #include <util.h>
 #include <global.h>

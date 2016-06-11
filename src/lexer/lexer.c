@@ -111,8 +111,7 @@ void lexer_process(struct s_lexer *lexer)
           return;
     }
 
-    char *empty = strdup("EOF");
-    lexer_add_token(lexer, TK_EOF, empty);
+    lexer_add_token(lexer, TK_EOF, "EOF");
 
     /** Reset current token to first element of list */
     lexer->tk_current = lexer->tk_list;
@@ -127,8 +126,7 @@ void lexer_destroy(struct s_lexer *lexer)
         {
             struct s_lexer_token *curr = token;
             token = token->next;
-            if (curr->type == TK_WORD || curr->type == TK_EOF)
-                free(curr->value);
+            free(curr->value);
             free(curr);
         }
     }
