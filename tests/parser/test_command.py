@@ -18,13 +18,13 @@ class TestCommand(unittest.TestCase):
 
     def test_01_funcdec(self):
         node = self.lib.init_ast_node()
-        command = b'myword() if a then b fi'
+        command = b'myword() if a; then b; fi'
         clexer = self.init_and_process_lexer(command)
         self.assertTrue(self.lib.read_command(node, clexer))
 
     def test_02_funcdec_and_redirection(self):
         node = self.lib.init_ast_node()
-        command = b'myword() if a then b fi > file'
+        command = b'myword() if a; then b; fi > file'
         clexer = self.init_and_process_lexer(command)
         self.assertTrue(self.lib.read_command(node, clexer))
 

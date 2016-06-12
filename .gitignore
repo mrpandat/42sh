@@ -3,6 +3,7 @@
 
 # Doc
 doc/git.html
+doc/git-tree.html
 
 # IDE configuration
 .idea/
@@ -171,3 +172,4 @@ $RECYCLE.BIN/
 
 # Custom files
 vgcore*
+script.py

@@ -21,13 +21,6 @@
  */
 int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer);
 
-/**
- ** @fn int file_test(char *name);
- ** @brief tests if a file exists and if it's executable
- ** @param path to the file
- ** @return 0 if it's ok, 127 if it does not exists, 126 if it's not executable
- */
-int file_test(char *name);
 
 int exec_ast_node(struct s_ast_node* node);
 int exec_if_node(struct s_if_node *node);
@@ -42,6 +35,7 @@ int exec_command_node(struct s_command_node *node);
 int exec_pipeline_node(struct s_pipeline_node *node);
 int exec_and_or_node(struct s_and_or_node *node);
 int exec_list_node(struct s_list_node *node);
+char *exec_word(struct s_word *word);
 
 int get_children_exit_status(int pid);
 

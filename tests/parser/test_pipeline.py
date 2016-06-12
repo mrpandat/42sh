@@ -60,8 +60,8 @@ class TestPipeline(unittest.TestCase):
         self.assertTrue(pipe.banged)
         self.assertEqual(pipe.nb_commands, 2)
         command1 = pipe.commands[0].data.s_command_node.content.data.s_simple_command_node
-        self.assertEqual(self.ffi.string(command1.elements[0].data.word),
+        self.assertEqual(self.ffi.string(command1.elements[0].data.s_word.value),
                          b'word1')
         command2 = pipe.commands[1].data.s_command_node.content.data.s_simple_command_node
-        self.assertEqual(self.ffi.string(command2.elements[0].data.word),
+        self.assertEqual(self.ffi.string(command2.elements[0].data.s_word.value),
                          b'word2')

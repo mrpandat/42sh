@@ -27,7 +27,7 @@ bool read_funcdec(struct s_ast_node *node, struct s_lexer *l)
     node->type = ND_FUNCDEC;
     if (lexer_peek(l)->type == TK_FUNCTION)
         lexer_read(l);
-    if (lexer_peek(l)->type != TK_WORD || lexer_peek(l)->next == NULL
+    if (is_word(lexer_peek(l)) == WD_NONE || lexer_peek(l)->next == NULL
         || lexer_peek(l)->next->type != TK_LPAR
         || lexer_peek(l)->next->next == NULL
         || lexer_peek(l)->next->next->type != TK_RPAR)
@@ -55,13 +55,16 @@ bool read_simple_command(struct s_ast_node *node, struct s_lexer *l)
         element = init_element_node();
         ret = true;
     }
-    while (read_element(element, l))
+    int el_res = 0;
+    while ((el_res = read_element(element, l)) == 1)
     {
         add_simple_command_element(command, element);
         element = init_element_node();
         ret = true;
     }
     free_element_node(element);
+    if (el_res < 0)
+        return false;
     return ret;
 }
 

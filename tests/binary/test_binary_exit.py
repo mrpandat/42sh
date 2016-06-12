@@ -12,3 +12,6 @@ class TestBinaryLexer(unittest.TestCase):
         result = execute_cmd('../42sh -c "exit 43"')
         self.assertEqual(result.stdout, '')
         self.assertEquals(result.returncode, 43)
+
+    def test_3_exit_error(self):
+        self.assertEqual(execute_cmd_cmp('-c "exit fozhf"'), 0)

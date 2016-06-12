@@ -4,9 +4,11 @@
 #include <argument_parser.h>
 #include <util.h>
 #include <execute.h>
+#include <builtins.h>
+#include <sys/stat.h>
 
 
-int parse_command(char **argv, int i, struct options *options1)
+static int parse_command(char **argv, int i, struct options *options1)
 {
     i++;
     options1->command = argv[i];
@@ -19,7 +21,7 @@ int print_exit(int code, char *str, FILE *out)
     exit(code);
 }
 
-int match(char *compare, char *compare2)
+static int match(char *compare, char *compare2)
 {
     if (strlen(compare) > strlen(compare2))
         for (unsigned x = 0; x < strlen(compare2); x++)
@@ -28,7 +30,7 @@ int match(char *compare, char *compare2)
     return 1;
 }
 
-void parse_long_option(char **argv, struct options *options, int i)
+static void parse_long_option(char **argv, struct options *options, int i)
 {
     int ok = 1;
     if (argv[i][2] == 'n') //norc
@@ -56,7 +58,7 @@ void parse_long_option(char **argv, struct options *options, int i)
         fprintf(stderr, "unknown long option : %s\n", argv[i]);
 }
 
-void parse_file(struct options *options)
+static void parse_file(struct options *options)
 {
     if (strcmp(options->command, "") == 0
         && strcmp(options->file, "") != 0)
@@ -70,26 +72,13 @@ void parse_file(struct options *options)
 
 }
 
-int shopt_parse(struct options *options, int i, char** argv)
+static int shopt_parse(int i, char **argv)
 {
-    char *name = argv[i + 1];
-
-    if (strcmp(name, "ast_print") == 0 || strcmp(name, "dotglob") == 0
-        || strcmp(name, "expand_aliases") == 0
-        || strcmp(name, "extglob") == 0 || strcmp(name, "nocaseglob") == 0
-        || strcmp(name, "nullglob") == 0 || strcmp(name, "sourcepath") == 0
-        || strcmp(name, "xpg_echo") == 0)
-    {
-        options->shopt_operation = (argv[i][0] == '+' ? 1 : -1);
-        i++;
-        options->shopt_option = argv[i];
-        return i;
-    }
-    else
-        exit(2);
+    set_option(argv[i + 1], (argv[i][0] == '+' ? 1 : -1));
+    return i + 1;
 }
 
-void parse_small_options(int argc, char **argv, struct options *options,
+static void parse_small_options(int argc, char **argv, struct options *options,
                          int start)
 {
     for (int i = start; i < argc; i++)
@@ -107,25 +96,37 @@ void parse_small_options(int argc, char **argv, struct options *options,
             i = parse_command(argv, i, options);
         else if ((argv[i][0] == '-' || argv[i][0] == '+')
                  && argv[i][1] == 'O')
-            i = shopt_parse(options, i, argv);
+            i = shopt_parse(i, argv);
         else if (argv[i][0] == '-' && argv[i][1] == '-') // long option
             parse_long_option(argv, options, i);
         else if (i == argc - 1)
             options->file = argv[i];
         else
-            print_exit(1, "unknown option", stderr);
+            exit(1);
 }
 
 void parse_options(int argc, char **argv, struct options *options, int start)
 {
-    if (!isatty(STDIN_FILENO))
-    {
-        options->file = "stdin";
-        options->command = file_to_str(stdin);
-    }
-    else
+    if (isatty(STDIN_FILENO))
     {
         parse_small_options(argc, argv, options, start);
         parse_file(options);
     }
+    else
+    {
+        struct stat st_info;
+        fstat(0, &st_info);
+        if (S_ISFIFO(st_info.st_mode))
+        {
+            // pipe = don't care
+            parse_small_options(argc, argv, options, start);
+            parse_file(options);
+        }
+        else
+        {
+            options->file = "stdin";
+            options->command = file_to_str(stdin);
+        }
+    }
+
 }

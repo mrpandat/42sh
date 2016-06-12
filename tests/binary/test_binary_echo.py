@@ -3,60 +3,77 @@ import unittest
 from test_functions import *
 
 
+def executeEcho(str):
+    a = execute_cmd("../42sh -c \"echo " + str + "\"")
+    b = execute_cmd("/bin/echo " + str)
+    if a.stdout != b.stdout:
+        print("ref: " + b.stdout)
+        print("got: " + a.stdout)
+    return (a.stdout == b.stdout)
+
+
+def executeEchoSanity(str):
+    return (
+    executeEcho(str) and sanity_test_cmd("../42sh -c \"echo " + str + "\""))
+
+
 class TestBinaryEcho(unittest.TestCase):
     def test_01_echo_simple(self):
-        self.assertEqual(execute_cmd_cmp("echo ok"), 0)
+        self.assertTrue(executeEchoSanity("ok"))
 
     def test_02_echo_multiple(self):
-        self.assertEqual(execute_cmd_cmp("echo ok ok ok"), 0)
+        self.assertTrue(executeEcho("ok ok ok"))
 
     def test_03_echo_with_option_n(self):
-        self.assertEqual(execute_cmd_cmp("echo -n ok"), 0)
+        self.assertTrue(executeEcho("-n ok"))
 
     def test_04_echo_multiple_with_option_n(self):
-        self.assertEqual(execute_cmd_cmp("echo -n ok ok ok"), 0)
+        self.assertTrue(executeEchoSanity("-n ok ok ok"))
 
     def test_05_echo_version(self):
         a = execute_cmd("../42sh -c 'echo --version'")
         b = execute_cmd("/bin/echo --version")
         self.assertEqual(a.returncode, b.returncode)
+        self.assertTrue(sanity_test_cmd("../42sh -c 'echo --version'"))
 
     def test_06_echo_help(self):
         a = execute_cmd("../42sh -c 'echo --help'")
         b = execute_cmd("/bin/echo --help")
         self.assertEqual(a.returncode, b.returncode)
+        self.assertTrue(sanity_test_cmd("../42sh -c 'echo --help'"))
 
-    def test_07_echo_with_e_simple(self):
-        a = execute_cmd("../42sh -c 'echo -e a'")
-        b = execute_cmd("/bin/echo -e a")
-        self.assertEqual(a.stdout, b.stdout)
+    def test_07_echo_backslashed(self):
+        self.assertTrue(executeEcho("\\t"))
 
-    def test_08_echo_with_e_simple_c(self):
-        a = execute_cmd("../42sh -c 'echo -e lol \c a'")
-        b = execute_cmd("/bin/echo -e 'lol \c a'")
-        self.assertEqual(a.stdout, b.stdout)
+    def test_08_echo_e(self):
+        self.assertTrue(executeEcho("-e \\t"))
 
-    def test_09_echo_with_e_escaped_simple(self):
-        a = execute_cmd("../42sh -c 'echo -e \r'")
-        b = execute_cmd("/bin/echo -e '\r'")
-        self.assertEqual(a.stdout, b.stdout)
+    def test_09_echo_quoted(self):
+        self.assertTrue(executeEchoSanity("\'\\t\'"))
 
-    def test_10_echo_with_e_escaped_medium(self):
-        a = execute_cmd("../42sh -c 'echo -e a \t  \n'")
-        b = execute_cmd("/bin/echo -e a \t  \n'")
-        self.assertEqual(a.stdout, b.stdout)
+    def test_10_echo_e_quoted(self):
+        self.assertTrue(executeEcho("-e \'\\t\'"))
 
-    def test_11_echo_with_e_escaped_hard(self):
-        a = execute_cmd("../42sh -c 'echo -e \\t'")
-        b = execute_cmd("/bin/echo -e '\\t'")
-        self.assertEqual(a.stdout, b.stdout)
+    def test_11_echo_multiple(self):
+        self.assertTrue(executeEcho("\\t \\t"))
 
-    def test_12_echo_with_e_escaped_hardcore(self):
-        a = execute_cmd("../42sh -c 'echo -e \\t \\n \\e \\c'")
-        b = execute_cmd("/bin/echo -e '\\t \\n \\e \\c'")
-        self.assertEqual(a.stdout, b.stdout)
+    def test_12_echo_e_multiple(self):
+        self.assertTrue(executeEchoSanity("-e \\t \\t"))
 
-    def test_13_echo_with_e_escaped_impossibru(self):
-        a = execute_cmd("../42sh -c 'echo -e \\t ~ \\ \n | bn \\z'")
-        b = execute_cmd("/bin/echo -e '\\t ~ \\ \n | bn \\z'")
-        self.assertEqual(a.stdout, b.stdout)
+    def test_13_echo_quoted_multiple(self):
+        self.assertTrue(executeEcho("\'\\t \\t\'"))
+
+    def test_14_echo_e_quoted_multiple(self):
+        self.assertTrue(executeEcho("-e \'\\t \\t\'"))
+
+    def test_15_echo_e_quoted_multiple_stuck(self):
+        self.assertTrue(executeEchoSanity("-e \'\\ta\\ta\\t\\t\'"))
+
+    def test_16_echo_multiple_options(self):
+        self.assertTrue(executeEcho("-e -n \' a\\ta\'"))
+
+    def test_17_echo_multiple_options_factor(self):
+        self.assertTrue(executeEcho("-en \' a\\ta\'"))
+
+    def test_18_echo_multiple_options_factor_backslashed(self):
+        self.assertTrue(executeEchoSanity("-en \'troubad\\our\'"))

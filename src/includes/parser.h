@@ -15,7 +15,7 @@
 /**
  ** @fn struct s_ast_node *parser(struct s_lexer *lexer)
  ** @brief Construct an AST tree using tokens from the lexer
- ** @param the lexer that handle the input commands
+ ** @param lexer the lexer that handle the input commands
  ** @return the root of the AST tree, or NULL if the grammar was bad
  */
 struct s_ast_node *parser(struct s_lexer *lexer);
@@ -24,13 +24,14 @@ struct s_ast_node *parser(struct s_lexer *lexer);
  ** @fn bool read_input(struct s_ast_node *node, struct s_lexer *l)
  ** @brief Read commands and construct an AST tree
  ** @param the root node
- ** @param the lexer that handle the tokens
+ ** @param lexer the lexer that handle the tokens
  ** @return true if the grammar was good, false if it was bad
  */
 bool read_input(struct s_ast_node *node, struct s_lexer *l);
 void read_newlines(struct s_lexer *l);
 bool read_redirection(struct s_redirection_node *redirection,
                       struct s_lexer *l);
+enum e_word_type is_word(struct s_lexer_token *token);
 
 /* File: parser_lists.c */
 bool read_list(struct s_ast_node *node, struct s_lexer *l);
@@ -46,7 +47,9 @@ bool read_funcdec(struct s_ast_node *node, struct s_lexer *l);
 
 /* File: parser_elements.c */
 bool read_prefix(struct s_element_node *element, struct s_lexer *l);
-bool read_element(struct s_element_node *element, struct s_lexer *l);
+int read_element(struct s_element_node *element, struct s_lexer *l);
+int read_arithmetic_expansion(struct s_element_node *element,
+                               struct s_lexer *l);
 
 /* File: parser_loops.c */
 bool read_rule_for(struct s_ast_node *node, struct s_lexer *l);

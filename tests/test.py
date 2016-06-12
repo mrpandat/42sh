@@ -109,6 +109,30 @@ def launch_all():
     launch_sanity_test()
 
 
+def launch_test_builtin(builtin):
+    print()
+    print()
+    print((" Launching " + builtin + " tests ").center(80, '*'))
+    print()
+    for test in [os.path.join("binary", fn) for fn in
+                 next(os.walk("binary"))[2]]:
+        if ("test_binary_" + builtin) in test:
+            a = time.time()
+            test = test.replace("/", ".").replace(".py", "")
+            print(test)
+            my_test = unittest.TestLoader().loadTestsFromName(test)
+
+            if not MyTestRunner(verbosity=3, resultclass=MyTestResult).run(
+                    my_test, a, begin, mtimeout):
+                print("Timeout...")
+                exit(1)
+            else:
+                global resume_time_y
+                resume_time_y.append(time.time() - a)
+                global resume_time_x
+                resume_time_x.append(len(resume_time_x))
+
+
 def print_nyan():
     global nb_fail
     if nb_fail == 0 and nb_errors == 0:
@@ -129,40 +153,59 @@ def print_nyan():
             print(resume_errors)
 
 
-def tracegraph():
+def tracegraph(trace):
+    if not trace:
+        return
     print("Generating reports...")
-    a = execute_cmd("git shortlog -s -n")
-    b = ""
-    for line in a.stdout.splitlines():
-        b += ("<h1>" + line + "</h1>")
-    text_file = open("../doc/git.html", "w")
-    text_file.write(b)
-    text_file.close()
-    fig = {
-        'data': [{'labels': ['Errors', 'Failures', 'Success'],
-                  'values': [nb_errors, nb_fail, nb_success],
-                  'type': 'pie'}],
-        'layout': {'title': 'Testsuit errors report'}
-    }
+    try:
+        with open("../doc/git.html", "w") as file:
+            file.write("<div style='text-align:center'>\n")
+            committers = get_committers()
+            for committer in committers:
+                image = "https://static.acu.epita.fr/photos/2018/{}-thumb".format(
+                    committer['login'])
+                file.write(
+                    "\t<img src=\"{}\" height=\"90\" width=\"60\">".format(
+                        image))
+                file.write("<h3>{} - {} {}</h3>\n".format(committer['commits'],
+                                                          committer[
+                                                              'firstname'],
+                                                          committer[
+                                                              'lastname']))
+            file.write("</div>\n")
+        with open("../doc/git-tree.html", "w") as file:
+            git_tree = get_git_tree_html()
+            file.write(git_tree)
+    except Exception:
+        print("Failed to generate git report")
+    try:
+        fig = {
+            'data': [{'labels': ['Errors', 'Failures', 'Success'],
+                      'values': [nb_errors, nb_fail, nb_success],
+                      'type': 'pie'}],
+            'layout': {'title': 'Testsuit errors report'}
+        }
 
-    plotly.tools.set_credentials_file(username='afepgjn',
-                                      api_key='zl4pmee9nl')
-    py.iplot(fig, filename='errors')
-    trace = go.Scatter(
-        x=resume_time_x,
-        y=resume_time_y,
-        mode='lines',
-        name='lines'
-    )
-    fig = {
-        'data': [trace],
-        'layout': {'title': 'Testsuit speed report',
-                   'xaxis': dict(title='Tests run'),
-                   'yaxis': dict(title='Speed in seconds')
-                   }
-    }
-    py.iplot(fig, filename='speed')
-    print("Reports created in " + b)
+        plotly.tools.set_credentials_file(username='afepgjn',
+                                          api_key='zl4pmee9nl')
+        py.iplot(fig, filename='errors')
+        trace = go.Scatter(
+            x=resume_time_x,
+            y=resume_time_y,
+            mode='lines',
+            name='lines'
+        )
+        fig = {
+            'data': [trace],
+            'layout': {'title': 'Testsuit speed report',
+                       'xaxis': dict(title='Tests run'),
+                       'yaxis': dict(title='Speed in seconds')
+                       }
+        }
+        py.iplot(fig, filename='speed')
+    except Exception:
+        print("Failed to generate statistics graphics")
+    execute_cmd("firefox ../doc/report-page.html &")
 
 
 def ctrl_c_handler(signalnum, stack):
@@ -177,6 +220,7 @@ if __name__ == "__main__":
     sys.argv[0] = ""
     loop = enumerate(sys.argv)
     skip = False
+    trace = False
     for id, arg in loop:
         if skip:
             skip = False
@@ -201,7 +245,7 @@ if __name__ == "__main__":
             launch_sanity_test()
             print_nyan()
             exit(0)
-        elif arg == "-c":
+        elif arg == "-c" or arg == "--category":
             if "utils" in sys.argv:
                 launch_test("utils")
             elif "lexer" in sys.argv:
@@ -212,12 +256,21 @@ if __name__ == "__main__":
                 launch_test("execute")
             elif "binary" in sys.argv:
                 launch_test("binary")
+            else:
+                print("Unknow category")
+                exit(1)
             print_nyan()
-            tracegraph()
+            tracegraph(trace)
             exit(0)
+        elif arg == "-x":
+            launch_test_builtin(sys.argv[id + 1])
+            exit(1)
+        elif arg == "-g":
+            trace = True
+            continue
         else:
             print("Unknow option : " + arg)
             exit(1)
     launch_all()
     print_nyan()
-    tracegraph()
+    tracegraph(trace)

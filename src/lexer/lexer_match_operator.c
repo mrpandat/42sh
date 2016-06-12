@@ -9,21 +9,21 @@ static bool match_if(struct s_lexer *lexer)
         lexer->current += strlen("if");
         return true;
     }
-    /** elif */
+        /** elif */
     else if (0 == strncmp(lexer->current, "elif", strlen("elif")))
     {
         lexer_add_token(lexer, TK_ELIF, "elif");
         lexer->current += strlen("elif");
         return true;
     }
-    /** else */
+        /** else */
     else if (0 == strncmp(lexer->current, "else", strlen("else")))
     {
         lexer_add_token(lexer, TK_ELSE, "else");
         lexer->current += strlen("else");
         return true;
     }
-    /** fi */
+        /** fi */
     else if (0 == strncmp(lexer->current, "fi", strlen("fi")))
     {
         lexer_add_token(lexer, TK_FI, "fi");
@@ -42,21 +42,21 @@ static bool match_for(struct s_lexer *lexer)
         lexer->current += strlen("for");
         return true;
     }
-    /** in */
+        /** in */
     else if (0 == strncmp(lexer->current, "in", strlen("in")))
     {
         lexer_add_token(lexer, TK_IN, "in");
         lexer->current += strlen("in");
         return true;
     }
-    /** done */
+        /** done */
     else if (0 == strncmp(lexer->current, "done", strlen("done")))
     {
         lexer_add_token(lexer, TK_DONE, "done");
         lexer->current += strlen("done");
         return true;
     }
-    /** do */
+        /** do */
     else if (0 == strncmp(lexer->current, "do", strlen("do")))
     {
         lexer_add_token(lexer, TK_DO, "do");
@@ -75,14 +75,14 @@ static bool match_case(struct s_lexer *lexer)
         lexer->current += strlen("case");
         return true;
     }
-    /** then */
+        /** then */
     else if (0 == strncmp(lexer->current, "then", strlen("then")))
     {
         lexer_add_token(lexer, TK_THEN, "then");
         lexer->current += strlen("then");
         return true;
     }
-    /** esac */
+        /** esac */
     else if (0 == strncmp(lexer->current, "esac", strlen("esac")))
     {
         lexer_add_token(lexer, TK_ESAC, "esac");
@@ -101,7 +101,7 @@ static bool match_while_until(struct s_lexer *lexer)
         lexer->current += strlen("while");
         return true;
     }
-    /** until */
+        /** until */
     else if (0 == strncmp(lexer->current, "until", strlen("until")))
     {
         lexer_add_token(lexer, TK_UNTIL, "until");

@@ -1,6 +1,37 @@
 #include <ast.h>
 #include <unistd.h>
 #include <global.h>
+#include <util.h>
+#include <execute.h>
+
+int cd_dir(struct s_simple_command_node *node)
+{
+    if (node->elements[1]->type == EL_WORD)
+    {
+        if (strcmp(exec_word(node->elements[1]->data.s_word), "-") == 0)
+        {
+            char *tmp = g_env.OLDPWD;
+            g_env.OLDPWD = g_env.PWD;
+            g_env.PWD = tmp;
+            chdir(g_env.PWD);
+            printf("%s", g_env.PWD);
+        }
+        else
+        {
+            if (file_test(exec_word(node->elements[1]->data.s_word)) == 33)
+            {
+                g_env.OLDPWD = g_env.PWD;
+                g_env.PWD = exec_word(node->elements[1]->data.s_word);
+                chdir(exec_word(node->elements[1]->data.s_word));
+            }
+            else
+            {
+                return 2;
+            }
+        }
+    }
+    return 0;
+}
 
 int my_cd(struct s_simple_command_node *node)
 {
@@ -12,27 +43,5 @@ int my_cd(struct s_simple_command_node *node)
             return 0;
         }
         else
-        {
-            if (node->elements[1]->type == EL_WORD)
-            {
-                if (strcmp(node->elements[1]->data.word, "-") == 0)
-                {
-                    char *tmp = g_env.OLDPWD;
-                    g_env.OLDPWD = g_env.PWD;
-                    g_env.PWD = tmp;
-                    chdir(g_env.OLDPWD);
-                    printf("%s\n", g_env.PWD);
-                }
-                else
-                {
-                    g_env.OLDPWD = g_env.PWD;
-                    g_env.PWD = node->elements[1]->data.word;
-                    chdir(node->elements[1]->data.word);
-                    printf("%s\n", g_env.PWD);
-                }
-            }
-
-            return 0;
-        }
-    return 1;
+            return cd_dir(node);
 }

@@ -37,7 +37,7 @@ class TestElement(unittest.TestCase):
                               self.init_and_process_lexer(b'myword'))
         self.assertEqual(self.lib.EL_WORD, element_node.type)
         self.assertEqual(b'myword',
-                         self.ffi.string(element_node.data.word))
+                         self.ffi.string(element_node.data.s_word.value))
 
     def test_05_redirection_node_attributes(self):
         element_node = self.lib.init_element_node()
@@ -54,4 +54,11 @@ class TestElement(unittest.TestCase):
                          self.ffi.string(
                              element_node.data.s_redirection_node.word))
 
-
+    def test_06_escaped_word(self):
+        element_node = self.lib.init_element_node()
+        self.lib.read_element(element_node,
+                              self.init_and_process_lexer(b'\'\\tmyword\\t\''))
+        self.assertEqual(self.lib.EL_WORD, element_node.type)
+        self.assertEqual(self.lib.WD_ESC, element_node.data.s_word.type)
+        self.assertEqual(b'\\tmyword\\t',
+                         self.ffi.string(element_node.data.s_word.value))

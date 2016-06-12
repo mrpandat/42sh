@@ -22,21 +22,21 @@ static bool match_redir(struct s_lexer *lexer)
         lexer->current += strlen(">&");
         return true;
     }
-    /** <& */
+        /** <& */
     else if (0 == strncmp(lexer->current, "<&", strlen("<&")))
     {
         lexer_add_token(lexer, TK_LESSAND, "<&");
         lexer->current += strlen("<&");
         return true;
     }
-    /** >| */
+        /** >| */
     else if (0 == strncmp(lexer->current, ">|", strlen(">|")))
     {
         lexer_add_token(lexer, TK_CLOBBER, ">|");
         lexer->current += strlen(">|");
         return true;
     }
-    /** <> */
+        /** <> */
     else if (0 == strncmp(lexer->current, "<>", strlen("<>")))
     {
         lexer_add_token(lexer, TK_LESSGREAT, "<>");
@@ -55,7 +55,7 @@ static bool match_io(struct s_lexer *lexer)
         lexer->current += strlen("<");
         return true;
     }
-    /** > */
+        /** > */
     else if (0 == strncmp(lexer->current, ">", strlen(">")))
     {
         lexer_add_token(lexer, TK_GREAT, ">");
@@ -74,14 +74,14 @@ static bool match_ionumber(struct s_lexer *lexer)
         lexer->current += strlen("0");
         return true;
     }
-    /** 1 */
+        /** 1 */
     else if (0 == strncmp(lexer->current, "1", strlen("1")))
     {
         lexer_add_token(lexer, TK_IONUMBER, "1");
         lexer->current += strlen("1");
         return true;
     }
-    /** 2 */
+        /** 2 */
     else if (0 == strncmp(lexer->current, "2", strlen("2")))
     {
         lexer_add_token(lexer, TK_IONUMBER, "2");
@@ -100,14 +100,14 @@ static bool match_iohere(struct s_lexer *lexer)
         lexer->current += strlen("<<-");
         return true;
     }
-    /** << */
+        /** << */
     else if (0 == strncmp(lexer->current, "<<", strlen("<<")))
     {
         lexer_add_token(lexer, TK_DLESS, "<<");
         lexer->current += strlen("<<");
         return true;
     }
-    /** >> */
+        /** >> */
     else if (0 == strncmp(lexer->current, ">>", strlen(">>")))
     {
         lexer_add_token(lexer, TK_DGREAT, ">>");
@@ -126,21 +126,21 @@ static bool match_bracket(struct s_lexer *lexer)
         lexer->current += strlen("(");
         return true;
     }
-    /** ) */
+        /** ) */
     else if (0 == strncmp(lexer->current, ")", strlen(")")))
     {
         lexer_add_token(lexer, TK_RPAR, ")");
         lexer->current += strlen(")");
         return true;
     }
-    /** { */
+        /** { */
     else if (0 == strncmp(lexer->current, "{", strlen("{")))
     {
         lexer_add_token(lexer, TK_LBRACE, "{");
         lexer->current += strlen("{");
         return true;
     }
-    /** } */
+        /** } */
     else if (0 == strncmp(lexer->current, "}", strlen("}")))
     {
         lexer_add_token(lexer, TK_RBRACE, "}");
@@ -159,7 +159,7 @@ static bool match_binary_op(struct s_lexer *lexer)
         lexer->current += strlen("&");
         return true;
     }
-    /** | */
+        /** | */
     else if (0 == strncmp(lexer->current, "|", strlen("|")))
     {
         lexer_add_token(lexer, TK_OR, "|");
@@ -181,14 +181,14 @@ bool lexer_match_and_or_not(struct s_lexer *lexer)
         lexer->current += strlen("&&");
         return true;
     }
-    /** || */
+        /** || */
     else if (0 == strncmp(lexer->current, "||", strlen("||")))
     {
         lexer_add_token(lexer, TK_OR_IF, "||");
         lexer->current += strlen("||");
         return true;
     }
-    /** ! */
+        /** ! */
     else if (0 == strncmp(lexer->current, "!", strlen("!")))
     {
         lexer_add_token(lexer, TK_BANG, "!");

@@ -32,7 +32,7 @@ class TestSimpleCommand(unittest.TestCase):
 
     def test_03_redirection(self):
         node = self.lib.init_ast_node()
-        self.assertFalse(
+        self.assertTrue(
             self.lib.read_simple_command(
                 node,
                 self.init_and_process_lexer(b'1 > 2 myword')))
@@ -79,7 +79,7 @@ class TestSimpleCommand(unittest.TestCase):
             self.ffi.string(command.elements[1].data.s_redirection_node.word),
             b'word2')
         self.assertEqual(command.elements[2].type, self.lib.EL_WORD)
-        self.assertEqual(self.ffi.string(command.elements[2].data.word),
+        self.assertEqual(self.ffi.string(command.elements[2].data.s_word.value),
                          b'word3')
 
 

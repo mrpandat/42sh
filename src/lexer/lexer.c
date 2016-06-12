@@ -66,18 +66,38 @@ int lexer_current_position(struct s_lexer *lexer)
     return pos;
 }
 
-bool lexer_match_expr(struct s_lexer *lexer)
+static bool lexer_match_expr(struct s_lexer *lexer)
 {
     return match_separator(lexer)
            || lexer_match_eof(lexer)
            || lexer_match_and_or_not(lexer)
            || lexer_match_dquote(lexer)
            || lexer_match_quote(lexer)
-           || lexer_match_symbol(lexer)
            || lexer_match_arith(lexer)
+           || lexer_match_symbol(lexer)
            || lexer_match_expansion(lexer)
            || lexer_match_operator(lexer)
            || lexer_read_word(lexer);
+}
+
+int lexer_token_list_size(struct s_lexer *lexer)
+{
+    if (NULL == lexer)
+        return -1;
+
+    if (NULL == lexer->tk_list)
+        return 0;
+
+    struct s_lexer_token *list = lexer->tk_list;
+    int size = 0;
+
+    while (NULL != list)
+    {
+        size++;
+        list = list->next;
+    }
+
+    return size;
 }
 
 void lexer_process(struct s_lexer *lexer)
@@ -88,11 +108,10 @@ void lexer_process(struct s_lexer *lexer)
     while ('\0' != *lexer->current)
     {
         if (!lexer_match_expr(lexer))
-          return;
+            return;
     }
 
-    char *empty = strdup("EOF");
-    lexer_add_token(lexer, TK_EOF, empty);
+    lexer_add_token(lexer, TK_EOF, "EOF");
 
     /** Reset current token to first element of list */
     lexer->tk_current = lexer->tk_list;
@@ -107,8 +126,7 @@ void lexer_destroy(struct s_lexer *lexer)
         {
             struct s_lexer_token *curr = token;
             token = token->next;
-            if (curr->type == TK_WORD || curr->type == TK_EOF)
-                free(curr->value);
+            free(curr->value);
             free(curr);
         }
     }

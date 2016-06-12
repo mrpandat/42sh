@@ -73,14 +73,29 @@ enum e_element_type
 {
     EL_NONE,
     EL_WORD,
-    EL_ASSIGNEMENT_WORD,
     EL_REDIRECTION
+};
+
+enum e_word_type
+{
+    WD_NONE,
+    WD_WORD,
+    WD_ESC,
+    WD_ARITH,
+    WD_SUBSHELL,
+    WD_ASSIGNEMENT_WORD,
+};
+
+struct s_word
+{
+    char *value;
+    char *result;
+    enum e_word_type type;
 };
 
 union u_element_data
 {
-    char* word;
-    char* assignement_word;
+    struct s_word *s_word;
     struct s_redirection_node *s_redirection_node;
 };
 
@@ -207,6 +222,7 @@ void add_command_redirection(struct s_command_node *command,
 
 /* File: ast_init_elements.c */
 struct s_element_node *init_element_node(void);
+struct s_word *init_word(enum e_word_type type, char *value);
 
 /* File: ast_init_lists.c */
 struct s_pipeline_node *init_pipeline_node(void);
@@ -236,6 +252,7 @@ void free_command_node(struct s_command_node *node);
 
 /* File: ast_free_elements.c */
 void free_element_node(struct s_element_node *node);
+void free_word(struct s_word *word);
 
 /* File: ast_free_lists.c */
 void free_pipeline_node(struct s_pipeline_node *node);

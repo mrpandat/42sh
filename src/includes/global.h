@@ -27,6 +27,19 @@ struct env
     char *HOME;
     char *PWD;
     char *OLDPWD;
+
+    // Aliases hashtable
+    struct s_hashtable *aliases;
+
+    //Shopt variables
+    int ast_print;
+    int dotglob;
+    int expand_aliases;
+    int extglob;
+    int nocaseglob;
+    int nullglob;
+    int sourcepath;
+    int xpg_echo;
 };
 
 struct env g_env;

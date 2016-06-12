@@ -11,14 +11,14 @@ static bool match_eof_symbol(struct s_lexer *lexer)
         lexer->current += strlen(";;");
         return true;
     }
-    /** ; */
+        /** ; */
     else if (0 == strncmp(lexer->current, ";", strlen(";")))
     {
         lexer_add_token(lexer, TK_SEMI, ";");
         lexer->current += strlen(";");
         return true;
     }
-    /** \n */
+        /** \n */
     else if (0 == strncmp(lexer->current, "\n", strlen("\n")))
     {
         lexer_add_token(lexer, TK_NEWLINE, "\n");
@@ -48,7 +48,7 @@ bool lexer_match_arith(struct s_lexer *lexer)
         lexer->current += strlen("$((");
         return true;
     }
-    /** )) */
+        /** )) */
     else if (0 == strncmp(lexer->current, "))", strlen("))")))
     {
         lexer_add_token(lexer, TK_RARITH, "))");
