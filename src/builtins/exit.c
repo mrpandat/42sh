@@ -7,16 +7,19 @@
 
 int my_exit(struct s_simple_command_node *node)
 {
-    if (node->nb_elements < 2)
-        return 1;
     int nb = 0;
-    if (isdigit(exec_word(node->elements[1]->data.s_word)[0]))
-        nb = atoi(exec_word(node->elements[1]->data.s_word));
+    if (node->nb_elements < 2)
+        nb = 0;
     else
     {
-        nb = 2;
-        fprintf(stderr, "exit: %s numeric argument required\n",
-                exec_word(node->elements[1]->data.s_word));
+        if (isdigit(exec_word(node->elements[1]->data.s_word)[0]))
+            nb = atoi(exec_word(node->elements[1]->data.s_word));
+        else
+        {
+            nb = 2;
+            fprintf(stderr, "exit: %s numeric argument required\n",
+                    exec_word(node->elements[1]->data.s_word));
+        }
     }
     free_ast_node(g_env.root);
     lexer_destroy(g_env.lexer);

@@ -5,6 +5,7 @@
 #include <util.h>
 #include <execute.h>
 #include <builtins.h>
+#include <sys/stat.h>
 
 
 int parse_command(char **argv, int i, struct options *options1)
@@ -106,6 +107,26 @@ void parse_small_options(int argc, char **argv, struct options *options,
 
 void parse_options(int argc, char **argv, struct options *options, int start)
 {
+    if (isatty(STDIN_FILENO))
+    {
         parse_small_options(argc, argv, options, start);
         parse_file(options);
+    }
+    else
+    {
+        struct stat st_info;
+        fstat(0, &st_info);
+        if (S_ISFIFO(st_info.st_mode))
+        {
+            // pipe = don't care
+            parse_small_options(argc, argv, options, start);
+            parse_file(options);
+        }
+        else
+        {
+            options->file = "stdin";
+            options->command = file_to_str(stdin);
+        }
+    }
+
 }
