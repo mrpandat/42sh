@@ -1,3 +1,9 @@
+/**
+ ** @file expansion.h
+ ** @brief Functions related to word expansion
+ ** @author Moisan L
+ */
+
 #ifndef INC_42SH_EXPANSION_H
 # define INC_42SH_EXPANSION_H
 
@@ -80,59 +86,64 @@ char *stream_peek(struct s_stream *stream);
 void stream_read(struct s_stream *stream, int n);
 
 /**
- * Read an AST from string
- *
- * The operators handled are below, ranked by priority:
- *   - '+', '-' (unary minus and plus)
- *   - '!', '~' (logical and bitwise negation)
- *   - '**'     (exponentiation)
- *   - '*', '/' (multiplication, division)
- *   - '+', '-' (addition, subtraction)
- *   - '&'      (bitwise AND)
- *   - '^'      (bitwise XOR)
- *   - '|'      (bitwise OR)
- *   - '&&'     (logical AND)
- *   - '||'     (logical OR)
- *   - '(', ')' (for grouping)
- *
- * The LL grammar used is the following:
- *
- *   J := I
- *      | I '||' J
- *
- *   I := H
- *      | H '&&' I
- *
- *   H := G
- *      | G '|' H
- *
- *   G := F
- *      | F '^' G
- *
- *   F := E
- *      | E '&' F
- *
- *   E := D
- *      | D '+' E
- *      | D '-' E
- *
- *   D := C
- *      | C '*' D
- *      | C '/' D
- *
- *   C := B
- *      | B '**' C
- *
- *   B := A
- *      | '(' J ')'
- *      | '!' B
- *      | '~' B
- *
- *   A := number
- *      | '(' J ')'
- *      | '-' A
- *      | '+' A
- *
+ **
+ ** Read an AST from string
+ **
+ ** The operators handled are below, ranked by priority:
+ **   - '+', '-' (unary minus and plus)
+ **   - '!', '~' (logical and bitwise negation)
+ **   - '**'     (exponentiation)
+ **   - '*', '/' (multiplication, division)
+ **   - '+', '-' (addition, subtraction)
+ **   - '&'      (bitwise AND)
+ **   - '^'      (bitwise XOR)
+ **   - '|'      (bitwise OR)
+ **   - '&&'     (logical AND)
+ **   - '||'     (logical OR)
+ **   - '(', ')' (for grouping)
+ **
+ ** The LL grammar used is the following:
+ **
+ **   J := I
+ **      | I '||' J
+ **
+ **   I := H
+ **      | H '&&' I
+ **
+ **   H := G
+ **      | G '|' H
+ **
+ **   G := F
+ **      | F '^' G
+ **
+ **   F := E
+ **      | E '&' F
+ **
+ **   E := D
+ **      | D '+' E
+ **      | D '-' E
+ **
+ **   D := C
+ **      | C '*' D
+ **      | C '/' D
+ **
+ **   C := B
+ **      | B '**' C
+ **
+ **   B := A
+ **      | '(' J ')'
+ **      | '!' B
+ **      | '~' B
+ **
+ **   A := number
+ **      | '(' J ')'
+ **      | '-' A
+ **      | '+' A
+ **
+ ** @fn char *arithmetic_expansion(char *expression)
+ ** @brief Calculate the result of an arithmetic expression
+ ** @param expression The arithmetic expression
+ ** @return A char* containing the result of the arithmetic calculation
  */
 char *arithmetic_expansion(char *expression);
 struct s_art_node *read_a(struct s_stream *stream);
@@ -158,7 +169,6 @@ void free_binop_node(struct s_binop_node *node);
 void free_unop_node(struct s_unop_node *node);
 void free_num_node(struct s_number_node *node);
 void free_art_node(struct s_art_node *node);
-
 int execute_art_node(struct s_art_node *node);
 
 #endif //INC_42SH_EXPANSION_H
