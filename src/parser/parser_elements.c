@@ -84,9 +84,9 @@ int read_arithmetic_expansion(struct s_element_node *element,
         temp = str_append(expression, lexer_peek(l)->value);
         free(expression);
         expression = temp;
-        lexer_read(l);
         pars += pars_count(l);
-        if (type == TK_RARITH && pars <= 0)
+        lexer_read(l);
+        if (pars <= 0)
             break;
         type = lexer_peek(l)->type;
     }
