@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
     {
         if (strcmp(opt.file, "") != 0)
             free(opt.command);
+        fprintf(stderr, "Bad grammar\n");
         return 1;
     }
     fill_env(lexer, root, opt);
