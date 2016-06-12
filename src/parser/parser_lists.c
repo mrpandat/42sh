@@ -47,6 +47,26 @@ bool read_and_or(struct s_ast_node *node, struct s_lexer *l)
     return true;
 }
 
+static void read_list_semi_and(struct s_list_node *list,
+                               struct s_lexer *l)
+{
+    if (lexer_peek(l)->type == TK_AND)
+        list->type = LIST_AND;
+    else
+        list->type = LIST_SEMI;
+    lexer_read(l);
+    list->right = init_ast_node();
+    if (!read_list(list->right, l))
+    {
+        if (list->type == LIST_AND)
+            list->type = LIST_BG;
+        else
+            list->type = LIST_NONE;
+        free(list->right);
+        list->right = NULL;
+    }
+}
+
 bool read_list(struct s_ast_node *node, struct s_lexer *l)
 {
     node->type = ND_LIST;
@@ -55,23 +75,7 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
     if (!read_and_or(list->left, l))
         return false;
     if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_SEMI)
-    {
-        if (lexer_peek(l)->type == TK_AND)
-            list->type = LIST_AND;
-        else
-            list->type = LIST_SEMI;
-        lexer_read(l);
-        list->right = init_ast_node();
-        if (!read_list(list->right, l))
-        {
-            if (list->type == LIST_AND)
-                list->type = LIST_BG;
-            else
-                list->type = LIST_NONE;
-            free(list->right);
-            list->right = NULL;
-        }
-    }
+        read_list_semi_and(list, l);
     else if (lexer_peek(l)->type == TK_NEWLINE)
     {
         read_newlines(l);
@@ -87,6 +91,26 @@ bool read_list(struct s_ast_node *node, struct s_lexer *l)
     return true;
 }
 
+static void read_list_right(struct s_list_node *list, struct s_lexer *l)
+{
+    if (lexer_peek(l)->type == TK_AND)
+        list->type = LIST_AND;
+    else
+        list->type = LIST_SEMI;
+    lexer_read(l);
+    read_newlines(l);
+    list->right = init_ast_node();
+    if (!read_compound_list(list->right, l))
+    {
+        if (list->type == LIST_AND)
+            list->type = LIST_BG;
+        else
+            list->type = LIST_NONE;
+        free(list->right);
+        list->right = NULL;
+    }
+}
+
 bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
 {
     read_newlines(l);
@@ -97,24 +121,6 @@ bool read_compound_list(struct s_ast_node *node, struct s_lexer *l)
         return false;
     if (lexer_peek(l)->type == TK_AND || lexer_peek(l)->type == TK_SEMI
         || lexer_peek(l)->type == TK_NEWLINE)
-    {
-        if (lexer_peek(l)->type == TK_AND)
-            list->type = LIST_AND;
-        else
-            list->type = LIST_SEMI;
-        lexer_read(l);
-        read_newlines(l);
-        list->right = init_ast_node();
-        if (!read_compound_list(list->right, l))
-        {
-            if (list->type == LIST_AND)
-                list->type = LIST_BG;
-            else
-                list->type = LIST_NONE;
-            free(list->right);
-            list->right = NULL;
-        }
-    }
+        read_list_right(list, l);
     return true;
 }
-

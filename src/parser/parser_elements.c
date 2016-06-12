@@ -29,14 +29,14 @@ bool read_prefix(struct s_element_node *element, struct s_lexer *l)
     }
 }
 
-bool read_element(struct s_element_node *element, struct s_lexer *l)
+int read_element(struct s_element_node *element, struct s_lexer *l)
 {
     if (lexer_peek(l)->type == TK_WORD || lexer_peek(l)->type == TK_ESC_WORD)
     {
         element->type = EL_WORD;
         element->data.s_word = init_word(is_word(lexer_peek(l)), lexer_peek(l)->value);
         lexer_read(l);
-        return true;
+        return 1;
     }
     else if (lexer_peek(l)->type == TK_LARITH)
         return read_arithmetic_expansion(element, l);
@@ -45,27 +45,38 @@ bool read_element(struct s_element_node *element, struct s_lexer *l)
         element->type = EL_REDIRECTION;
         element->data.s_redirection_node = init_redirection_node();
         if (read_redirection(element->data.s_redirection_node, l))
-            return true;
+            return 1;
         else
         {
             element->type = EL_NONE;
             free_redirection_node(element->data.s_redirection_node);
-            return false;
+            return 0;
         }
     }
 }
 
-bool read_arithmetic_expansion(struct s_element_node *element,
+static int pars_count(struct s_lexer *l)
+{
+    enum e_token_type type = lexer_peek(l)->type;
+    if (type == TK_LPAR)
+        return 1;
+    else if (type == TK_RPAR)
+        return -1;
+    else if (type == TK_RARITH)
+        return -2;
+    else
+        return 0;
+}
+
+int read_arithmetic_expansion(struct s_element_node *element,
                                struct s_lexer *l)
 {
     if (lexer_peek(l)->type != TK_LARITH)
-        return false;
+        return 0;
     int pars = 2;
     lexer_read(l);
-    element->type = EL_WORD;
     char *expression = strdup("");
     char *temp;
-    element->data.s_word = init_word(WD_ARITH, NULL);
     enum e_token_type type = lexer_peek(l)->type;
     while (type == TK_WORD || type == TK_LPAR || type == TK_RPAR
            || type == TK_RARITH || type == TK_IONUMBER)
@@ -74,19 +85,15 @@ bool read_arithmetic_expansion(struct s_element_node *element,
         free(expression);
         expression = temp;
         lexer_read(l);
-        if (type == TK_LPAR)
-            pars++;
-        if (type == TK_RPAR)
-            pars--;
-        if (type == TK_RARITH)
-            pars -= 2;
+        pars += pars_count(l);
         if (type == TK_RARITH && pars <= 0)
             break;
         type = lexer_peek(l)->type;
     }
+    element->type = EL_WORD;
+    element->data.s_word = init_word(WD_ARITH, expression);
     if (pars != 0 || strlen(expression) <= 2)
-        return false;
+        return -1;
     expression[strlen(expression) - 2] = '\0';
-    element->data.s_word->value = expression;
-    return true;
+    return 1;
 }

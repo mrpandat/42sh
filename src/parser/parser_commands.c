@@ -55,13 +55,16 @@ bool read_simple_command(struct s_ast_node *node, struct s_lexer *l)
         element = init_element_node();
         ret = true;
     }
-    while (read_element(element, l))
+    int el_res = 0;
+    while ((el_res = read_element(element, l)) == 1)
     {
         add_simple_command_element(command, element);
         element = init_element_node();
         ret = true;
     }
     free_element_node(element);
+    if (el_res < 0)
+        return false;
     return ret;
 }
 

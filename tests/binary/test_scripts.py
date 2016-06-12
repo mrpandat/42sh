@@ -13,31 +13,29 @@ class TestBinary(unittest.TestCase):
         self.assertTrue(a.stdout == b.stdout and a.returncode == b.returncode, msg=msg)
 
     def test_01(self):
-        self.exec_script("binary/scripts/test1.sh")
+        self.exec_script("binary/scripts/test01.sh")
 
     def test_02(self):
-        self.exec_script("binary/scripts/test2.sh")
+        self.exec_script("binary/scripts/test02.sh")
 
     def test_03(self):
-        self.exec_script("binary/scripts/test3.sh")
+        self.exec_script("binary/scripts/test03.sh")
 
     def test_04(self):
-        self.exec_script("binary/scripts/test4.sh")
+        self.exec_script("binary/scripts/test04.sh")
 
     def test_05(self):
-        self.exec_script("binary/scripts/test5.sh")
+        self.exec_script("binary/scripts/test05.sh")
 
     def test_06(self):
-        self.exec_script("binary/scripts/test6.sh")
+        self.exec_script("binary/scripts/test06.sh")
 
     def test_07(self):
-        self.exec_script("binary/scripts/test7.sh")
+        self.exec_script("binary/scripts/test07.sh")
 
     def test_08(self):
-        self.exec_script("binary/scripts/test8.sh")
+        self.exec_script("binary/scripts/test08.sh")
 
     def test_09(self):
-        self.exec_script("binary/scripts/test9.sh")
+        self.exec_script("binary/scripts/test09.sh")
 
-    def test_10(self):
-        self.exec_script("binary/scripts/test10.sh")

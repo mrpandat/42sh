@@ -42,6 +42,22 @@ bool read_do_group(struct s_ast_node *node, struct s_lexer *l)
     return true;
 }
 
+static bool read_for_words(struct s_for_node *for_node, struct s_lexer *l)
+{
+    lexer_read(l);
+    while (is_word(lexer_peek(l)))
+    {
+        add_for_word(for_node, lexer_peek(l)->value);
+        lexer_read(l);
+    }
+    if (lexer_peek(l)->type != TK_SEMI
+        && lexer_peek(l)->type != TK_NEWLINE)
+        return false;
+    lexer_read(l);
+    read_newlines(l);
+    return true;
+}
+
 bool read_rule_for(struct s_ast_node *node, struct s_lexer *l)
 {
     if (lexer_peek(l)->type == TK_FOR)
@@ -56,17 +72,8 @@ bool read_rule_for(struct s_ast_node *node, struct s_lexer *l)
         read_newlines(l);
         if (lexer_peek(l)->type == TK_IN)
         {
-            lexer_read(l);
-            while (is_word(lexer_peek(l)))
-            {
-                add_for_word(for_node, lexer_peek(l)->value);
-                lexer_read(l);
-            }
-            if (lexer_peek(l)->type != TK_SEMI
-                && lexer_peek(l)->type != TK_NEWLINE)
+            if (!read_for_words(for_node, l))
                 return false;
-            lexer_read(l);
-            read_newlines(l);
         }
         if (!read_do_group(for_node->do_group, l))
             return false;

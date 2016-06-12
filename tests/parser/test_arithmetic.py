@@ -43,7 +43,7 @@ class TestSimpleCommand(unittest.TestCase):
         node = self.lib.init_ast_node()
         self.lib.read_simple_command(
             node,
-            self.init_and_process_lexer(b'echo $((3 + 4  + (5 ** 2) - (3 / 4))'))
+            self.init_and_process_lexer(b'echo $((3 + 4  + (5 ** 2) - (3 / 4)))'))
         command = node.data.s_simple_command_node
         self.assertEqual(command.nb_elements, 2)
         self.assertEqual(command.elements[0].type, self.lib.EL_WORD)

@@ -2,15 +2,11 @@
 #include "../includes/execute.h"
 #include "../includes/expansion.h"
 
-int exec_ast_node(struct s_ast_node *node)
+static int exec_loops_control_node(struct s_ast_node *node)
 {
-    if (node == NULL)
-        return -1;
     enum e_node_type type = node->type;
     if (type == ND_IF)
         return exec_if_node(node->data.s_if_node);
-    else if (type == ND_COMMAND)
-        return exec_command_node(node->data.s_command_node);
     else if (type == ND_WHILE)
         return exec_while_node(node->data.s_while_node);
     else if (type == ND_UNTIL)
@@ -19,6 +15,17 @@ int exec_ast_node(struct s_ast_node *node)
         return exec_case_node(node->data.s_case_node);
     else if (type == ND_FOR)
         return exec_for_node(node->data.s_for_node);
+    else
+        return -1;
+}
+
+int exec_ast_node(struct s_ast_node *node)
+{
+    if (node == NULL)
+        return -1;
+    enum e_node_type type = node->type;
+    if (type == ND_COMMAND)
+        return exec_command_node(node->data.s_command_node);
     else if (type == ND_REDIRECTION)
         return exec_redirection_node(node->data.s_redirection_node);
     else if (type == ND_FUNCDEC)
@@ -31,7 +38,8 @@ int exec_ast_node(struct s_ast_node *node)
         return exec_and_or_node(node->data.s_and_or_node);
     else if (type == ND_LIST)
         return exec_list_node(node->data.s_list_node);
-    return -1;
+    else
+        return exec_loops_control_node(node);
 }
 
 int exec_redirection_node(struct s_redirection_node *node)

@@ -153,6 +153,7 @@ struct s_binop_node *init_binop_node(struct s_art_node *left,
 struct s_unop_node *init_unop_node(enum e_unop_type type,
                                    struct s_art_node *son);
 struct s_number_node *init_num_node_int(int num);
+struct s_art_node *init_art_node(void);
 void free_binop_node(struct s_binop_node *node);
 void free_unop_node(struct s_unop_node *node);
 void free_num_node(struct s_number_node *node);

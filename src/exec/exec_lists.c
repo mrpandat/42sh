@@ -20,6 +20,22 @@ int exec_and_or_node(struct s_and_or_node *node)
     return -1;
 }
 
+static int exec_list_and_node(struct s_list_node *node)
+{
+    int pid = fork();
+    if (pid == 0)
+    {
+        exec_ast_node(node->right);
+        return 0;
+    }
+    else
+    {
+        exec_ast_node(node->left);
+        wait(NULL);
+        return 0;
+    }
+}
+
 int exec_list_node(struct s_list_node *node)
 {
     if (node->type == LIST_SEMI)
@@ -28,20 +44,7 @@ int exec_list_node(struct s_list_node *node)
         return exec_ast_node(node->right);
     }
     else if (node->type == LIST_AND)
-    {
-        int pid = fork();
-        if (pid == 0)
-        {
-            exec_ast_node(node->right);
-            return 0;
-        }
-        else
-        {
-            exec_ast_node(node->left);
-            wait(NULL);
-            return 0;
-        }
-    }
+        return exec_list_and_node(node);
     else if (node->type == LIST_BG)
     {
         int pid = fork();
