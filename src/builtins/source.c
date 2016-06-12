@@ -11,10 +11,10 @@ int my_source(struct s_simple_command_node *node)
         && node->elements[1]->type == EL_WORD)
     {
         char *prog = "./42sh";
-        char **arguments = calloc(3, sizeof(char *));
+        char **arguments = calloc(3, sizeof (char *));
         char *word = exec_word(node->elements[1]->data.s_word);
-        arguments[0] = malloc(sizeof(char) * (strlen(prog) + 1));
-        arguments[1] = malloc(sizeof(char) * (strlen(word) + 1));
+        arguments[0] = malloc(sizeof (char) * (strlen(prog) + 1));
+        arguments[1] = malloc(sizeof (char) * (strlen(word) + 1));
         strcpy(arguments[1], word);
         strcpy(arguments[0], prog);
         if (res == 0)

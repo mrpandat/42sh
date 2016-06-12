@@ -72,10 +72,10 @@ void parse_file(struct options *options)
 
 }
 
-int shopt_parse(int i, char** argv)
+int shopt_parse(int i, char **argv)
 {
-        set_option(argv[i + 1],(argv[i][0] == '+' ? 1 : -1));
-        return i + 1;
+    set_option(argv[i + 1], (argv[i][0] == '+' ? 1 : -1));
+    return i + 1;
 }
 
 void parse_small_options(int argc, char **argv, struct options *options,

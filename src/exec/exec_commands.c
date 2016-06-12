@@ -14,7 +14,7 @@ int exec_funcdec_node(struct s_funcdec_node *node)
 char **get_argv(struct s_simple_command_node *node,
               char **prog)
 {
-    char **arguments = calloc(node->nb_elements + 1, sizeof(char *));
+    char **arguments = calloc(node->nb_elements + 1, sizeof (char *));
     char *word = NULL;
     for (int i = 0; i < node->nb_elements; i++)
     {

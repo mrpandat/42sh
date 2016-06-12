@@ -23,7 +23,7 @@ void read_spaces(struct s_stream *s)
 
 struct s_art_node *init_art_node()
 {
-    return malloc(sizeof(struct s_art_node));
+    return malloc(sizeof (struct s_art_node));
 }
 
 struct s_binop_node *init_binop_node(struct s_art_node *left,
