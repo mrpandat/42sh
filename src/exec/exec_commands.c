@@ -11,8 +11,8 @@ int exec_funcdec_node(struct s_funcdec_node *node)
     return -1;
 }
 
-char **get_argv(struct s_simple_command_node *node,
-              char **prog)
+static char **get_argv(struct s_simple_command_node *node,
+                char **prog)
 {
     char **arguments = calloc(node->nb_elements + 1, sizeof (char *));
     char *word = NULL;
@@ -31,7 +31,7 @@ char **get_argv(struct s_simple_command_node *node,
     return arguments;
 }
 
-int exec_file(struct s_simple_command_node *node)
+static int exec_file(struct s_simple_command_node *node)
 {
     char *prog =  malloc(sizeof (char) *
                          strlen(exec_word(node->elements[0]->data.s_word)) + 1);

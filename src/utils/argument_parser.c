@@ -8,7 +8,7 @@
 #include <sys/stat.h>
 
 
-int parse_command(char **argv, int i, struct options *options1)
+static int parse_command(char **argv, int i, struct options *options1)
 {
     i++;
     options1->command = argv[i];
@@ -21,7 +21,7 @@ int print_exit(int code, char *str, FILE *out)
     exit(code);
 }
 
-int match(char *compare, char *compare2)
+static int match(char *compare, char *compare2)
 {
     if (strlen(compare) > strlen(compare2))
         for (unsigned x = 0; x < strlen(compare2); x++)
@@ -30,7 +30,7 @@ int match(char *compare, char *compare2)
     return 1;
 }
 
-void parse_long_option(char **argv, struct options *options, int i)
+static void parse_long_option(char **argv, struct options *options, int i)
 {
     int ok = 1;
     if (argv[i][2] == 'n') //norc
@@ -58,7 +58,7 @@ void parse_long_option(char **argv, struct options *options, int i)
         fprintf(stderr, "unknown long option : %s\n", argv[i]);
 }
 
-void parse_file(struct options *options)
+static void parse_file(struct options *options)
 {
     if (strcmp(options->command, "") == 0
         && strcmp(options->file, "") != 0)
@@ -72,13 +72,13 @@ void parse_file(struct options *options)
 
 }
 
-int shopt_parse(int i, char **argv)
+static int shopt_parse(int i, char **argv)
 {
     set_option(argv[i + 1], (argv[i][0] == '+' ? 1 : -1));
     return i + 1;
 }
 
-void parse_small_options(int argc, char **argv, struct options *options,
+static void parse_small_options(int argc, char **argv, struct options *options,
                          int start)
 {
     for (int i = start; i < argc; i++)

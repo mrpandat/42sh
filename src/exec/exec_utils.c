@@ -50,7 +50,7 @@ int exec_redirection_node(struct s_redirection_node *node)
     return -1;
 }
 
-char *tilde_expantion(char *word)
+char *tilde_expansion(char *word)
 {
     if (!strcmp("~", word))
         return g_env.HOME;
