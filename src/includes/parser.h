@@ -48,6 +48,8 @@ bool read_funcdec(struct s_ast_node *node, struct s_lexer *l);
 /* File: parser_elements.c */
 bool read_prefix(struct s_element_node *element, struct s_lexer *l);
 bool read_element(struct s_element_node *element, struct s_lexer *l);
+bool read_arithmetic_expansion(struct s_element_node *element,
+                               struct s_lexer *l);
 
 /* File: parser_loops.c */
 bool read_rule_for(struct s_ast_node *node, struct s_lexer *l);
