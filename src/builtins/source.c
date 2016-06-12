@@ -3,12 +3,25 @@
 #include <util.h>
 #include <global.h>
 
+int check (struct s_simple_command_node *node)
+{
+    if (node->nb_elements < 2)
+    {
+        fprintf(stderr, "No argument after source\n");
+        return 2;
+    }
+    if (node->elements[0]->type == EL_WORD
+        && node->elements[1]->type == EL_WORD)
+    {
+        return 0;
+    }
+    return 1;
+}
 
 int my_source(struct s_simple_command_node *node)
 {
-    int res = 0;
-    if (node->elements[0]->type == EL_WORD
-        && node->elements[1]->type == EL_WORD)
+    int res = check(node);
+    if (!res)
     {
         char *prog = "./42sh";
         char **arguments = calloc(3, sizeof (char *));

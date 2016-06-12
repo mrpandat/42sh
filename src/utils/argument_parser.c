@@ -102,7 +102,7 @@ void parse_small_options(int argc, char **argv, struct options *options,
         else if (i == argc - 1)
             options->file = argv[i];
         else
-            print_exit(1, "unknown option", stderr);
+            exit(1);
 }
 
 void parse_options(int argc, char **argv, struct options *options, int start)
