@@ -1,7 +1,6 @@
 #define _GNU_SOURCE
 
 #include <execute.h>
-#include "../includes/global.h"
 #include "../includes/hashtable.h"
 #include "../includes/builtins.h"
 
@@ -99,14 +98,16 @@ int my_alias(struct s_simple_command_node *node)
         char *key = strtok(tmp, "=");
         char *val = strtok(NULL, "=");
         if (NULL != key)
+        {
             if (NULL == val)
             {
                 alias_set_value(node->elements[i], node->elements[i + 1]);
                 i++;
             }
-            /** value has no quoting */
+                /** value has no quoting */
             else
                 alias_set_value(node->elements[i], NULL);
+        }
         else
         {
             if (!alias_get_value(exec_word(node->elements[i]->data.s_word)))

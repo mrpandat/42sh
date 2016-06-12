@@ -108,7 +108,7 @@ void lexer_process(struct s_lexer *lexer)
     while ('\0' != *lexer->current)
     {
         if (!lexer_match_expr(lexer))
-          return;
+            return;
     }
 
     lexer_add_token(lexer, TK_EOF, "EOF");
