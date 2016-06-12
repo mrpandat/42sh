@@ -152,10 +152,10 @@ int my_echo(struct s_simple_command_node *node)
                 if (execute_short_options(node, i, echo) == 0) continue;
             }
             if (words >= 1) printf(" ");
-            print_word_not_escaped(word);
+                print_word_not_escaped(word);
             words++;
         }
     }
     if (echo->noption == 0) putchar('\n');
-    return exitf(echo);
+        return exitf(echo);
 }
