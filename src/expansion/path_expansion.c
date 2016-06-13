@@ -21,6 +21,7 @@ char *expand_path(char *path)
                 free(res);
                 res = tmp;
                 tmp = str_append(tmp, " ");
+                free(res);
                 res = tmp;
                 count_match++;
             }
