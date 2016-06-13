@@ -1,25 +1,33 @@
-#include <stdio.h>
-#include <dirent.h>
-#include "../includes/global.h"
-#include "../includes/expansion.h"
-
-
 #define _GNU_SOURCE
 
+#include <dirent.h>
+#include <util.h>
+#include "../includes/expansion.h"
 
 char *expand_path(char *path)
 {
-    DIR *dp = opendir(".");
+    DIR *current_dir = opendir(".");
     struct dirent *ep;
-    if (dp != NULL && path != NULL)
+    char* res = strdup("");
+    char* tmp;
+    int count_match = 0;
+    if (current_dir != NULL && path != NULL)
     {
-        while ((ep = readdir(dp)) != NULL)
+        while ((ep = readdir(current_dir)) != NULL)
         {
-            puts(ep->d_name);
             if (!fnmatch(path, (ep->d_name), 0))
-                puts(ep->d_name);
+            {
+                tmp = str_append(res, ep->d_name);
+                free(res);
+                res = tmp;
+                tmp = str_append(tmp, " ");
+                res = tmp;
+                count_match++;
+            }
         }
-        closedir(dp);
+        closedir(current_dir);
     }
-    return "lol";
+    puts(res);
+
+    return res;
 }
