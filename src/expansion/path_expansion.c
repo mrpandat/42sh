@@ -29,6 +29,10 @@ char *expand_path(char *path)
         closedir(current_dir);
     }
     puts(res);
-
+    if(count_match==0)
+    {
+        free(res);
+        return NULL;
+    }
     return res;
 }
