@@ -17,6 +17,21 @@ char *str_append(char *str_one, char *str_two)
     return str;
 }
 
+char *str_append_char(char *str_one, char str_two)
+{
+    char *str;
+    if ((str = malloc(strlen(str_one) + 2)) != NULL
+        && (str[0] = '\0') == '\0')
+    {
+        strcat(str, str_one);
+        str[strlen(str_one)] = str_two;
+    }
+    else
+        fprintf(stderr, "Malloc error\n");
+    return str;
+}
+
+
 /**
  * Be carefull this function does not closes the FILE
  * Reason : ment to be used with stdin
