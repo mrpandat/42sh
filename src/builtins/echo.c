@@ -65,8 +65,7 @@ static int pr_escaped(char *word)
     for (size_t i = 0; i < strlen(word); i++)
     {
         size_t sw = strlen(word);
-        if (word[i] == '\0')
-            return 0;
+        if (word[i] == '\0') return 0;
         if (word[i] == '\\' && sw >= i + 1)
         {
             if (word[i + 1] == 'c') return 1;
@@ -82,7 +81,6 @@ static int pr_escaped(char *word)
                 putchar('\\');
                 putchar(word[i + 1]);
             }
-
             i++;
         }
         else
