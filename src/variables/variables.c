@@ -11,9 +11,16 @@ void *get_var(char *name)
     return a->value;
 }
 
-void set_var(char *var, void* value)
+void set_var(char *var, void *value)
 {
     ht_insert(g_env.variables, var, value);
+}
+
+int exit_var(int vcount, int values, int save, char *var, char *value)
+{
+    if (vcount == 0 || values == 0) return 1;
+    if (save == 1) set_var(var, value);
+    return 0;
 }
 
 int is_var(char *word, int save)
@@ -43,9 +50,6 @@ int is_var(char *word, int save)
             values++;
         }
     }
-    if(vcount != 0 && values!=0) return 1;
-    if(save == 1) set_var(var,value);
-    free(var);
-    free(value);
-    return 0;
+    return exit_var(vcount, values, save, var, value);
 }
+
