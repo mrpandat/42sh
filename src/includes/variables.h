@@ -10,7 +10,7 @@
 
 #include "global.h"
 
-int is_var(char *word);
+int is_var(char *word, int save);
 
 
 #endif
