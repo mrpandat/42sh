@@ -16,6 +16,7 @@ set(PARSER_DIR src/parser)
 set(AST_DIR src/ast)
 set(LEXER_DIR src/lexer)
 set(UTILS_DIR src/utils)
+set(VAR_DIR src/variables)
 
 aux_source_directory(${EXEC_DIR} EXEC_SRC)
 aux_source_directory(${BUILTINS_DIR} BUILTINS_SRC)
@@ -24,6 +25,7 @@ aux_source_directory(${PARSER_DIR} PARSER_SRC)
 aux_source_directory(${AST_DIR} AST_SRC)
 aux_source_directory(${LEXER_DIR} LEXER_SRC)
 aux_source_directory(${UTILS_DIR} UTILS_SRC)
+aux_source_directory(${VAR_DIR} VAR_DIR)
 
 include_directories(src/includes)
 
@@ -36,6 +38,7 @@ add_executable(42sh
         ${AST_SRC}
         ${LEXER_SRC}
         ${UTILS_SRC}
+        ${VAR_DIR}
         )
 
 add_library(my42sh SHARED
@@ -47,6 +50,7 @@ add_library(my42sh SHARED
         ${AST_SRC}
         ${LEXER_SRC}
         ${UTILS_SRC}
+        ${VAR_DIR}
 )
 
 add_custom_target(check
