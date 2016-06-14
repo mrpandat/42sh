@@ -5,33 +5,47 @@
 
 #include "variables.h"
 
-int is_var(char *word)
+void *get_var(char *name)
 {
-    int assignement = 0;
-    char *tmp, *var = strdup(""), *assign = strdup("");
+    struct s_element *a = ht_get(g_env.variables, name);
+    return a->value;
+}
+
+void set_var(char *var, void* value)
+{
+    ht_insert(g_env.variables, var, value);
+}
+
+int is_var(char *word, int save)
+{
+    int values = 0, vcount = 0;
+    char *tmp, *var = strdup(""), *value = strdup("");
     for (size_t i = 0; i < strlen(word); i++)
     {
         if (word[i] == '\0') break;
-        if (word[i]== '=')
+        if (word[i] == '=')
         {
-            tmp ="";
-            assignement++;
+            tmp = "";
+            vcount++;
             continue;
         }
-        if (assignement == 0)
+        if (vcount == 0)
         {
             tmp = str_append_char(var, word[i]);
             free(var);
             var = tmp;
         }
-        else {
-            tmp = str_append_char(assign, word[i]);
-            free(assign);
-            assign = tmp;
+        else
+        {
+            tmp = str_append_char(value, word[i]);
+            free(value);
+            value = tmp;
+            values++;
         }
     }
-    puts(var);
-    puts(assign);
-    ht_insert(g_env.variables,var,assign);
+    if(vcount != 0 && values!=0) return 1;
+    if(save == 1) set_var(var,value);
+    free(var);
+    free(value);
     return 0;
 }
