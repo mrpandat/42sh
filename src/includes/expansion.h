@@ -84,6 +84,7 @@ struct s_stream
 
 char *stream_peek(struct s_stream *stream);
 void stream_read(struct s_stream *stream, int n);
+char* expand_path(char * path);
 
 /**
  **
