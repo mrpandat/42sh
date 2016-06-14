@@ -1,6 +1,7 @@
 #define _GNU_SOURCE
 
 #include <util.h>
+#include <hashtable.h>
 
 #include "variables.h"
 
@@ -31,5 +32,6 @@ int is_var(char *word)
     }
     puts(var);
     puts(assign);
+    ht_insert(g_env.variables,var,assign);
     return 0;
 }
