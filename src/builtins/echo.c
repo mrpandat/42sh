@@ -29,24 +29,25 @@ static int execute_long_option(struct s_simple_command_node *node, int i,
 }
 
 void changeEchoOption(int noption, int eoption, int Eoption,
-                      struct echo_struct *echo) {
-    if(noption == 1) {
+                      struct echo_struct *echo)
+{
+    if (noption == 1)
+    {
         echo->noption = 1;
         echo->options++;
     }
-    if(eoption == 1)
+    if (eoption == 1)
     {
         echo->eoption = 1;
         echo->Eoption = 0;
         echo->options++;
     }
-    if(Eoption == 1)
+    if (Eoption == 1)
     {
         echo->eoption = 0;
         echo->Eoption = 1;
         echo->options++;
     }
-
 }
 
 static int execute_short_options(struct s_simple_command_node *node, int i,
@@ -60,13 +61,13 @@ static int execute_short_options(struct s_simple_command_node *node, int i,
         switch (ew[j])
         {
             case 'n':
-                changeEchoOption(1,0,0,echo);
+                changeEchoOption(1, 0, 0, echo);
                 break;
             case 'e':
-                changeEchoOption(0,1,0,echo);
+                changeEchoOption(0, 1, 0, echo);
                 break;
             case 'E':
-                changeEchoOption(0,0,1,echo);
+                changeEchoOption(0, 0, 1, echo);
                 break;
             default:
                 return 1;
