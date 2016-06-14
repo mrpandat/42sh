@@ -89,8 +89,9 @@ static int pr_escaped(char *word)
     return 0;
 }
 
-static int print_word_not_escaped(char *word)
+static int print_word_not_escaped(char *word, int words)
 {
+    if (words >= 1) printf(" ");
     if (!strcmp(word, "\\c"))
         return 1;
     if (strlen(word) >= 1 && word[0] == '\\')
@@ -123,7 +124,6 @@ int my_echo(struct s_simple_command_node *node)
     {
         if (node->elements[i]->type != EL_WORD) continue;
         char *word = exec_word(node->elements[i]->data.s_word);
-
         if (node->elements[i]->data.s_word->type == WD_ESC)
         {
             if (echo->eoption == 0) fprintf(stdout, "%s", word);
@@ -134,12 +134,10 @@ int my_echo(struct s_simple_command_node *node)
         {
             if (words == 0)
             {
-                if (execute_long_option(node, i, echo) == 0)
-                    return exitf(echo);
+                if (execute_long_option(node, i, echo) == 0) return exitf(echo);
                 if (execute_short_options(node, i, echo) == 0) continue;
             }
-            if (words >= 1) printf(" ");
-            print_word_not_escaped(word);
+            print_word_not_escaped(word, words);
             words++;
         }
     }
