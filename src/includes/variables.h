@@ -10,7 +10,8 @@
 
 #include "global.h"
 
-int is_var(char *word, int save);
+int is_var_assign(char *word, int save);
+int is_variable(struct s_simple_command_node *node);
 
 
 #endif
