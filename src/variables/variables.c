@@ -26,27 +26,20 @@ int exit_var(int vcount, int values, int save, char *var, char *value)
 int is_var(char *word, int save)
 {
     int values = 0, vcount = 0;
-    char *tmp, *var = strdup(""), *value = strdup("");
+    char *var = strdup(""), *value = strdup("");
     for (size_t i = 0; i < strlen(word); i++)
     {
         if (word[i] == '\0') break;
         if (word[i] == '=')
         {
-            tmp = "";
             vcount++;
             continue;
         }
         if (vcount == 0)
-        {
-            tmp = str_append_char(var, word[i]);
-            free(var);
-            var = tmp;
-        }
+            var = str_append_char(var, word[i]);
         else
         {
-            tmp = str_append_char(value, word[i]);
-            free(value);
-            value = tmp;
+            value = str_append_char(value, word[i]);
             values++;
         }
     }
