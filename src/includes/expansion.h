@@ -6,6 +6,7 @@
 
 #ifndef INC_42SH_EXPANSION_H
 # define INC_42SH_EXPANSION_H
+# include <ast.h>
 
 enum e_binop_type
 {
@@ -171,5 +172,9 @@ void free_unop_node(struct s_unop_node *node);
 void free_num_node(struct s_number_node *node);
 void free_art_node(struct s_art_node *node);
 int execute_art_node(struct s_art_node *node);
+
+int is_var_assign(char *word, int save);
+int is_variable(struct s_simple_command_node *node);
+int save_variables(struct s_simple_command_node *node);
 
 #endif //INC_42SH_EXPANSION_H

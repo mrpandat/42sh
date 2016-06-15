@@ -4,8 +4,7 @@
 #include <hashtable.h>
 #include <ast.h>
 #include <execute.h>
-
-#include "variables.h"
+#include <expansion.h>
 
 char *get_var(char *name)
 {
@@ -82,9 +81,7 @@ int save_variables(struct s_simple_command_node *node)
         else if(i == 1) set_var(var_name,word);
 
         else return 1;
-
     }
-
     return 0;
 }
 

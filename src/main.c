@@ -1,7 +1,6 @@
 #include <parser.h>
 #include "includes/hashtable.h"
 #include "includes/execute.h"
-#include "includes/variables.h"
 
 
 void fill_env(struct s_lexer *lexer, struct s_ast_node *root,
