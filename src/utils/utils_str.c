@@ -17,18 +17,21 @@ char *str_append(char *str_one, char *str_two)
     return str;
 }
 
-char *str_append_char(char *str_one, char str_two)
+char *str_append_char(char *str, char c)
 {
-    char *str;
-    if ((str = malloc(strlen(str_one) + 2)) != NULL
-        && (str[0] = '\0') == '\0')
+    char *ret;
+    size_t len_str = strlen(str);
+    if ((ret = malloc(len_str + 2)) != NULL
+        && (ret[0] = '\0') == '\0')
     {
-        strcat(str, str_one);
-        str[strlen(str_one)] = str_two;
+        strcat(ret, str);
+        ret[len_str] = c;
+        ret[len_str + 1] = '\0';
+        free(str);
     }
     else
         fprintf(stderr, "Malloc error\n");
-    return str;
+    return ret;
 }
 
 
