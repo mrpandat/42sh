@@ -28,11 +28,23 @@ char *expand_path(char *path)
         }
         closedir(current_dir);
     }
-    puts(res);
-    if(count_match==0)
+    if (count_match == 0)
     {
         free(res);
         return NULL;
     }
     return res;
+}
+
+char *expand_tilde(char *word)
+{
+    if (!strcmp("~", word))
+        return strdup(g_env.HOME);
+    if (!strcmp("~/", word))
+        return str_append_char(strdup(g_env.HOME), '/');
+    else if (!strcmp("~-", word))
+        return strdup(g_env.OLDPWD);
+    else if (!strcmp("~+", word))
+        return strdup(g_env.PWD);
+    return NULL;
 }

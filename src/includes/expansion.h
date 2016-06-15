@@ -172,4 +172,6 @@ void free_num_node(struct s_number_node *node);
 void free_art_node(struct s_art_node *node);
 int execute_art_node(struct s_art_node *node);
 
+char *expand_tilde(char *word);
+
 #endif //INC_42SH_EXPANSION_H

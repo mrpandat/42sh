@@ -84,6 +84,7 @@ enum e_word_type
     WD_ARITH,
     WD_SUBSHELL,
     WD_ASSIGNEMENT_WORD,
+    WD_PATH
 };
 
 struct s_word
