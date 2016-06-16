@@ -34,6 +34,32 @@ static bool match_compound_variable(struct s_lexer *lexer)
 
 static bool match_simple_variable(struct s_lexer *lexer)
 {
+    /** $ */
+    char *value = NULL;
+
+    if (0 == strncmp(lexer->current, "$", strlen("$")))
+    {
+        size_t len = 0;
+        lexer->current++;
+        char *copy = lexer->current;
+        while (*copy && 0 != is_word_letter(*copy))
+        {
+            len++;
+            copy++;
+        }
+
+        value = strndup(lexer->current, (copy - lexer->current));
+    }
+
+    if (NULL != value && strlen(value) > 0)
+    {
+        lexer_add_token(lexer, TK_VARIABLE, value);
+        lexer->current += (strlen(value));
+        free(value);
+        return true;
+    }
+
+    free(value);
     return false;
 }
 
