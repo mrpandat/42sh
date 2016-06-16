@@ -51,17 +51,19 @@ static bool match_simple_variable(struct s_lexer *lexer)
 
         value = strndup(lexer->current, (copy - lexer->current));
     }
+    else
+        return false;
 
     if (NULL != value && strlen(value) > 0)
     {
         lexer_add_token(lexer, TK_VARIABLE, value);
         lexer->current += (strlen(value));
-        free(value);
-        return true;
     }
+    else
+        lexer_add_token(lexer, TK_WORD, "$");
 
     free(value);
-    return false;
+    return true;
 }
 
 bool lexer_match_variable(struct s_lexer *lexer)
