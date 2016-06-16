@@ -23,9 +23,20 @@ void set_var(char *var, void *value)
 
 int exit_var(int vcount, int values, int save, char *var, char *value)
 {
-    if (vcount == 0) return 1;
-    if (values == 0) return 2;
+    if (vcount == 0)
+    {
+        free(value);
+        free(var);
+        return 1;
+    }
+    if (values == 0)  {
+        free(value);
+        free(var);
+        return 2;
+    }
     if (save == 1) set_var(var, value);
+    free(value);
+    free(var);
     return 0;
 }
 
