@@ -56,8 +56,9 @@ char *exec_word(struct s_word *word)
         || word->type == WD_ASSIGNEMENT_WORD)
     {
         char *expanded;
-        if ((expanded = expand_path(word->value)) != NULL
-            || (expanded = expand_tilde(word->value)) != NULL)
+        if (word->type != WD_ESC
+            && ((expanded = expand_path(word->value)) != NULL
+                || (expanded = expand_tilde(word->value)) != NULL))
         {
             word->type = WD_PATH;
             word->result = expanded;
