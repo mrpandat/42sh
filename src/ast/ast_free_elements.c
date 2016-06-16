@@ -15,6 +15,8 @@ void free_element_node(struct s_element_node *node)
                 free(node->data.s_word->result);
             free(node->data.s_word->value);
         }
+        else if (node->data.s_word->type == WD_PATH)
+            free(node->data.s_word->result);
         free_word(node->data.s_word);
     }
     free(node);

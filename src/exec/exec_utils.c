@@ -50,22 +50,23 @@ int exec_redirection_node(struct s_redirection_node *node)
     return -1;
 }
 
-char *tilde_expansion(char *word)
-{
-    if (!strcmp("~", word))
-        return g_env.HOME;
-    else if (!strcmp("~-", word))
-        return g_env.OLDPWD;
-    else if (!strcmp("~+", word))
-        return g_env.PWD;
-    return NULL;
-}
-
 char *exec_word(struct s_word *word)
 {
     if (word->type == WD_WORD || word->type == WD_ESC
         || word->type == WD_ASSIGNEMENT_WORD)
-        return word->value;
+    {
+        char *expanded;
+        if (word->type != WD_ESC
+            && ((expanded = expand_path(word->value)) != NULL
+                || (expanded = expand_tilde(word->value)) != NULL))
+        {
+            word->type = WD_PATH;
+            word->result = expanded;
+            return word->result;
+        }
+        else
+            return word->value;
+    }
     else if (word->type == WD_ARITH)
     {
         if (word->result != NULL)
@@ -73,6 +74,8 @@ char *exec_word(struct s_word *word)
         word->result = arithmetic_expansion(word->value);
         return word->result;
     }
+    else if (word->type == WD_PATH)
+        return word->result;
     else
         return NULL;
 }
