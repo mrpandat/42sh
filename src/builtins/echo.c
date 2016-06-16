@@ -28,6 +28,27 @@ static int execute_long_option(struct s_simple_command_node *node, int i,
     return 1;
 }
 
+void changeEchoOption(int noption, int eoption, int Eoption,
+                      struct echo_struct *echo)
+{
+    if (noption == 1)
+    {
+        echo->noption = 1;
+        echo->options++;
+    }
+    if (eoption == 1)
+    {
+        echo->eoption = 1;
+        echo->Eoption = 0;
+        echo->options++;
+    }
+    if (Eoption == 1)
+    {
+        echo->eoption = 0;
+        echo->Eoption = 1;
+        echo->options++;
+    }
+}
 
 static int execute_short_options(struct s_simple_command_node *node, int i,
                                  struct echo_struct *echo)
@@ -40,18 +61,13 @@ static int execute_short_options(struct s_simple_command_node *node, int i,
         switch (ew[j])
         {
             case 'n':
-                echo->noption = 1;
-                echo->options++;
+                changeEchoOption(1, 0, 0, echo);
                 break;
             case 'e':
-                echo->eoption = 1;
-                echo->Eoption = 1;
-                echo->options++;
+                changeEchoOption(0, 1, 0, echo);
                 break;
             case 'E':
-                echo->eoption = 1;
-                echo->Eoption = 1;
-                echo->options++;
+                changeEchoOption(0, 0, 1, echo);
                 break;
             default:
                 return 1;
@@ -65,8 +81,7 @@ static int pr_escaped(char *word)
     for (size_t i = 0; i < strlen(word); i++)
     {
         size_t sw = strlen(word);
-        if (word[i] == '\0')
-            return 0;
+        if (word[i] == '\0') return 0;
         if (word[i] == '\\' && sw >= i + 1)
         {
             if (word[i + 1] == 'c') return 1;
@@ -82,7 +97,6 @@ static int pr_escaped(char *word)
                 putchar('\\');
                 putchar(word[i + 1]);
             }
-
             i++;
         }
         else
@@ -91,28 +105,18 @@ static int pr_escaped(char *word)
     return 0;
 }
 
-static int print_word_not_escaped(char *word)
+static int print_word_not_escaped(char *word, int words)
 {
+    if (words >= 1) printf(" ");
     if (!strcmp(word, "\\c"))
         return 1;
-    else if (!strcmp(word, "\\a"))
-        putchar('a');
-    else if (!strcmp(word, "\\b"))
-        putchar('b');
-    else if (!strcmp(word, "\\e"))
-        putchar('e');
-    else if (!strcmp(word, "\\f"))
-        putchar('f');
-    else if (!strcmp(word, "\\n"))
-        putchar('n');
-    else if (!strcmp(word, "\\r"))
-        putchar('r');
-    else if (!strcmp(word, "\\t"))
-        putchar('t');
-    else if (!strcmp(word, "\\v"))
-        putchar('v');
-    else
+    if (strlen(word) >= 1 && word[0] == '\\')
+    {
+        for (size_t i = 1; i < strlen(word); i++)
+            printf("%c", word[i]);
+    } else
         printf("%s", word);
+
     return 0;
 }
 
@@ -136,7 +140,6 @@ int my_echo(struct s_simple_command_node *node)
     {
         if (node->elements[i]->type != EL_WORD) continue;
         char *word = exec_word(node->elements[i]->data.s_word);
-
         if (node->elements[i]->data.s_word->type == WD_ESC)
         {
             if (echo->eoption == 0) fprintf(stdout, "%s", word);
@@ -147,15 +150,13 @@ int my_echo(struct s_simple_command_node *node)
         {
             if (words == 0)
             {
-                if (execute_long_option(node, i, echo) == 0)
-                    return exitf(echo);
+                if (execute_long_option(node, i, echo) == 0) return exitf(echo);
                 if (execute_short_options(node, i, echo) == 0) continue;
             }
-            if (words >= 1) printf(" ");
-                print_word_not_escaped(word);
+            print_word_not_escaped(word, words);
             words++;
         }
     }
     if (echo->noption == 0) putchar('\n');
-        return exitf(echo);
+    return exitf(echo);
 }

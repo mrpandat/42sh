@@ -38,5 +38,7 @@ void free_case_item_node(struct s_case_item_node *node)
             free(node->words[i]);
         free(node->words);
     }
+    if (node->statement != NULL)
+        free_ast_node(node->statement);
     free(node);
 }

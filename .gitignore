@@ -1,3 +1,8 @@
+# ast files
+ast.png
+ast.dot
+
+
 # Git folder
 .git/
 
@@ -172,4 +177,3 @@ $RECYCLE.BIN/
 
 # Custom files
 vgcore*
-script.py

@@ -99,6 +99,7 @@ def get_git_tree_html():
     html += "\t</p>\n</div>\n"
     return html
 
+
 def sanity_test_cmd(test):
     res = execute_cmd(
         "valgrind --leak-check=full --error-exitcode=42 " + test)
@@ -110,3 +111,50 @@ def sanity_test_cmd(test):
         print(
             "--> " + bcolors.FAIL + "UNSAIN TEST " + bcolors.ENDC, end='')
         return False
+
+
+def get_all_files_recursive(path):
+    f_list = []
+    if os.listdir(path):
+        for item in os.listdir(path):
+            item = os.path.join(path, item)
+            if os.path.isfile(item):
+                f_list.append(item)
+            elif os.path.isdir(item):
+                f_list += get_all_files(item)
+    return f_list
+
+
+def get_files_of_type(path, extensions):
+    file_list = sorted(get_all_files_recursive(path), key=str.lower)
+    file_list = [file for file in file_list if os.path.splitext(file)[1] in extensions]
+    return file_list
+
+
+def check_lines(path):
+    with open(path, 'r') as file:
+        lines = file.readlines()
+        counter = 0
+        counterfuncs = 0
+        for i, line in enumerate(lines):
+            if 'sizeof(' in line:
+                print("** Keyword 'sizeof' with no spaces detected in file {} at line {}.".format(path, i + 1))
+            if line[0] == '{':
+                counter = 0
+                if 'static' not in lines[i - 1] and 'static' not in lines[i - 2] and 'static' not in lines[i - 3]:
+                    counterfuncs += 1
+            if line[0] == '}':
+                if counter - 1 > 25:
+                    print("** Function too long detected in file {} near line {} ({} lines)."
+                          .format(path, i + 1, counter - 1))
+                counter = 0
+            if line != '\n' and '/*' not in line and '*/' not in line:
+                counter += 1
+        if counterfuncs > 5:
+            print('** Too much functions ({}) in file {}.'.format(counterfuncs, path))
+
+
+def check_code(src_dir):
+    files = get_files_of_type(src_dir, ['.c'])
+    for file in files:
+        check_lines(file)

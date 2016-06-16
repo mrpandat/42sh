@@ -26,7 +26,7 @@ static bool is_escaped_symbol(struct s_lexer *lexer)
     return false;
 }
 
-static bool is_word_letter(char c)
+bool is_word_letter(char c)
 {
     if ('#' != c && '>' != c && '<' != c && '|' != c && '&' != c && '(' != c
         && ')' != c && '{' != c && '}' != c && '!' != c && ';' != c

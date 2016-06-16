@@ -5,9 +5,8 @@ static bool read_rule_else(struct s_ast_node *node, struct s_lexer *l)
 {
     if (lexer_peek(l)->type == TK_ELIF)
     {
-        lexer_read(l);
         node->data.s_if_node->false_statement = init_ast_node();
-        if (!read_rule_if(node->data.s_if_node->false_statement, l))
+        if (!read_rule_if(node->data.s_if_node->false_statement, l, true))
             return false;
     }
     else if (lexer_peek(l)->type == TK_ELSE)
@@ -20,9 +19,11 @@ static bool read_rule_else(struct s_ast_node *node, struct s_lexer *l)
     return true;
 }
 
-bool read_rule_if(struct s_ast_node *node, struct s_lexer *l)
+bool read_rule_if(struct s_ast_node *node, struct s_lexer *l, bool elif)
 {
-    if (lexer_peek(l)->type != TK_IF)
+    if (!elif && lexer_peek(l)->type != TK_IF)
+        return false;
+    if (elif && lexer_peek(l)->type != TK_ELIF)
         return false;
     lexer_read(l);
     node->type = ND_IF;
@@ -36,13 +37,11 @@ bool read_rule_if(struct s_ast_node *node, struct s_lexer *l)
         return false;
     if (!read_rule_else(node, l))
         return false;
-    if (lexer_peek(l)->type == TK_FI)
-    {
-        lexer_read(l);
-        return true;
-    }
-    else
+    if (!elif && lexer_peek(l)->type != TK_FI)
         return false;
+    if (!elif)
+        lexer_read(l);
+    return true;
 }
 
 bool read_rule_case(struct s_ast_node *node, struct s_lexer *l)

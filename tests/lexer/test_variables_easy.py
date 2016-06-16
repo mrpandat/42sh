@@ -45,3 +45,27 @@ class TestVariablesEasy(unittest.TestCase):
         )
 
         destroy_lexer(self)
+
+    def test_03_lexer_simple_variable_simple(self):
+        init_and_process_lexer(self, b'echo $BONJOUR')
+
+        self.assertTrue(
+            list_equals(self, False,
+                        (self.lib.TK_WORD, b'echo'),
+                        (self.lib.TK_VARIABLE, b'BONJOUR'),
+                        (self.lib.TK_EOF, b'EOF'))
+        )
+
+        destroy_lexer(self)
+
+    def test_04_lexer_compound_variable_simple(self):
+        init_and_process_lexer(self, b'echo ${BESTYAKAEVER}')
+
+        self.assertTrue(
+            list_equals(self, False,
+                        (self.lib.TK_WORD, b'echo'),
+                        (self.lib.TK_VARIABLE, b'BESTYAKAEVER'),
+                        (self.lib.TK_EOF, b'EOF'))
+        )
+
+        destroy_lexer(self)
