@@ -281,6 +281,18 @@ bool lexer_match_and_or_not(struct s_lexer *lexer);
 */
 bool lexer_match_symbol(struct s_lexer *lexer);
 
+/* File: lexer_match_variable.c */
+
+/**
+** @fn bool lexer_match_variable(struct s_lexer *lexer);
+** @brief If the current value of the command string pointer match to a
+**        "${" or a "$" - variable declaration -, creates a
+**        token and put it into the token list.
+** @param The lexer instance.
+** @return true if it matched, false otherwise.
+*/
+bool lexer_match_variable(struct s_lexer *lexer);
+
 /* File: lexer_quoting.c */
 
 /**
