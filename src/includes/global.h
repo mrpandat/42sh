@@ -8,6 +8,7 @@
 #ifndef INC_42SH_GLOBAL_H
 # define INC_42SH_GLOBAL_H
 
+# include <dirent.h>
 # include <stdio.h>
 # include <string.h>
 # include <stdlib.h>

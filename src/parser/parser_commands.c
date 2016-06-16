@@ -19,7 +19,7 @@ bool read_shell_command(struct s_ast_node *node, struct s_lexer *l)
             || read_rule_while(node, l)
             || read_rule_until(node, l)
             || read_rule_case(node, l)
-            || read_rule_if(node, l));
+            || read_rule_if(node, l, false));
 }
 
 bool read_funcdec(struct s_ast_node *node, struct s_lexer *l)

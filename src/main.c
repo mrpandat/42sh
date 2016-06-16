@@ -30,7 +30,6 @@ int main(int argc, char *argv[])
     struct s_lexer *lexer = lexer_init(opt.command);
     lexer_process(lexer);
     struct s_ast_node *root = parser(lexer);
-
     if (root == NULL)
     {
         if (strcmp(opt.file, "") != 0)
@@ -38,6 +37,8 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Bad grammar\n");
         return 1;
     }
+    if (opt.ast_print)
+        print_ast(root);
     fill_env(lexer, root, opt);
     return execute(opt, root, lexer);
 }

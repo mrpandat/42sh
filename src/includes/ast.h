@@ -8,6 +8,7 @@
 #define INC_42SH_AST_H
 
 #include <stdbool.h>
+#include <global.h>
 
 struct s_if_node
 {
@@ -258,6 +259,32 @@ void free_word(struct s_word *word);
 void free_pipeline_node(struct s_pipeline_node *node);
 void free_and_or_node(struct s_and_or_node *node);
 void free_list_node(struct s_list_node *node);
+
+/* File: ast_print_utils.c */
+int print_ast_node(struct s_ast_node* node, FILE *dot, int n);
+int print_redirection_node(struct s_redirection_node *node, FILE *dot, int n);
+void print_ast(struct s_ast_node* root);
+
+/* File: ast_print_controls.c */
+int print_if_node(struct s_if_node *node, FILE *dot, int n);
+int print_case_node(struct s_case_node *node, FILE *dot, int n);
+int print_case_item_node(struct s_case_item_node *node, FILE *dot, int n);
+
+/* File: ast_print_loops.c */
+int print_while_node(struct s_while_node *node, FILE *dot, int n);
+int print_until_node(struct s_until_node *node, FILE *dot, int n);
+int print_for_node(struct s_for_node *node, FILE *dot, int n);
+
+/* File: ast_print_commands.c */
+int print_funcdec_node(struct s_funcdec_node *node, FILE *dot, int n);
+int print_simple_command_node(struct s_simple_command_node *node, FILE *dot,
+                               int n);
+int print_command_node(struct s_command_node *node, FILE *dot, int n);
+
+/* File: ast_print_lists.c */
+int print_pipeline_node(struct s_pipeline_node *node, FILE *dot, int n);
+int print_and_or_node(struct s_and_or_node *node, FILE *dot, int n);
+int print_list_node(struct s_list_node *node, FILE *dot, int n);
 
 
 

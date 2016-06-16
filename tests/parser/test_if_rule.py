@@ -20,53 +20,57 @@ class TestIfRule(unittest.TestCase):
         node = self.lib.init_ast_node()
         command = b'if a then b fi'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_rule_if(node, clexer))
+        self.assertTrue(self.lib.read_rule_if(node, clexer, 0))
 
     def test_02_two_thens(self):
         node = self.lib.init_ast_node()
         self.assertFalse(
             self.lib.read_rule_if(
                 node,
-                self.init_and_process_lexer(b'if a then then b fi')))
+                self.init_and_process_lexer(b'if a then then b fi'),
+                0))
 
     def test_03_two_ifs(self):
         node = self.lib.init_ast_node()
         self.assertFalse(
             self.lib.read_rule_if(
                 node,
-                self.init_and_process_lexer(b'if if a then b fi')))
+                self.init_and_process_lexer(b'if if a then b fi'),
+                0))
 
     def test_04_ending_if(self):
         node = self.lib.init_ast_node()
         self.assertFalse(
             self.lib.read_rule_if(
                 node,
-                self.init_and_process_lexer(b'if a then b if')))
+                self.init_and_process_lexer(b'if a then b if'),
+                0))
 
     def test_05_no_ending_fi(self):
         node = self.lib.init_ast_node()
         self.assertFalse(
             self.lib.read_rule_if(
                 node,
-                self.init_and_process_lexer(b'if a then b')))
+                self.init_and_process_lexer(b'if a then b'),
+                0))
 
     def test_06_simple_if_else(self):
         node = self.lib.init_ast_node()
         command = b'if a then b else c fi'
         clexer = self.init_and_process_lexer(command)
-        self.assertTrue(self.lib.read_rule_if(node, clexer))
+        self.assertTrue(self.lib.read_rule_if(node, clexer, 0))
 
     def test_07_two_else(self):
         node = self.lib.init_ast_node()
         command = b'if a then b else else c fi'
         clexer = self.init_and_process_lexer(command)
-        self.assertFalse(self.lib.read_rule_if(node, clexer))
+        self.assertFalse(self.lib.read_rule_if(node, clexer, 0))
 
     def test_08_if_then_else_node_attributes(self):
         node = self.lib.init_ast_node()
         command = b'if a then b else c fi'
         clexer = self.init_and_process_lexer(command)
-        self.lib.read_rule_if(node, clexer)
+        self.lib.read_rule_if(node, clexer, 0)
         if_node = node.data.s_if_node
         list_node_1 = if_node.predicate.data.s_list_node
         and_or_1 = list_node_1.left.data.s_and_or_node
@@ -88,7 +92,7 @@ class TestIfRule(unittest.TestCase):
         node = self.lib.init_ast_node()
         command = b'if a then b fi'
         clexer = self.init_and_process_lexer(command)
-        self.lib.read_rule_if(node, clexer)
+        self.lib.read_rule_if(node, clexer, 0)
         if_node = node.data.s_if_node
         list_node_1 = if_node.predicate.data.s_list_node
         and_or_1 = list_node_1.left.data.s_and_or_node
@@ -106,7 +110,7 @@ class TestIfRule(unittest.TestCase):
         node = self.lib.init_ast_node()
         command = b'if echo lol; then echo d; else echo lul; fi'
         clexer = self.init_and_process_lexer(command)
-        self.lib.read_rule_if(node, clexer)
+        self.lib.read_rule_if(node, clexer, 0)
         if_node = node.data.s_if_node
         list_node_1 = if_node.predicate.data.s_list_node
         and_or_1 = list_node_1.left.data.s_and_or_node

@@ -1,6 +1,5 @@
 #define _GNU_SOURCE
 
-#include <dirent.h>
 #include <util.h>
 #include "../includes/expansion.h"
 

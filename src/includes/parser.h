@@ -59,7 +59,7 @@ bool read_do_group(struct s_ast_node *node, struct s_lexer *l);
 
 /* File: parser_controls.c */
 bool read_rule_case(struct s_ast_node *node, struct s_lexer *l);
-bool read_rule_if(struct s_ast_node *node, struct s_lexer *l);
+bool read_rule_if(struct s_ast_node *node, struct s_lexer *l, bool elif);
 bool read_case_item(struct s_case_node *node, struct s_lexer *l);
 
 #endif //PARSER_H
