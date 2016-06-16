@@ -123,7 +123,7 @@ static int print_word_not_escaped(char *word, int words)
 
 struct echo_struct *fill_echo()
 {
-    struct echo_struct *echo = malloc(sizeof(struct echo_struct));
+    struct echo_struct *echo = malloc(sizeof (struct echo_struct));
     echo->Eoption = 0;
     echo->eoption = 0;
     echo->noption = 0;

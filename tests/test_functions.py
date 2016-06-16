@@ -141,7 +141,7 @@ def check_lines(path):
                 print("** Keyword 'sizeof' with no spaces detected in file {} at line {}.".format(path, i + 1))
             if line[0] == '{':
                 counter = 0
-                if i > 0 and 'static' not in lines[i - 1]:
+                if 'static' not in lines[i - 1] and 'static' not in lines[i - 2] and 'static' not in lines[i - 3]:
                     counterfuncs += 1
             if line[0] == '}':
                 if counter - 1 > 25:

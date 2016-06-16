@@ -8,7 +8,6 @@ char *expand_path(char *path)
     DIR *current_dir = opendir(".");
     struct dirent *ep;
     char* res = strdup("");
-    char* tmp;
     int count_match = 0;
     if (current_dir != NULL && path != NULL)
     {
@@ -16,12 +15,8 @@ char *expand_path(char *path)
         {
             if (!fnmatch(path, (ep->d_name), 0))
             {
-                tmp = str_append(res, ep->d_name);
-                free(res);
-                res = tmp;
-                tmp = str_append(tmp, " ");
-                free(res);
-                res = tmp;
+                res = str_append_free(res, ep->d_name);
+                res = str_append(res, " ");
                 count_match++;
             }
         }

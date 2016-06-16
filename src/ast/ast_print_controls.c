@@ -54,15 +54,10 @@ int print_case_item_node(struct s_case_item_node *node, FILE* dot, int n)
     if (node->words != NULL)
     {
         char *items = strdup("");
-        char *tmp;
         for (int i = 0; i < node->nb_words; i++)
         {
-            tmp = str_append(items, node->words[i]);
-            free(items);
-            items = tmp;
-            tmp = str_append(tmp, " ");
-            free(items);
-            items = tmp;
+            items = str_append_free(items, node->words[i]);
+            items = str_append(items, " ");
         }
         fprintf(dot, "%i [label=\"case item: %s\"];\n", n, items);
         free(items);

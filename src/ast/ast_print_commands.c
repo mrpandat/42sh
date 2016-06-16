@@ -4,6 +4,29 @@
 #include "global.h"
 #include "ast.h"
 
+static char *append_element(struct s_element_node *element, char* commands)
+{
+    if (element->type == EL_WORD)
+    {
+        if (element->data.s_word->type == WD_ARITH)
+        {
+            commands = str_append(commands, "$((");
+            commands = str_append(commands, element->data.s_word->value);
+            commands = str_append(commands, "))");
+        }
+        else if (element->data.s_word->type == WD_SUBSHELL)
+        {
+            commands = str_append(commands, "$(");
+            commands = str_append(commands, element->data.s_word->value);
+            commands = str_append(commands, ")");
+        }
+        else
+            commands = str_append(commands, element->data.s_word->value);
+        commands = str_append(commands, " ");
+    }
+    return commands;
+}
+
 int print_simple_command_node(struct s_simple_command_node *node,
                               FILE* dot,
                               int n)
@@ -15,29 +38,7 @@ int print_simple_command_node(struct s_simple_command_node *node,
     {
         char *commands = strdup("");
         for (int i = 0; i < node->nb_elements; i++)
-        {
-            if (node->elements[i]->type == EL_WORD)
-            {
-                if (node->elements[i]->data.s_word->type == WD_ARITH)
-                {
-                    commands = str_append(commands, "$((");
-                    commands = str_append(commands,
-                                     node->elements[i]->data.s_word->value);
-                    commands = str_append(commands, "))");
-                }
-                else if (node->elements[i]->data.s_word->type == WD_SUBSHELL)
-                {
-                    commands = str_append(commands, "$(");
-                    commands = str_append(commands,
-                                          node->elements[i]->data.s_word->value);
-                    commands = str_append(commands, ")");
-                }
-                else
-                    commands = str_append(commands,
-                                     node->elements[i]->data.s_word->value);
-                commands = str_append(commands, " ");
-            }
-        }
+            commands = append_element(node->elements[i], commands);
         fprintf(dot, "%i [label=\"simple command: %s\"];\n", n, commands);
         free(commands);
     }
