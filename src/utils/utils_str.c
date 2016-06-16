@@ -17,6 +17,10 @@ char *str_append(char *str_one, char *str_two)
     return str;
 }
 
+/**
+ *
+ * Warning, this function free the variable str given in parameters.
+ */
 char *str_append_char(char *str, char c)
 {
     char *ret;

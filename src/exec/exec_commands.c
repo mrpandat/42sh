@@ -78,7 +78,7 @@ int exec_simple_command_node(struct s_simple_command_node *node)
         return exec_builtin(node);
     else if (node->elements[0]->type == EL_WORD
              && !is_var_assign(exec_word(node->elements[0]->data.s_word), 0))
-        return save_variables(node);
+        return variables(node);
     else
         return exec_file(node);
 }

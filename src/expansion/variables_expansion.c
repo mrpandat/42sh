@@ -6,6 +6,10 @@
 #include <execute.h>
 #include <expansion.h>
 
+/*
+ * il manque ici un ht_check pour voir si la variable existe,
+ * sinon ça throw un bad_access
+ */
 char *get_var(char *name)
 {
     struct s_element *a = ht_get(g_env.variables, name);
@@ -66,7 +70,7 @@ char *get_var_name(char *word) {
     return var;
 }
 
-int save_variables(struct s_simple_command_node *node)
+int variables(struct s_simple_command_node *node)
 {
     char* var_name = strdup("");
     for (int i = 0; i < node->nb_elements; i++)
