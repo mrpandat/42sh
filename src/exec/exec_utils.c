@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <global.h>
 #include "../includes/execute.h"
 #include "../includes/expansion.h"
@@ -50,6 +52,22 @@ int exec_redirection_node(struct s_redirection_node *node)
     return -1;
 }
 
+char *tilde_expansion(char *word)
+{
+    if (!strcmp("~", word))
+        return g_env.HOME;
+    else if (!strcmp("~-", word))
+        return g_env.OLDPWD;
+    else if (!strcmp("~+", word))
+        return g_env.PWD;
+    return NULL;
+}
+
+static char *execute_subshell(char *expression)
+{
+    return strdup(expression);
+}
+
 char *exec_word(struct s_word *word)
 {
     if (word->type == WD_WORD || word->type == WD_ESC
@@ -76,6 +94,13 @@ char *exec_word(struct s_word *word)
     }
     else if (word->type == WD_PATH)
         return word->result;
+    else if (word->type == WD_SUBSHELL)
+    {
+        if (word->result != NULL)
+            return word->result;
+        word->result = execute_subshell(word->value);
+        return word->result;
+    }
     else
         return NULL;
 }

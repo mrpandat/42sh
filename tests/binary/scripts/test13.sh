@@ -1,1 +1,1 @@
-a=$((3 + 4 + ((3 + (2 ** 2)
+echo $(if echo lol then echo ptdr fi)

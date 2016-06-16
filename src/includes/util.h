@@ -20,6 +20,8 @@
 char *str_append(char *str_one, char *str_two);
 char *str_append_char(char *str_one, char str_two);
 
+char *str_append_free(char *str_one, char *str_two);
+
 /**
  ** @fn char *args_from_str(char *str, char ***arguments)
  ** @brief extracts words from a string

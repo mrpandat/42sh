@@ -17,6 +17,21 @@ char *str_append(char *str_one, char *str_two)
     return str;
 }
 
+char *str_append_free(char *str_one, char *str_two)
+{
+    char *str;
+    if ((str = malloc(strlen(str_one) + strlen(str_two) + 1)) != NULL
+        && (str[0] = '\0') == '\0')
+    {
+        strcat(str, str_one);
+        strcat(str, str_two);
+        free(str_one);
+    }
+    else
+        fprintf(stderr, "Malloc error\n");
+    return str;
+}
+
 /**
  *
  * Warning, this function free the variable str given in parameters.
