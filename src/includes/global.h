@@ -32,6 +32,9 @@ struct env
     // Aliases hashtable
     struct s_hashtable *aliases;
 
+    // Variables hashtable
+    struct s_hashtable *variables;
+
     //Shopt variables
     int ast_print;
     int dotglob;

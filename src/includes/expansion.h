@@ -6,6 +6,7 @@
 
 #ifndef INC_42SH_EXPANSION_H
 # define INC_42SH_EXPANSION_H
+# include <ast.h>
 
 enum e_binop_type
 {
@@ -171,5 +172,31 @@ void free_unop_node(struct s_unop_node *node);
 void free_num_node(struct s_number_node *node);
 void free_art_node(struct s_art_node *node);
 int execute_art_node(struct s_art_node *node);
+
+/*
+ ** @fn int variables(struct s_simple_command_node *node)
+ ** @brief Save variables of a simple_command_node
+ * ex: a=5 lol=45 lolmdr='mdr'
+ ** @param node The command node
+ ** @return Int: 0 if it's ok 1 if there is no variables of the command.
+ */
+int variables(struct s_simple_command_node *node);
+
+/*
+ ** @fn char *get_var(char *name)
+ ** @brief Get a saved variable
+ ** @param char* name the variable name
+ ** @return Char: empty if no variable has been found, else, the value.
+ */
+char *get_var(char *name);
+
+/*
+ ** @fn int is_var_assign(char *word, int save)
+ ** @brief Check if word is a assignement
+ ** @param char* word, the assignement, int save 1 if you want to save the
+ * variable assignement, 0 else.
+ ** @return Int: 0 if it's ok 1 if there is no variables of the word.
+ */
+int is_var_assign(char *word, int save);
 
 #endif //INC_42SH_EXPANSION_H
