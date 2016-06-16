@@ -50,6 +50,8 @@ bool read_prefix(struct s_element_node *element, struct s_lexer *l);
 int read_element(struct s_element_node *element, struct s_lexer *l);
 int read_arithmetic_expansion(struct s_element_node *element,
                                struct s_lexer *l);
+int read_subshell(struct s_element_node *element,
+                  struct s_lexer *l);
 
 /* File: parser_loops.c */
 bool read_rule_for(struct s_ast_node *node, struct s_lexer *l);

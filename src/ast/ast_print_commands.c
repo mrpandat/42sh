@@ -14,34 +14,28 @@ int print_simple_command_node(struct s_simple_command_node *node,
     if (node->elements != NULL)
     {
         char *commands = strdup("");
-        char *tmp;
         for (int i = 0; i < node->nb_elements; i++)
         {
             if (node->elements[i]->type == EL_WORD)
             {
                 if (node->elements[i]->data.s_word->type == WD_ARITH)
                 {
-                    tmp = str_append(commands, "$((");
-                    free(commands);
-                    commands = tmp;
-                    tmp = str_append(commands,
+                    commands = str_append(commands, "$((");
+                    commands = str_append(commands,
                                      node->elements[i]->data.s_word->value);
-                    free(commands);
-                    commands = tmp;
-                    tmp = str_append(commands, "))");
-                    free(commands);
-                    commands = tmp;
+                    commands = str_append(commands, "))");
+                }
+                else if (node->elements[i]->data.s_word->type == WD_SUBSHELL)
+                {
+                    commands = str_append(commands, "$(");
+                    commands = str_append(commands,
+                                          node->elements[i]->data.s_word->value);
+                    commands = str_append(commands, ")");
                 }
                 else
-                {
-                    tmp = str_append(commands,
+                    commands = str_append(commands,
                                      node->elements[i]->data.s_word->value);
-                    free(commands);
-                    commands = tmp;
-                }
-                tmp = str_append(tmp, " ");
-                free(commands);
-                commands = tmp;
+                commands = str_append(commands, " ");
             }
         }
         fprintf(dot, "%i [label=\"simple command: %s\"];\n", n, commands);

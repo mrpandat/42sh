@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <global.h>
 #include "../includes/execute.h"
 #include "../includes/expansion.h"
@@ -61,6 +63,11 @@ char *tilde_expansion(char *word)
     return NULL;
 }
 
+static char *execute_subshell(char *expression)
+{
+    return strdup(expression);
+}
+
 char *exec_word(struct s_word *word)
 {
     if (word->type == WD_WORD || word->type == WD_ESC
@@ -71,6 +78,13 @@ char *exec_word(struct s_word *word)
         if (word->result != NULL)
             return word->result;
         word->result = arithmetic_expansion(word->value);
+        return word->result;
+    }
+    else if (word->type == WD_SUBSHELL)
+    {
+        if (word->result != NULL)
+            return word->result;
+        word->result = execute_subshell(word->value);
         return word->result;
     }
     else
