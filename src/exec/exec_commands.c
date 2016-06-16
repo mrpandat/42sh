@@ -1,6 +1,7 @@
 #include <global.h>
 #include <builtins.h>
 #include <util.h>
+#include <expansion.h>
 #include "../includes/execute.h"
 
 int exec_funcdec_node(struct s_funcdec_node *node)
@@ -66,9 +67,7 @@ int exec_builtin(struct s_simple_command_node *node)
     else if (!strcmp("unalias", exec_word(node->elements[0]->data.s_word)))
         return my_unalias(node);
     else if (!strcmp("source", exec_word(node->elements[0]->data.s_word)))
-    {
         return my_source(node);
-    }
     return 1;
 }
 
@@ -77,6 +76,9 @@ int exec_simple_command_node(struct s_simple_command_node *node)
     if (node->elements[0]->type == EL_WORD
         && is_builtin(exec_word(node->elements[0]->data.s_word)) == 1)
         return exec_builtin(node);
+    else if (node->elements[0]->type == EL_WORD
+             && !is_var_assign(exec_word(node->elements[0]->data.s_word), 0))
+        return variables(node);
     else
         return exec_file(node);
 }

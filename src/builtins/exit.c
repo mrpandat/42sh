@@ -26,5 +26,6 @@ int my_exit(struct s_simple_command_node *node)
     if (strcmp(g_env.opt->file, "") != 0)
         free(g_env.opt->command);
     ht_destroy(g_env.aliases);
+    ht_destroy(g_env.variables);
     exit(nb);
 }
