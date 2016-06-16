@@ -107,7 +107,9 @@ enum e_token_type
     /** Arithmetic expression, without $(( and )) */
     TK_ARITH,
     /** Subshell command, without $( and ) */
-    TK_SUBSHELL
+    TK_SUBSHELL,
+    /** Variable expansion - ${EXAMPLE} or $EXAMPLE */
+    TK_VARIABLE,
 };
 
 /**
@@ -281,6 +283,18 @@ bool lexer_match_and_or_not(struct s_lexer *lexer);
 */
 bool lexer_match_symbol(struct s_lexer *lexer);
 
+/* File: lexer_match_variable.c */
+
+/**
+** @fn bool lexer_match_variable(struct s_lexer *lexer);
+** @brief If the current value of the command string pointer match to a
+**        "${" or a "$" - variable declaration -, creates a
+**        token and put it into the token list.
+** @param The lexer instance.
+** @return true if it matched, false otherwise.
+*/
+bool lexer_match_variable(struct s_lexer *lexer);
+
 /* File: lexer_quoting.c */
 
 /**
@@ -305,7 +319,15 @@ bool lexer_match_quote(struct s_lexer *lexer);
 */
 bool lexer_match_dquote(struct s_lexer *lexer);
 
-/* File: lexer_reading.c */
+/* File: lexer_reader.c */
+
+/**
+** @fn bool is_word_letter(char c);
+** @brief Check if the given char is a word-type char (no special symbols).
+** @param An ASCII character.
+** @return true if it's a word-type character, false otherwise.
+*/
+bool is_word_letter(char c);
 
 /**
 ** @fn bool lexer_read_word(struct s_lexer *lexer);
