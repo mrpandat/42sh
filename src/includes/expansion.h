@@ -159,6 +159,7 @@ struct s_art_node *read_h(struct s_stream *stream);
 struct s_art_node *read_i(struct s_stream *stream);
 struct s_art_node *read_j(struct s_stream *stream);
 struct s_art_node *read_num(struct s_stream *stream);
+struct s_art_node *read_var(struct s_stream *stream);
 void read_spaces(struct s_stream *stream);
 struct s_binop_node *init_binop_node(struct s_art_node *left,
                                      enum e_binop_type type,
