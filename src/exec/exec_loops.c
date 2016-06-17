@@ -1,4 +1,5 @@
 #include <global.h>
+#include <expansion.h>
 #include "../includes/execute.h"
 
 int exec_while_node(struct s_while_node *node)
@@ -19,8 +20,14 @@ int exec_until_node(struct s_until_node *node)
 
 int exec_for_node(struct s_for_node *node)
 {
-    // TODO: Implement for loop
     if (node == NULL)
         return -1;
-    return -1;
+    int ret = 0;
+    // TODO: replace words by $@ expansion if there is no word
+    for (int i = 0; i < node->nb_words; i++)
+    {
+        set_var(node->iterator, exec_word(node->words[i]));
+        ret = exec_ast_node(node->do_group);
+    }
+    return ret;
 }

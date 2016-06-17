@@ -27,9 +27,9 @@ struct s_for_node *init_for_node(char *iterator)
     return node;
 }
 
-void add_for_word(struct s_for_node *node, char *word)
+void add_for_word(struct s_for_node *node, struct s_word *word)
 {
     node->nb_words++;
-    node->words = realloc(node->words, node->nb_words * sizeof (char *));
+    node->words = realloc(node->words, node->nb_words * sizeof (struct s_word));
     node->words[node->nb_words - 1] = word;
 }

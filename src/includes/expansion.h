@@ -192,6 +192,8 @@ int variables(struct s_simple_command_node *node);
  ** @return Char: empty if no variable has been found, else, the value.
  */
 char *get_var(char *name);
+void set_var(char *var, void *value);
+
 
 /*
  ** @fn int is_var_assign(char *word, int save)

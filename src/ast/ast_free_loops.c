@@ -29,5 +29,11 @@ void free_for_node(struct s_for_node *node)
         return;
     if (node->do_group != NULL)
         free_ast_node(node->do_group);
+    if (node->words != NULL)
+    {
+        for (int i = 0; i < node->nb_words; i++)
+            free_word(node->words[i]);
+        free(node->words);
+    }
     free(node);
 }
