@@ -13,11 +13,15 @@
 char *get_var(char *name)
 {
     struct s_element *a = ht_get(g_env.variables, name);
+    if (a == NULL)
+        return NULL;
     return a->value;
 }
 
 void set_var(char *var, void *value)
 {
+    if (var == NULL)
+        var = strdup("");
     ht_insert(g_env.variables, var, value);
 }
 
@@ -83,18 +87,18 @@ char *get_var_name(char *word) {
 
 int variables(struct s_simple_command_node *node)
 {
-    char* var_name = strdup("");
+    char* var_name;
     for (int i = 0; i < node->nb_elements; i++)
     {
-        if (node->elements[i]->type != EL_WORD) continue;
+        if (node->elements[i]->type != EL_WORD)
+            continue;
         char *word = exec_word(node->elements[i]->data.s_word);
-        if(is_var_assign(word,0) == 0 && i == 0)
-            return is_var_assign(word,1);
-        else if(is_var_assign(word,0) == 2 && i == 0){
+        if (is_var_assign(word, 0) == 0 && i == 0)
+            return is_var_assign(word, 1);
+        else if (is_var_assign(word, 0) == 2 && i == 0)
             var_name = get_var_name(word);
-        }
-        else if(i == 1) set_var(var_name,word);
-
+        else if (i == 1)
+            set_var(var_name, word);
         else return 1;
     }
     return 0;

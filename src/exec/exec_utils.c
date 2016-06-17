@@ -79,6 +79,8 @@ static char *exec_normal_word(struct s_word *word)
         word->result = expanded;
         return word->result;
     }
+    else if ((expanded = get_var(word->value)) != NULL)
+        return expanded;
     else
         return word->value;
 }
@@ -99,6 +101,13 @@ char *exec_word(struct s_word *word)
         else
             word->result = execute_subshell(word->value);
         return word->result;
+    }
+    else if (word->type == WD_VARIABLE)
+    {
+        if (get_var(word->value) == NULL)
+            return "";
+        else
+            return get_var(word->value);
     }
     else
         return NULL;

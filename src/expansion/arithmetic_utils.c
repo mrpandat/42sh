@@ -20,26 +20,6 @@ void read_spaces(struct s_stream *s)
         stream_read(s, 1);
 }
 
-struct s_art_node *read_num(struct s_stream *s)
-{
-    read_spaces(s);
-    int i = 0;
-    char c = stream_peek(s)[0];
-    while (c != '\0' && c >= '0' && c <= '9')
-    {
-        i++;
-        c = stream_peek(s)[i];
-    }
-    char *char_num = strndup(stream_peek(s), i);
-    int num = atoi(char_num);
-    stream_read(s, i);
-    free(char_num);
-    struct s_art_node *node = init_art_node();
-    node->type = ART_NUM;
-    node->data.number = init_num_node_int(num);
-    return node;
-}
-
 char *arithmetic_expansion(char *expression)
 {
     struct s_stream *s = malloc(sizeof (struct s_stream));

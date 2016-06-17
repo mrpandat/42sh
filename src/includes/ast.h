@@ -85,6 +85,7 @@ enum e_word_type
     WD_ARITH,
     WD_SUBSHELL,
     WD_ASSIGNEMENT_WORD,
+    WD_VARIABLE,
     WD_PATH
 };
 
