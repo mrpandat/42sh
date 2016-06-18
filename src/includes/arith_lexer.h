@@ -12,36 +12,46 @@
 
 /**
 ** @brief Used to associate an arithmetic token value with its type (operator,
-**        number, parenthesis...)
+**        number, parenthesis...). Types are ranked by priority
 */
 enum e_arlex_type
 {
-    /** Unknown value */
-    AL_UNDEFINED,
-    /** & (bitwise operation) */
-    AL_AND,
-    /** | (bitwise operation) */
-    AL_OR,
-    /** \\n */
-    AL_NEWLINE,
-    /** \0 (End of input) */
-    AL_EOF,
     /** + */
     AL_PLUS,
     /** - */
     AL_MINUS,
-    /** ** */
+    /** ! (logical NOT) */
+    AL_LG_NEG,
+    /** ~ (bitwise NOT) */
+    AL_BW_NEG,
+    /** ** (exponentiation) */
     AL_POW,
     /** * */
     AL_MULT,
     /** / */
     AL_DIV,
-    /** % */
-    AL_MOD,
+    /** & (bitwise AND) */
+    AL_BW_AND,
+    /** ^ (bitwise XOR) */
+    AL_BW_XOR,
+    /** | (bitwise OR) */
+    AL_BW_OR,
+    /** && (logical AND) */
+    AL_LG_AND,
+    /** || (logical OR) */
+    AL_LG_OR,
     /** ( */
     AL_LPAR,
     /** ) */
-    AL_RPAR
+    AL_RPAR,
+    /** Variable ('${VAR}', '$VAR' or 'VAR') */
+    AL_VAR,
+    /** Number (0-9)+ */
+    AL_NUMBER,
+    /** \0 (End of input) */
+    AL_EOF,
+    /** Unknown value */
+    AL_UNDEFINED
 };
 
 /**
