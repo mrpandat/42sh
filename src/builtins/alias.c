@@ -85,6 +85,45 @@ static bool alias_get_value(char *command)
     return true;
 }
 
+static char *clean_str(char *str)
+{
+    char *raw = str;
+    char *value = NULL;
+
+    if (0 == strncmp("\"", raw, 1)
+        || 0 == strncmp("\'", raw, 1))
+    {
+        str++;
+        value = strndup(raw, strlen(raw) - 1);
+    }
+    else
+        value = strdup(str);
+
+    return value;
+}
+
+static bool is_splitted_argument(char *arg1)
+{
+    if ('=' == arg1[strlen(arg1) - 1])
+        return true;
+
+    return false;
+}
+
+static bool is_argument(char *arg1)
+{
+    bool ok;
+    char *cpy = strdup(arg1);
+
+    if (NULL != strtok(cpy, "="))
+        ok = true;
+    else
+        ok = false;
+
+    free(cpy);
+    return ok;
+}
+
 int my_alias(struct s_simple_command_node *node)
 {
     if (node->nb_elements == 1)
