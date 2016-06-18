@@ -48,6 +48,8 @@ enum e_arlex_type
     AL_VAR,
     /** Number (0-9)+ */
     AL_NUMBER,
+    /** New line */
+    AL_NEWLINE,
     /** \0 (End of input) */
     AL_EOF,
     /** Unknown value */

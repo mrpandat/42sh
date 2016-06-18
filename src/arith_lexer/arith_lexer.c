@@ -25,19 +25,35 @@ static bool match_separator(struct s_arlex *arlex)
     return false;
 }
 
+static bool match_newline_symbol(struct s_arlex *arlex)
+{
+    /** \n */
+    if (0 == strncmp(arlex->current, "\n", strlen("\n")))
+    {
+        arlex_add_token(arlex, AL_NEWLINE, "\n");
+        arlex->current += strlen("\n");
+        return true;
+    }
+    return false;
+}
+
+static bool arlex_match_newline(struct s_arlex *arlex)
+{
+    if (NULL == arlex || NULL == arlex->current || !strlen(arlex->current))
+        return false;
+
+    return match_newline_symbol(arlex);
+}
+
 static bool arlex_match_expr(struct s_arlex *arlex)
 {
     return match_separator(arlex)
-           || arlex_match_eof(arlex)
-           || arlex_match_and_or_not(arlex)
-           || arlex_match_dquote(arlex)
-           || arlex_match_quote(arlex)
-           || arlex_match_arith(arlex)
+           || arlex_match_newline(arlex)
            || arlex_match_symbol(arlex)
-           || arlex_match_expansion(arlex)
-           || arlex_match_variable(arlex)
            || arlex_match_operator(arlex)
-           || arlex_read_word(arlex);
+           || arlex_match_variable(arlex)
+           || arlex_match_number(arlex)
+           || arlex_match_undefined(arlex);
 }
 
 struct s_arlex *arlex_init(const char *expr)
