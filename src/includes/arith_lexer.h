@@ -105,4 +105,33 @@ void arlex_process(struct s_arlex *arlex);
 */
 void arlex_destroy(struct s_arlex *arlex);
 
+/* File: arlex_tokening.c */
+
+/**
+** @fn void void arlex_add_token(struct s_arlex *arlex, enum e_arlex_type type,
+**          char *val)
+** @brief Create a new arithmetic value token. Allocates memory for the value.
+**        Type is on the stack, value is on the heap (can be shared).
+** @param The arithmetic expression lexer instance.
+*/
+void arlex_add_token(struct s_arlex *arlex, enum e_arlex_type type, char *val);
+
+/**
+** @fn struct s_arlex_token *arlex_peek(struct s_arlex *arlex)
+** @brief Returns the current token in the arlex list without consuming it.
+** @param The arithmetic expression lexer instance.
+** @return The current token instance, NULL if invalid arithmetic expression
+**         lexer instance.
+*/
+struct s_arlex_token *arlex_peek(struct s_arlex *arlex);
+
+/**
+** @fn struct s_arlex_token *arlex_read(struct s_arlex *arlex)
+** @brief Returns the next token in the arlex list, consuming the current.
+** @param The arithmetic expression lexer instance.
+** @return The next token instance, NULL if invalid arithmetic expression lexer
+**         instance.
+*/
+struct s_arlex_token *arlex_read(struct s_arlex *arlex);
+
 #endif /* !ARITH_LEXER_H */
