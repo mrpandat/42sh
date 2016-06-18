@@ -77,4 +77,32 @@ struct s_arlex
     struct s_arlex_token *altk_current;
 };
 
+/* File: arith_lexer.c */
+
+/**
+** @fn struct s_arlex *arlex_init(const char *expr)
+** @brief Initialize an arithmetic expression lexer instance with a given
+**        expression.
+** @param The expression to lex.
+** @return A structure representing the arithmetic expression lexer instance.
+*/
+struct s_arlex *arlex_init(const char *expr);
+
+/**
+** @fn void arlex_process(struct s_arlex *arlex)
+** @brief Lex the arithmetic expression in the lexer instance, and create the
+**        tokens for the parsing function.
+** @param The arithmetic expression lexer instance.
+*/
+void arlex_process(struct s_arlex *arlex);
+
+/**
+** @fn void arlex_destroy(struct s_arlex *arlex)
+** @brief Destroy an arithmetic expression lexer instance, freeing all memory
+**        required for the lexer to work properly. Destroys also all the
+**        tokens lexed.
+** @param The arithmetic expression lexer instance.
+*/
+void arlex_destroy(struct s_arlex *arlex);
+
 #endif /* !ARITH_LEXER_H */
