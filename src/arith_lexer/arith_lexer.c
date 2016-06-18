@@ -1,6 +1,6 @@
 #define _GNU_SOURCE
 
-#include "../includes/arith_arlex.h"
+#include "../includes/arith_lexer.h"
 
 static bool match_separator(struct s_arlex *arlex)
 {
@@ -46,7 +46,7 @@ struct s_arlex *arlex_init(const char *expr)
     if (NULL == (arlex = malloc(sizeof (struct s_arlex))))
         return NULL;
 
-    if (NULL == (arlex->command = malloc(sizeof (char) * strlen(expr) + 1)))
+    if (NULL == (arlex->expression = malloc(sizeof (char) * strlen(expr) + 1)))
     {
         free(arlex);
         return NULL;
@@ -63,7 +63,7 @@ struct s_arlex *arlex_init(const char *expr)
 
 void arlex_process(struct s_arlex *arlex)
 {
-    if (NULL == arlex || NULL == arlex->command || NULL == arlex->current)
+    if (NULL == arlex || NULL == arlex->expression || NULL == arlex->current)
         return;
 
     while ('\0' != *arlex->current)
