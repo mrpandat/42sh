@@ -14,6 +14,7 @@ set(EXPANSION_DIR src/expansion)
 set(BUILTINS_DIR src/builtins)
 set(PARSER_DIR src/parser)
 set(AST_DIR src/ast)
+set(ARLEX_DIR src/arith_lexer)
 set(LEXER_DIR src/lexer)
 set(UTILS_DIR src/utils)
 
@@ -22,6 +23,7 @@ aux_source_directory(${BUILTINS_DIR} BUILTINS_SRC)
 aux_source_directory(${EXPANSION_DIR} EXPANSION_SRC)
 aux_source_directory(${PARSER_DIR} PARSER_SRC)
 aux_source_directory(${AST_DIR} AST_SRC)
+aux_source_directory(${ARLEX_DIR} ARLEX_SRC)
 aux_source_directory(${LEXER_DIR} LEXER_SRC)
 aux_source_directory(${UTILS_DIR} UTILS_SRC)
 
@@ -34,6 +36,7 @@ add_executable(42sh
         ${BUILTINS_SRC}
         ${PARSER_SRC}
         ${AST_SRC}
+        ${ARLEX_SRC}
         ${LEXER_SRC}
         ${UTILS_SRC}
         )
@@ -45,6 +48,7 @@ add_library(my42sh SHARED
         ${BUILTINS_SRC}
         ${PARSER_SRC}
         ${AST_SRC}
+        ${ARLEX_SRC}
         ${LEXER_SRC}
         ${UTILS_SRC}
 )
