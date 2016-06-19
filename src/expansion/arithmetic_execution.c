@@ -1,3 +1,4 @@
+#include <expansion.h>
 #include "../includes/expansion.h"
 #include "../includes/util.h"
 #include "../includes/global.h"
@@ -53,7 +54,10 @@ int execute_art_node(struct s_art_node *node)
         if (node->data.number->type == NUM_INT)
             return node->data.number->data.integer;
         else
-            return 42;
+        {
+            int res = atoi(get_var(node->data.number->data.variable));
+            return res;
+        }
     }
     else if (node->type == ART_BINOP)
         return execute_binop_node(node->data.binop);

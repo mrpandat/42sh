@@ -95,7 +95,7 @@ char *exec_word(struct s_word *word)
     else if (word->type == WD_ARITH || word->type == WD_SUBSHELL)
     {
         if (word->result != NULL)
-            return word->result;
+            free(word->result);
         if (word->type == WD_ARITH)
             word->result = arithmetic_expansion(word->value);
         else

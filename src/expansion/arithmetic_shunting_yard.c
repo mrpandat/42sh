@@ -118,7 +118,7 @@ struct s_art_node *shunting_yard(struct s_arlex *lexer)
             }
         }
     }
-    if (token->type != AL_NEWLINE || token->type != AL_UNDEFINED)
+    if (token->type == AL_NEWLINE || token->type == AL_UNDEFINED)
     {
         free_stack(operands);
         free_stack(operators);

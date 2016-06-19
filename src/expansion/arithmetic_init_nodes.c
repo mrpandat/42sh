@@ -41,7 +41,7 @@ struct s_number_node *init_num_node_int(int num)
 struct s_number_node *init_num_node_var(char *var)
 {
     struct s_number_node *node = malloc(sizeof (struct s_number_node));
-    node->type = NUM_INT;
+    node->type = NUM_VAR;
     node->data.variable = var;
     return node;
 }
