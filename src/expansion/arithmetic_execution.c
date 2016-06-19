@@ -4,27 +4,27 @@
 
 static int execute_binop_node(struct s_binop_node *node)
 {
-    if (node->type == BINOP_MINUS)
+    if (node->type == AL_MINUS)
         return execute_art_node(node->left) - execute_art_node(node->right);
-    else if (node->type == BINOP_ADD)
+    else if (node->type == AL_PLUS)
         return execute_art_node(node->left) + execute_art_node(node->right);
-    else if (node->type == BINOP_MULT)
+    else if (node->type == AL_MULT)
         return execute_art_node(node->left) * execute_art_node(node->right);
-    else if (node->type == BINOP_DIV)
+    else if (node->type == AL_DIV)
         return execute_art_node(node->left) / execute_art_node(node->right);
-    else if (node->type == BINOP_POW)
+    else if (node->type == AL_POW)
         return my_pow(execute_art_node(node->left),
                       execute_art_node(node->right));
-    else if (node->type == BINOP_BIT_AND)
+    else if (node->type == AL_BW_AND)
         return execute_art_node(node->left) & execute_art_node(node->right);
-    else if (node->type == BINOP_BIT_OR)
+    else if (node->type == AL_BW_OR)
         return execute_art_node(node->left) | execute_art_node(node->right);
-    else if (node->type == BINOP_BIT_XOR)
+    else if (node->type == AL_BW_XOR)
         return execute_art_node(node->left) ^ execute_art_node(node->right);
-    else if (node->type == BINOP_BOOL_AND)
+    else if (node->type == AL_LG_AND)
         return execute_art_node(node->left) != 0
                && execute_art_node(node->right) != 0;
-    else if (node->type == BINOP_BOOL_OR)
+    else if (node->type == AL_LG_OR)
         return execute_art_node(node->left) != 0
                || execute_art_node(node->right) != 0;
     else
@@ -33,13 +33,13 @@ static int execute_binop_node(struct s_binop_node *node)
 
 static int execute_unop_node(struct s_unop_node *node)
 {
-    if (node->type == UNOP_MINUS)
+    if (node->type == AL_UNARY_MINUS)
         return -execute_art_node(node->number);
-    else if (node->type == UNOP_ADD)
+    else if (node->type == AL_UNARY_PLUS)
         return +execute_art_node(node->number);
-    else if (node->type == UNOP_BANG)
+    else if (node->type == AL_LG_NEG)
         return !execute_art_node(node->number);
-    else if (node->type == UNOP_INV)
+    else if (node->type == AL_BW_NEG)
         return ~execute_art_node(node->number);
     else
         return 42;

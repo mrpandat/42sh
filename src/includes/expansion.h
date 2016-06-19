@@ -7,6 +7,7 @@
 #ifndef INC_42SH_EXPANSION_H
 # define INC_42SH_EXPANSION_H
 # include <ast.h>
+# include <arith_lexer.h>
 
 enum e_binop_type
 {
@@ -24,7 +25,7 @@ enum e_binop_type
 
 struct s_binop_node
 {
-    enum e_binop_type type;
+    enum e_arlex_type type;
     struct s_art_node *left;
     struct s_art_node *right;
 };
@@ -39,7 +40,7 @@ enum e_unop_type
 
 struct s_unop_node
 {
-    enum e_unop_type type;
+    enum e_arlex_type type;
     struct s_art_node *number;
 };
 
@@ -76,6 +77,34 @@ struct s_art_node
         struct s_number_node *number;
     } data;
 };
+
+enum e_operand_type
+{
+    OPERAND_TOKEN,
+    OPERAND_NODE
+};
+
+struct s_art_operand
+{
+    enum e_operand_type type;
+    union
+    {
+        struct s_art_node *node;
+        struct s_arlex_token *token;
+    } data;
+};
+
+struct s_art_stack
+{
+    int size;
+    struct s_art_operand **elements;
+};
+
+void add_stack(struct s_art_stack *stack, struct s_art_operand *operand);
+struct s_art_operand *pop_stack(struct s_art_stack *stack);
+struct s_art_operand *peek_stack(struct s_art_stack *stack);
+struct s_art_stack *init_stack(void);
+void free_stack(struct s_art_stack *stack);
 
 struct s_stream
 {
@@ -148,6 +177,9 @@ char* expand_path(char * path);
  ** @return A char* containing the result of the arithmetic calculation
  */
 char *arithmetic_expansion(char *expression);
+struct s_art_node *shunting_yard(struct s_arlex *lexer);
+
+/*
 struct s_art_node *read_a(struct s_stream *stream);
 struct s_art_node *read_b(struct s_stream *stream);
 struct s_art_node *read_c(struct s_stream *stream);
@@ -160,13 +192,16 @@ struct s_art_node *read_i(struct s_stream *stream);
 struct s_art_node *read_j(struct s_stream *stream);
 struct s_art_node *read_num(struct s_stream *stream);
 struct s_art_node *read_var(struct s_stream *stream);
+ */
 void read_spaces(struct s_stream *stream);
+
 struct s_binop_node *init_binop_node(struct s_art_node *left,
-                                     enum e_binop_type type,
+                                     enum e_arlex_type type,
                                      struct s_art_node *right);
-struct s_unop_node *init_unop_node(enum e_unop_type type,
+struct s_unop_node *init_unop_node(enum e_arlex_type type,
                                    struct s_art_node *son);
 struct s_number_node *init_num_node_int(int num);
+struct s_number_node *init_num_node_var(char *var);
 struct s_art_node *init_art_node(void);
 void free_binop_node(struct s_binop_node *node);
 void free_unop_node(struct s_unop_node *node);

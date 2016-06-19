@@ -16,32 +16,36 @@
 */
 enum e_arlex_type
 {
+    /** ( */
+    AL_LPAR,
+    /** || (logical OR) */
+    AL_LG_OR,
+    /** && (logical AND) */
+    AL_LG_AND,
+    /** | (bitwise OR) */
+    AL_BW_OR,
+    /** ^ (bitwise XOR) */
+    AL_BW_XOR,
+    /** & (bitwise AND) */
+    AL_BW_AND,
     /** + */
     AL_PLUS,
     /** - */
     AL_MINUS,
-    /** ! (logical NOT) */
-    AL_LG_NEG,
-    /** ~ (bitwise NOT) */
-    AL_BW_NEG,
-    /** ** (exponentiation) */
-    AL_POW,
     /** * */
     AL_MULT,
     /** / */
     AL_DIV,
-    /** & (bitwise AND) */
-    AL_BW_AND,
-    /** ^ (bitwise XOR) */
-    AL_BW_XOR,
-    /** | (bitwise OR) */
-    AL_BW_OR,
-    /** && (logical AND) */
-    AL_LG_AND,
-    /** || (logical OR) */
-    AL_LG_OR,
-    /** ( */
-    AL_LPAR,
+    /** ** (exponentiation) */
+    AL_POW,
+    /** ! (logical NOT) */
+    AL_LG_NEG,
+    /** ~ (bitwise NOT) */
+    AL_BW_NEG,
+    /** + */
+    AL_UNARY_PLUS,
+    /** - */
+    AL_UNARY_MINUS,
     /** ) */
     AL_RPAR,
     /** Variable ('${VAR}', '$VAR' or 'VAR') */

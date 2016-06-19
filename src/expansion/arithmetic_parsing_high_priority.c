@@ -4,6 +4,7 @@
 #include "../includes/expansion.h"
 #include "../includes/util.h"
 
+/*
 struct s_art_node *read_f(struct s_stream *s)
 {
     struct s_art_node *node = read_e(s);
@@ -93,3 +94,4 @@ struct s_art_node *read_j(struct s_stream *s)
     else
         return node;
 }
+*/
