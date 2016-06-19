@@ -16,7 +16,7 @@ class TextArithLexerConfig(unittest.TestCase):
 
         self.carlex = self.ffi.NULL
 
-    def test_01_lexer_init(self):
+    def test_01_arlex_init(self):
         # Init lexer
         self.carlex = self.lib.arlex_init(b'2 + 3')
         self.assertIsNotNone(self.carlex, '[ERROR] Arlex is NULL')
@@ -33,7 +33,7 @@ class TextArithLexerConfig(unittest.TestCase):
                          '[ERROR]\n\t--expected: 2 + 3\n\t--my: ' +
                          str(current))
 
-    def test_02_lexer_process_launched(self):
+    def test_02_arlex_process_launched(self):
         # Init lexer
         self.carlex = self.lib.arlex_init(b'2 + 5 + 6')
         self.assertIsNotNone(self.carlex, '[ERROR] Arlex is NULL')
