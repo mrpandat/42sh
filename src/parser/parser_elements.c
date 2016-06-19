@@ -83,7 +83,7 @@ int read_arithmetic_expansion(struct s_element_node *element,
     char *temp;
     enum e_token_type type = lexer_peek(l)->type;
     while (type == TK_WORD || type == TK_LPAR || type == TK_RPAR
-           || type == TK_RARITH || type == TK_IONUMBER)
+           || type == TK_RARITH || type == TK_IONUMBER || type == TK_BANG)
     {
         temp = str_append(expression, lexer_peek(l)->value);
         free(expression);
