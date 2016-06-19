@@ -2,7 +2,7 @@
 
 #include "../includes/arith_lexer.h"
 
-bool is_word_letter(char c)
+bool is_word_char(char c)
 {
     if ('#' != c && '>' != c && '<' != c && '|' != c && '&' != c && '(' != c
         && ')' != c && '{' != c && '}' != c && '!' != c && ';' != c
@@ -53,7 +53,7 @@ static bool match_simple_variable(struct s_arlex *arlex)
     {
         arlex->current++;
         char *begin = arlex->current;
-        while (is_word_letter(*arlex->current))
+        while (is_word_char(*arlex->current))
             arlex->current++;
 
         char *value = strndup(begin, arlex->current - begin);
@@ -69,10 +69,10 @@ static bool match_simple_variable(struct s_arlex *arlex)
 static bool match_word(struct s_arlex *arlex)
 {
     /** WORD */
-    if (is_word_letter(*arlex->current))
+    if (is_word_char(*arlex->current))
     {
         char *begin = arlex->current;
-        while (is_word_letter(*arlex->current))
+        while (is_word_char(*arlex->current))
             arlex->current++;
 
         char *value = strndup(begin, arlex->current - begin);

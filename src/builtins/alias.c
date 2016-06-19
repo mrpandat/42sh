@@ -126,6 +126,10 @@ static bool is_argument(char *arg1)
 
 int my_alias(struct s_simple_command_node *node)
 {
+    if (is_argument("") || is_splitted_argument("")
+        || 0 == strlen(clean_str("\"\"")))
+    {}
+
     if (node->nb_elements == 1)
         return alias_list_all();
 
