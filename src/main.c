@@ -1,4 +1,6 @@
 #include <parser.h>
+
+#include <fcntl.h>
 #include "includes/hashtable.h"
 #include "includes/execute.h"
 

@@ -19,7 +19,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <fnmatch.h>
-
 struct env
 {
     struct s_ast_node *root;
@@ -44,8 +43,17 @@ struct env
     int nullglob;
     int sourcepath;
     int xpg_echo;
+
 };
 
 struct env g_env;
+
+
+struct process
+{
+    char *stdout_contents;
+    char *stderr_contents;
+    int ret;
+};
 
 #endif
