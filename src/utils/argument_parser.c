@@ -88,7 +88,7 @@ static void parse_small_options(int argc, char **argv, struct options *options,
             options->ast_print = 1;
         else if (strcmp(argv[i], "-v") == 0
                  || strcmp(argv[i], "--version") == 0)
-            print_exit(0, "Version 0.8", stdout);
+            print_exit(0, "Version 1.0", stdout);
         else if (strcmp(argv[i], "-h") == 0)
             print_exit(0, "42sh [ GNU long options ] [ options ] [ file ]",
                        stdout);
