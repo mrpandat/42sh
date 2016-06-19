@@ -66,8 +66,7 @@ enum e_word_type is_word(struct s_lexer_token *token)
         TK_DONE, TK_CASE, TK_ESAC, TK_WHILE, TK_UNTIL, TK_FOR, TK_IN,
         TK_FUNCTION, TK_IONUMBER, TK_VARIABLE
     };
-    int size = 18;
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < 18; i++)
     {
         if (token->type == word_types[i])
         {

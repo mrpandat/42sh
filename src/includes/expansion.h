@@ -106,14 +106,6 @@ struct s_art_operand *peek_stack(struct s_art_stack *stack);
 struct s_art_stack *init_stack(void);
 void free_stack(struct s_art_stack *stack);
 
-struct s_stream
-{
-    char *content;
-    int pos;
-};
-
-char *stream_peek(struct s_stream *stream);
-void stream_read(struct s_stream *stream, int n);
 char* expand_path(char * path);
 
 /**
@@ -133,43 +125,6 @@ char* expand_path(char * path);
  **   - '||'     (logical OR)
  **   - '(', ')' (for grouping)
  **
- ** The LL grammar used is the following:
- **
- **   J := I
- **      | I '||' J
- **
- **   I := H
- **      | H '&&' I
- **
- **   H := G
- **      | G '|' H
- **
- **   G := F
- **      | F '^' G
- **
- **   F := E
- **      | E '&' F
- **
- **   E := D
- **      | D '+' E
- **      | D '-' E
- **
- **   D := C
- **      | C '*' D
- **      | C '/' D
- **
- **   C := B
- **      | B '**' C
- **
- **   B := A
- **      | '(' J ')'
- **      | '!' B
- **      | '~' B
- **
- **   A := number
- **      | '(' J ')'
- **      | '-' A
- **      | '+' A
  **
  ** @fn char *arithmetic_expansion(char *expression)
  ** @brief Calculate the result of an arithmetic expression
@@ -178,22 +133,6 @@ char* expand_path(char * path);
  */
 char *arithmetic_expansion(char *expression);
 struct s_art_node *shunting_yard(struct s_arlex *lexer);
-
-/*
-struct s_art_node *read_a(struct s_stream *stream);
-struct s_art_node *read_b(struct s_stream *stream);
-struct s_art_node *read_c(struct s_stream *stream);
-struct s_art_node *read_d(struct s_stream *stream);
-struct s_art_node *read_e(struct s_stream *stream);
-struct s_art_node *read_f(struct s_stream *stream);
-struct s_art_node *read_g(struct s_stream *stream);
-struct s_art_node *read_h(struct s_stream *stream);
-struct s_art_node *read_i(struct s_stream *stream);
-struct s_art_node *read_j(struct s_stream *stream);
-struct s_art_node *read_num(struct s_stream *stream);
-struct s_art_node *read_var(struct s_stream *stream);
- */
-void read_spaces(struct s_stream *stream);
 
 struct s_binop_node *init_binop_node(struct s_art_node *left,
                                      enum e_arlex_type type,

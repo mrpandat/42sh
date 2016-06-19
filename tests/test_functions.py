@@ -137,6 +137,8 @@ def check_lines(path):
         counter = 0
         counterfuncs = 0
         for i, line in enumerate(lines):
+            if ',' in line and ', ' not in line and ',\n' not in line:
+                print("** Comma with no spaces detected in file {} at line {}.".format(path, i + 1))
             if 'sizeof(' in line:
                 print("** Keyword 'sizeof' with no spaces detected in file {} at line {}.".format(path, i + 1))
             if line[0] == '{':
@@ -150,6 +152,8 @@ def check_lines(path):
                 counter = 0
             if line != '\n' and '/*' not in line and '*/' not in line:
                 counter += 1
+            if len(line) > 81:
+                print('** Too much columns at line {} in file {} ({} columns).'.format(i + 1, path, len(line)))
         if counterfuncs > 5:
             print('** Too much functions ({}) in file {}.'.format(counterfuncs, path))
 
