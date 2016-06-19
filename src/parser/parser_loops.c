@@ -47,7 +47,9 @@ static bool read_for_words(struct s_for_node *for_node, struct s_lexer *l)
     lexer_read(l);
     while (is_word(lexer_peek(l)))
     {
-        add_for_word(for_node, lexer_peek(l)->value);
+        struct s_word *word = init_word(is_word(lexer_peek(l)),
+                                        lexer_peek(l)->value);
+        add_for_word(for_node, word);
         lexer_read(l);
     }
     if (lexer_peek(l)->type != TK_SEMI

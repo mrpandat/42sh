@@ -27,5 +27,8 @@ int my_exit(struct s_simple_command_node *node)
         free(g_env.opt->command);
     ht_destroy(g_env.aliases);
     ht_destroy(g_env.variables);
+    for (int i = 0; i < g_env.n_words; i++)
+        free(g_env.words[i]);
+    free(g_env.words);
     exit(nb);
 }

@@ -1,1 +1,1 @@
-exit 43
+exit 3

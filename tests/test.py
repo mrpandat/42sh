@@ -101,6 +101,7 @@ def launch_sanity_test():
 
 
 def launch_all():
+    launch_test("arith_lexer")
     launch_test("binary")
     launch_test("utils")
     launch_test("lexer")
@@ -216,7 +217,8 @@ def ctrl_c_handler(signalnum, stack):
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, ctrl_c_handler)
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
-    categorie = ["utils", "lexer", "parser", "execute", "binary"]
+    categorie = ["arith_lexer", "utils", "lexer", "parser", "execute",
+                 "binary"]
     sys.argv[0] = ""
     loop = enumerate(sys.argv)
     skip = False
@@ -251,6 +253,8 @@ if __name__ == "__main__":
         elif arg == "-c" or arg == "--category":
             if "utils" in sys.argv:
                 launch_test("utils")
+            elif "arith_lexer" in sys.argv:
+                launch_test("arith_lexer")
             elif "lexer" in sys.argv:
                 launch_test("lexer")
             elif "parser" in sys.argv:
@@ -260,7 +264,7 @@ if __name__ == "__main__":
             elif "binary" in sys.argv:
                 launch_test("binary")
             else:
-                print("Unknow category")
+                print("Unknown category")
                 exit(1)
             print_nyan()
             tracegraph(trace)

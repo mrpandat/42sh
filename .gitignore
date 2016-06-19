@@ -1,7 +1,8 @@
 # ast files
 ast.png
 ast.dot
-
+*.png
+*.dot
 
 # Git folder
 .git/

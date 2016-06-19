@@ -46,7 +46,7 @@ struct s_case_item_node
 struct s_for_node
 {
     char *iterator;
-    char **words;
+    struct s_word **words;
     int nb_words;
     struct s_ast_node *do_group;
 };
@@ -85,6 +85,7 @@ enum e_word_type
     WD_ARITH,
     WD_SUBSHELL,
     WD_ASSIGNEMENT_WORD,
+    WD_VARIABLE,
     WD_PATH
 };
 
@@ -211,7 +212,7 @@ void add_case_item_word(struct s_case_item_node *item, char *word);
 struct s_while_node *init_while_node(void);
 struct s_until_node *init_until_node(void);
 struct s_for_node *init_for_node(char *iterator);
-void add_for_word(struct s_for_node *node, char *word);
+void add_for_word(struct s_for_node *node, struct s_word *word);
 
 /* File: ast_init_commands.c */
 struct s_funcdec_node *init_funcdec_node(char *name);

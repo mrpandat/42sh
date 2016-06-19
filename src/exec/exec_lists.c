@@ -1,12 +1,17 @@
 #include <global.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <util.h>
+#include <ast.h>
 #include "../includes/execute.h"
 
 int exec_pipeline_node(struct s_pipeline_node *node)
 {
-    // TODO: Handle banged pipeline
-    if (node->nb_commands > 0)
-        return exec_ast_node(node->commands[0]); // TODO: Execute all commands
-    return -1;
+    if (node-> nb_commands > 0)
+        return exec_ast_node(node->commands[0]);
+    else
+        return 1;
 }
 
 int exec_and_or_node(struct s_and_or_node *node)

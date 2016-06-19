@@ -11,10 +11,13 @@ By Treibert Jean, Domingues Thomas, Lucas Moisan and Martin Lees.
 To build :
 - make
 
-To test:
+To test :
 - make check
 - make test [yourmodule]
 - make testb [yourbuiltin]
+
+To make a png from the ast.dot file :
+dot -Tpng -oast.png ast.dot
 
 If python modules are missing to launch the tests please run :
 

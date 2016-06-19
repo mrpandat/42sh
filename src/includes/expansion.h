@@ -7,6 +7,7 @@
 #ifndef INC_42SH_EXPANSION_H
 # define INC_42SH_EXPANSION_H
 # include <ast.h>
+# include <arith_lexer.h>
 
 enum e_binop_type
 {
@@ -24,7 +25,7 @@ enum e_binop_type
 
 struct s_binop_node
 {
-    enum e_binop_type type;
+    enum e_arlex_type type;
     struct s_art_node *left;
     struct s_art_node *right;
 };
@@ -39,7 +40,7 @@ enum e_unop_type
 
 struct s_unop_node
 {
-    enum e_unop_type type;
+    enum e_arlex_type type;
     struct s_art_node *number;
 };
 
@@ -77,14 +78,34 @@ struct s_art_node
     } data;
 };
 
-struct s_stream
+enum e_operand_type
 {
-    char *content;
-    int pos;
+    OPERAND_TOKEN,
+    OPERAND_NODE
 };
 
-char *stream_peek(struct s_stream *stream);
-void stream_read(struct s_stream *stream, int n);
+struct s_art_operand
+{
+    enum e_operand_type type;
+    union
+    {
+        struct s_art_node *node;
+        struct s_arlex_token *token;
+    } data;
+};
+
+struct s_art_stack
+{
+    int size;
+    struct s_art_operand **elements;
+};
+
+void add_stack(struct s_art_stack *stack, struct s_art_operand *operand);
+struct s_art_operand *pop_stack(struct s_art_stack *stack);
+struct s_art_operand *peek_stack(struct s_art_stack *stack);
+struct s_art_stack *init_stack(void);
+void free_stack(struct s_art_stack *stack);
+
 char* expand_path(char * path);
 
 /**
@@ -104,43 +125,6 @@ char* expand_path(char * path);
  **   - '||'     (logical OR)
  **   - '(', ')' (for grouping)
  **
- ** The LL grammar used is the following:
- **
- **   J := I
- **      | I '||' J
- **
- **   I := H
- **      | H '&&' I
- **
- **   H := G
- **      | G '|' H
- **
- **   G := F
- **      | F '^' G
- **
- **   F := E
- **      | E '&' F
- **
- **   E := D
- **      | D '+' E
- **      | D '-' E
- **
- **   D := C
- **      | C '*' D
- **      | C '/' D
- **
- **   C := B
- **      | B '**' C
- **
- **   B := A
- **      | '(' J ')'
- **      | '!' B
- **      | '~' B
- **
- **   A := number
- **      | '(' J ')'
- **      | '-' A
- **      | '+' A
  **
  ** @fn char *arithmetic_expansion(char *expression)
  ** @brief Calculate the result of an arithmetic expression
@@ -148,24 +132,15 @@ char* expand_path(char * path);
  ** @return A char* containing the result of the arithmetic calculation
  */
 char *arithmetic_expansion(char *expression);
-struct s_art_node *read_a(struct s_stream *stream);
-struct s_art_node *read_b(struct s_stream *stream);
-struct s_art_node *read_c(struct s_stream *stream);
-struct s_art_node *read_d(struct s_stream *stream);
-struct s_art_node *read_e(struct s_stream *stream);
-struct s_art_node *read_f(struct s_stream *stream);
-struct s_art_node *read_g(struct s_stream *stream);
-struct s_art_node *read_h(struct s_stream *stream);
-struct s_art_node *read_i(struct s_stream *stream);
-struct s_art_node *read_j(struct s_stream *stream);
-struct s_art_node *read_num(struct s_stream *stream);
-void read_spaces(struct s_stream *stream);
+struct s_art_node *shunting_yard(struct s_arlex *lexer);
+
 struct s_binop_node *init_binop_node(struct s_art_node *left,
-                                     enum e_binop_type type,
+                                     enum e_arlex_type type,
                                      struct s_art_node *right);
-struct s_unop_node *init_unop_node(enum e_unop_type type,
+struct s_unop_node *init_unop_node(enum e_arlex_type type,
                                    struct s_art_node *son);
 struct s_number_node *init_num_node_int(int num);
+struct s_number_node *init_num_node_var(char *var);
 struct s_art_node *init_art_node(void);
 void free_binop_node(struct s_binop_node *node);
 void free_unop_node(struct s_unop_node *node);
@@ -191,6 +166,8 @@ int variables(struct s_simple_command_node *node);
  ** @return Char: empty if no variable has been found, else, the value.
  */
 char *get_var(char *name);
+void set_var(char *var, void *value);
+
 
 /*
  ** @fn int is_var_assign(char *word, int save)

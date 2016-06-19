@@ -100,3 +100,6 @@ class TestExec(unittest.TestCase):
         self.arith_bash('1*(4*3)')
         self.arith_bash('5+(3/7)')
         self.arith_bash('(12 ^56) ** (6 && 6)')
+
+    def test_12_hard(self):
+        self.arith_bash('3 * (5 || 3) - (( 3 ^ 7) ** 2) | 3 + (4 - 6 * 3 + 7 + 8 - 7)')

@@ -79,8 +79,25 @@ static char *exec_normal_word(struct s_word *word)
         word->result = expanded;
         return word->result;
     }
+    else if ((expanded = get_var(word->value)) != NULL)
+        return expanded;
     else
         return word->value;
+}
+
+static char *handle_arith_subshell(struct s_word *word)
+{
+    if (word->result != NULL)
+    {
+        g_env.n_words++;
+        g_env.words = realloc(g_env.words, g_env.n_words * sizeof (char*));
+        g_env.words[g_env.n_words - 1] = word->result;
+    }
+    if (word->type == WD_ARITH)
+        word->result = arithmetic_expansion(word->value);
+    else
+        word->result = execute_subshell(word->value);
+    return word->result;
 }
 
 char *exec_word(struct s_word *word)
@@ -91,14 +108,13 @@ char *exec_word(struct s_word *word)
     else if (word->type == WD_PATH)
         return word->result;
     else if (word->type == WD_ARITH || word->type == WD_SUBSHELL)
+        return handle_arith_subshell(word);
+    else if (word->type == WD_VARIABLE)
     {
-        if (word->result != NULL)
-            return word->result;
-        if (word->type == WD_ARITH)
-            word->result = arithmetic_expansion(word->value);
+        if (get_var(word->value) == NULL)
+            return "";
         else
-            word->result = execute_subshell(word->value);
-        return word->result;
+            return get_var(word->value);
     }
     else
         return NULL;

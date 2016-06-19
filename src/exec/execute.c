@@ -61,6 +61,9 @@ int execute(struct options opt, struct s_ast_node *root, struct s_lexer *lexer)
     lexer_destroy(lexer);
     ht_destroy(g_env.aliases);
     ht_destroy(g_env.variables);
+    for (int i = 0; i < g_env.n_words; i++)
+        free(g_env.words[i]);
+    free(g_env.words);
     return ret;
 }
 

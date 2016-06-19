@@ -8,7 +8,7 @@ int check (struct s_simple_command_node *node)
     if (node->nb_elements < 2)
     {
         fprintf(stderr, "No argument after source\n");
-        return 2;
+        return 1;
     }
     if (node->elements[0]->type == EL_WORD
         && node->elements[1]->type == EL_WORD)

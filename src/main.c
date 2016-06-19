@@ -1,4 +1,6 @@
 #include <parser.h>
+
+#include <fcntl.h>
 #include "includes/hashtable.h"
 #include "includes/execute.h"
 
@@ -22,6 +24,8 @@ void fill_env(struct s_lexer *lexer, struct s_ast_node *root,
     g_env.nullglob = 0;
     g_env.sourcepath = 0;
     g_env.xpg_echo = 0;
+    g_env.words = NULL;
+    g_env.n_words = 0;
 }
 
 int main(int argc, char *argv[])
