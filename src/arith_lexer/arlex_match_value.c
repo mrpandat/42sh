@@ -4,10 +4,8 @@
 
 bool is_word_char(char c)
 {
-    if ('#' != c && '>' != c && '<' != c && '|' != c && '&' != c && '(' != c
-        && ')' != c && '{' != c && '}' != c && '!' != c && ';' != c
-        && '$' != c && '"' != c && '\'' != c && ' ' != c && '\n' != c
-        && '\0' != c && !(c >= 48 && c <= 57))
+    if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90)
+        || (c >= 97 && c <= 122) || '_' == c)
         return true;
 
     return false;
@@ -69,7 +67,8 @@ static bool match_simple_variable(struct s_arlex *arlex)
 static bool match_word(struct s_arlex *arlex)
 {
     /** WORD */
-    if (is_word_char(*arlex->current))
+    char c = *arlex->current;
+    if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || '_' == c)
     {
         char *begin = arlex->current;
         while (is_word_char(*arlex->current))
