@@ -44,6 +44,10 @@ struct env
     int sourcepath;
     int xpg_echo;
 
+    // Words
+    char **words;
+    int n_words;
+
 };
 
 struct env g_env;

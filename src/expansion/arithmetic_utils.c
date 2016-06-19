@@ -11,7 +11,7 @@ char *arithmetic_expansion(char *expression)
     arlex_process(lexer);
     if (lexer == NULL)
         return NULL;
-    struct s_art_node *root = shunting_yard(lexer); //read_j(s);
+    struct s_art_node *root = shunting_yard(lexer);
     if (root != NULL)
     {
         int res = execute_art_node(root);
