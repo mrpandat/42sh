@@ -136,4 +136,16 @@ struct s_arlex_token *arlex_peek(struct s_arlex *arlex);
 */
 struct s_arlex_token *arlex_read(struct s_arlex *arlex);
 
+/* File: arlex_match_operator.c */
+
+/**
+** @fn bool arlex_match_operator(struct s_arlex *arlex);
+** @brief If the current value of the command string pointer match to an
+**        operator - +, -, *, **, /, &, | ... -, creates a token and put it
+**        into  the token list.
+** @param The arithmetic expression lexer instance.
+** @return true if it matched, false otherwise.
+*/
+bool arlex_match_operator(struct s_arlex *arlex);
+
 #endif /* !ARITH_LEXER_H */
