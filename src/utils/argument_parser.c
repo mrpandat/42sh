@@ -107,7 +107,7 @@ static void parse_small_options(int argc, char **argv, struct options *options,
 
 void parse_options(int argc, char **argv, struct options *options, int start)
 {
-    if (isatty(STDIN_FILENO))
+    if (isatty(STDIN_FILENO) && isatty(STDIN_FILENO))
     {
         parse_small_options(argc, argv, options, start);
         parse_file(options);
