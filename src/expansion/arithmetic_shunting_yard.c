@@ -118,6 +118,12 @@ struct s_art_node *shunting_yard(struct s_arlex *lexer)
             }
         }
     }
+    if (token->type != AL_NEWLINE || token->type != AL_UNDEFINED)
+    {
+        free_stack(operands);
+        free_stack(operators);
+        return NULL;
+    }
     while (peek_stack(operators) != NULL)
         reduct(operands, operators);
     struct s_art_node *root = peek_stack(operands)->data.node;

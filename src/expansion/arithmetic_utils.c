@@ -40,7 +40,10 @@ char *arithmetic_expansion(char *expression)
         return my_itoa(res);
     }
     else
+    {
+        arlex_destroy(lexer);
         return "";
+    }
 }
 
 struct s_art_stack *init_stack(void)
