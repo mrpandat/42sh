@@ -49,7 +49,6 @@ static bool arlex_match_expr(struct s_arlex *arlex)
 {
     return match_separator(arlex)
            || arlex_match_newline(arlex)
-           || arlex_match_symbol(arlex)
            || arlex_match_operator(arlex)
            || arlex_match_variable(arlex)
            || arlex_match_number(arlex)
