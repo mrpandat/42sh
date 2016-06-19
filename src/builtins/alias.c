@@ -149,11 +149,8 @@ int my_alias(struct s_simple_command_node *node)
                 /** value has no quoting */
             else
                 alias_set_value(node->elements[i], NULL);
-        else
-        {
-            if (!alias_get_value(exec_word(node->elements[i]->data.s_word)))
-                ret = 1;
-        }
+        else if (!alias_get_value(exec_word(node->elements[i]->data.s_word)))
+            ret = 1;
         free(tmp);
     }
 

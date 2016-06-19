@@ -52,7 +52,7 @@ static void parse_long_option(char **argv, struct options *options, int i)
         char *compare = "--version";
         ok = match(compare, argv[i]);
         if (ok == 1)
-            print_exit(0, "Version 0.8", stdout);
+            print_exit(0, "Version 1.0", stdout);
     }
     if (ok == 0)
         fprintf(stderr, "unknown long option : %s\n", argv[i]);

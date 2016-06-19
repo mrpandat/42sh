@@ -2,6 +2,33 @@
 
 #include "../includes/hashtable.h"
 
+static void insert_new_element(struct s_hashtable *ht, struct s_element *prev,
+                               char *key, void *value)
+{
+    size_t index = ht_hash(ht, key);
+    struct s_element *curr = NULL;
+
+    if (NULL == prev)
+        curr = prev;
+    else
+        curr = prev->next;
+
+    struct s_element *new_element = ht_new_element(key, value);
+
+    if (curr == ht->table[index])
+    {
+        new_element->next = curr;
+        ht->table[index] = new_element;
+    }
+    else if (NULL != prev && NULL == curr)
+        prev->next = new_element;
+    else
+    {
+        new_element->next = curr;
+        prev->next = new_element;
+    }
+}
+
 void ht_insert(struct s_hashtable *ht, char *key, void *value)
 {
     size_t index = ht_hash(ht, key);
@@ -21,22 +48,7 @@ void ht_insert(struct s_hashtable *ht, char *key, void *value)
         curr->value = strdup(value);
     }
     else
-    {
-        struct s_element *new_element = ht_new_element(key, value);
-
-        if (curr == ht->table[index])
-        {
-            new_element->next = curr;
-            ht->table[index] = new_element;
-        }
-        else if (NULL != prev && NULL == curr)
-            prev->next = new_element;
-        else
-        {
-            new_element->next = curr;
-            prev->next = new_element;
-        }
-    }
+        insert_new_element(ht, prev, key, value);
 }
 
 void ht_remove(struct s_hashtable *ht, char *key)

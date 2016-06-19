@@ -81,11 +81,9 @@ bool lexer_match_dquote(struct s_lexer *lexer)
         while (*copy && 0 != strncmp(copy, "\"", strlen("\"")))
         {
             if (0 == strncmp(lexer->current, "\\\"", strlen("\\\"")))
-            {
                 copy += strlen("\\\"");
-                continue;
-            }
-            copy++;
+            else
+                copy++;
         }
 
         val = strndup(lexer->current, (copy - lexer->current));
