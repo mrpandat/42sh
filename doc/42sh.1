@@ -1,4 +1,4 @@
-.TH 42sh 1 "2016 May 26" "42sh-0.5" "Manpage of 42sh"
+.TH 42sh 1 "2016 June 19" "42sh-1.0" "Manpage of 42sh"
 
 .SH NAME
 
@@ -6,7 +6,8 @@
 
 .SH SYNOPSIS
 
-42sh [GNU long options] [options] [file]
+.B 42sh
+[GNU long options] [options] [file]
 
 .SH DESCRIPTION
 
@@ -15,24 +16,115 @@ is an sh-compatible command language interpreter that executes commands
 read from the standard input, from a file, from a here-document or from
 argument with
 .I -c
-. 42sh also incorporates useful features from the Bash shell.
+\&.
+.B 42sh
+also incorporates useful features from the Bash shell.
 
 .B 42sh
 is intended to be a conformant implementation of the Shell and Utilities
-portion of the IEEE  POSIX  specification  (IEEE  Standard  1003.1).
+portion of the IEEE POSIX specification (IEEE Standard 1003.1).
 .B 42sh
 can be configured to be POSIX-conformant by default.
 
+.SH OPTIONS
+.B 42sh
+interprets the following options when it is invoked:
+
+.TP
+.B -c
+If the
+.I -c
+option is present, then commands are read from the first non-option argument
+.I command_string
+\&. If there are arguments after the
+.I command_string
+, they are assigned to the positional parameters, starting with
+.I $0
+\&.
+.TP
+.B -h
+Display a usage message on standard output and exit successfully.
+.TP
+.B [-+]O [shopt_option]
+.I shopt_option
+is one of the shell options accepted by the
+.B shopt
+builtin (see
+.B Shell Command Language
+external documentation for further instructions). If
+.I shopt_option
+is present,
+.B -O
+sets the value of that option;
+.B +O
+unsets it. If
+.I shopt_option
+is not supplied, the names and values of the shell options accepted by
+.B shopt
+are printed on the standard output. If the invocation option is
+.B +O
+, the output is displayed in a format that may be reused as input.
+.TP
+.B --
+A
+.B --
+signals the end of options and disables further option processing. Any arguments
+after the
+.B --
+are treated as filenames and arguments. An argument of
+.B -
+is equivalent to
+.B --
+\&.
+.TP
+.B -v
+Show version information for this instance of
+.B 42sh
+on the standard output and exit successfully.
+
+.PP
+.B 42sh
+also interprets a number of multi-character options. These options must appear
+on the command line before the single-character options to be recognized.
+
+.TP
+.B --ast-print
+Creates an image copy in the current directory of the
+.I Abstract Syntax Tree
+representation used internally to execute your script / command.
+
+.TP
+.B --no-rc
+Do not read and execute the personal initialization file
+.I ~/.42shrc
+if the shell is interactive. This option is on by default if the
+shell is invoked as
+.B sh
+\&.
+.TP
+.B --version
+Equivalent to
+.B -v
+\&.
+
 .SH AUTHORS
 
-Jean Treibert, Project Manager of the Century
-<jean.treibert@epita.fr>
+.TP
+.B Jean Treibert
+Project Manager of the Century -- Testsuite Master & Execution Padawan
+.I <jean.treibert@epita.fr>
 
-Martin Lees, Git Destroyer
-<martin.lees@epita.fr>
+.TP
+.B Martin Lees
+Git Destroyer -- Execution Master
+.I <martin.lees@epita.fr>
 
-Lucas Moisan, Parser Master
-<lucas.moisan@epita.fr>
+.TP
+.B Lucas Moisan
+Tryharder -- Parser Master
+.I <lucas.moisan@epita.fr>
 
-Thomas Domingues, Lazy Developer
-<thomas.domingues@epita.fr>
+.TP
+.B Thomas Domingues
+Crazy but lazy -- Lexer Master
+.I <thomas.domingues@epita.fr>
