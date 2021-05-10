@@ -2,5 +2,5 @@ cffi==1.6.0
 plotly==1.11.0
 pycparser==2.14
 pytz==2016.4
-requests==2.10.0
+requests==2.20.0
 six==1.10.0
